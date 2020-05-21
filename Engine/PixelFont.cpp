@@ -10,8 +10,20 @@
 	 int y = pos.y;
 	 const int padding = (fontsize + fontsize / 2)*6;
 	 for (size_t i = 0; i < string.size(); i++) {
-		 if (string[i] == 32) {
+		 if (string[i] == 32) {//space
 			 x += padding/2;
+		 }
+		 else if (string[i] == 105|| string[i] == 46 || string[i] == 39 || string[i] == 33 ) {// i .' or !
+			 DrawCharacter(x, y, gfx, string[i], fontsize, c);
+			 x += padding/3;
+		 }
+		 else if (string[i] == 49) {//1
+			 DrawCharacter(x, y, gfx, string[i], fontsize, c);
+			 x += padding *4/6;
+		 }
+		 else if (string[i] == 44) {//,
+			 DrawCharacter(x, y, gfx, string[i], fontsize, c);
+			 x += padding /2;
 		 }
 		 else {
 			 DrawCharacter(x, y, gfx, string[i], fontsize, c);
@@ -27,6 +39,7 @@ void PixelFont::DrawCharacter(int x,int y, Graphics& gfx,int char_case_nr,int fo
 	const int xy3 = xy1 * 3;
 	const int xy4 = xy1 * 4;
 	const int y5 = xy1 * 5;
+	const int y6 = xy1 * 6;
 	switch (char_case_nr)//case numbers according to ascii
 	{
 	case 97: // A
@@ -203,24 +216,11 @@ void PixelFont::DrawCharacter(int x,int y, Graphics& gfx,int char_case_nr,int fo
 		break;
 	case 105: //I
 		DrawBlock(gfx, x, y,fontsize,c);
-		DrawBlock(gfx, x + xy1, y,fontsize,c);
-		DrawBlock(gfx, x + xy2, y,fontsize,c);
-		DrawBlock(gfx, x + xy3, y,fontsize,c);
-		DrawBlock(gfx, x + xy4, y,fontsize,c);
-
-		DrawBlock(gfx, x + xy2, y + xy1,fontsize,c);
-
-		DrawBlock(gfx, x + xy2, y + xy2,fontsize,c);
-
-		DrawBlock(gfx, x + xy2, y + xy3,fontsize,c);
-
-		DrawBlock(gfx, x + xy2, y + xy4,fontsize,c);
-
-		DrawBlock(gfx, x, y + y5,fontsize,c);
-		DrawBlock(gfx, x + xy1, y + y5,fontsize,c);
-		DrawBlock(gfx, x + xy2, y + y5,fontsize,c);
-		DrawBlock(gfx, x + xy3, y + y5,fontsize,c);
-		DrawBlock(gfx, x + xy4, y + y5,fontsize,c);
+		DrawBlock(gfx, x , y + xy1,fontsize,c);
+		DrawBlock(gfx, x , y + xy2,fontsize,c);
+		DrawBlock(gfx, x , y + xy3,fontsize,c);
+		DrawBlock(gfx, x, y + xy4,fontsize,c);
+		DrawBlock(gfx, x, y + y5,fontsize,c);	
 		break;
 	case 106: //J
 		DrawBlock(gfx, x, y,fontsize,c);
@@ -586,20 +586,20 @@ void PixelFont::DrawCharacter(int x,int y, Graphics& gfx,int char_case_nr,int fo
 		DrawBlock(gfx, x + xy3, y + y5,fontsize,c);
 		break;
 	case 49: // 1
-		DrawBlock(gfx, x + xy2, y,fontsize,c);
+		DrawBlock(gfx, x + xy1, y,fontsize,c);
 
+		DrawBlock(gfx, x , y + xy1,fontsize,c);
 		DrawBlock(gfx, x + xy1, y + xy1,fontsize,c);
-		DrawBlock(gfx, x + xy2, y + xy1,fontsize,c);
 
-		DrawBlock(gfx, x + xy2, y + xy2,fontsize,c);
+		DrawBlock(gfx, x + xy1, y + xy2,fontsize,c);
 
-		DrawBlock(gfx, x + xy2, y + xy3,fontsize,c);
+		DrawBlock(gfx, x + xy1, y + xy3,fontsize,c);
 
-		DrawBlock(gfx, x + xy2, y + xy4,fontsize,c);
+		DrawBlock(gfx, x + xy1, y + xy4,fontsize,c);
 
+		DrawBlock(gfx, x , y + y5,fontsize,c);
 		DrawBlock(gfx, x + xy1, y + y5,fontsize,c);
 		DrawBlock(gfx, x + xy2, y + y5,fontsize,c);
-		DrawBlock(gfx, x + xy3, y + y5,fontsize,c);
 		break;
 	case 50: //2
 		DrawBlock(gfx, x + xy1, y,fontsize,c);
@@ -770,17 +770,14 @@ void PixelFont::DrawCharacter(int x,int y, Graphics& gfx,int char_case_nr,int fo
 		DrawBlock(gfx, x + xy2, y + y5,fontsize,c);
 		DrawBlock(gfx, x + xy1, y + y5,fontsize,c);
 		break;
-	case 46: // .
-		DrawBlock(gfx, x, y + xy4,fontsize,c);
-		DrawBlock(gfx, x + xy1, y + xy4,fontsize,c);
+	case 46: // .	
 		DrawBlock(gfx, x, y + y5,fontsize,c);
-		DrawBlock(gfx, x + xy1, y + y5,fontsize,c);
 		break;
 	case 44: // ,
-		DrawBlock(gfx, x, y + xy3,fontsize,c);
-		DrawBlock(gfx, x + xy1, y + xy3,fontsize,c);
+		DrawBlock(gfx, x, y + xy4,fontsize,c);
 		DrawBlock(gfx, x + xy1, y + xy4,fontsize,c);
-		DrawBlock(gfx, x, y + y5,fontsize,c);
+		DrawBlock(gfx, x + xy1, y + y5,fontsize,c);
+		DrawBlock(gfx, x, y + y6,fontsize,c);
 		break;
 	case 39: // '
 		DrawBlock(gfx, x, y,fontsize,c);
