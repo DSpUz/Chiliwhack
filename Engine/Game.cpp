@@ -248,7 +248,7 @@ void Game::DrawHammer2(int head_x, int head_y)
 }
 void Game::DrawWelcomeScreen()
 {
-	font.DrawString({ 350,500 }, text, gfx,Colors::Green);
+	font.DrawString({ 100,420 }, text, gfx,6,Colors::Green);
 	DrawTimeline(gfx.ScreenWidth, 10, 128, 255, 0);
 	int x = 80, y = 50;
 	int r = 0, g = 146, b = 14;

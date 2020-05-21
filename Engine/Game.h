@@ -81,7 +81,7 @@ private:
 	int ChiliMoveX; //AI Chili coordinates
 	int ChiliMoveY;
 	PixelFont font;
-	std::string text = "garbage";
+	std::string text = "what's this?";
 
 	ChiliState s0, s1, s2, s3, s4, s5, s6, s7, s8; //State variables for each cell
 	bool keysPressedLastFrame,gotStarttime=false;
