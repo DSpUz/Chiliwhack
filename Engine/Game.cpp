@@ -230,7 +230,7 @@ void Game::DrawTimeline(int length, int height, int r,int g, int b)
 {
 	int x1 = 0,x2=length;
 	for (int y = 0; y <= height; y++) {
-		gfx.DrawLine(x1, y, x2, y, r, g, b);
+		gfx.DrawLine(x1, y, x2-1, y, r, g, b);
 }
 }
 void Game::DrawHammer1(int head_x, int head_y)
@@ -248,6 +248,7 @@ void Game::DrawHammer2(int head_x, int head_y)
 }
 void Game::DrawWelcomeScreen()
 {
+	font.DrawString({ 350,500 }, text, gfx,Colors::Green);
 	DrawTimeline(gfx.ScreenWidth, 10, 128, 255, 0);
 	int x = 80, y = 50;
 	int r = 0, g = 146, b = 14;

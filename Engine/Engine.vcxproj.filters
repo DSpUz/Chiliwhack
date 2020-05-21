@@ -57,10 +57,10 @@
     <ClInclude Include="SoundEffect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Fonts.h">
+    <ClInclude Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Vei2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Vei2.h">
+    <ClInclude Include="PixelFont.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -89,10 +89,10 @@
     <ClCompile Include="Sound.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Fonts.cpp">
+    <ClCompile Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Vei2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Vei2.cpp">
+    <ClCompile Include="PixelFont.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
