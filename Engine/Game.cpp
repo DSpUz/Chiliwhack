@@ -248,27 +248,9 @@ void Game::DrawHammer2(int head_x, int head_y)
 }
 void Game::DrawWelcomeScreen()
 {
-	font.DrawString({ 100,450 }, text, gfx,3,Colors::Magenta);
+	font.DrawString({ 80,50 }, welcometext, gfx,3,Colors::Green);
 	DrawTimeline(gfx.ScreenWidth, 10, 128, 255, 0);
-	int x = 80, y = 50;
-	int r = 0, g = 146, b = 14;
-	/*---------FIRST ROW--------------*/
-	gfx.chW(x, y, r, g, b); x = x + 30; gfx.chE(x, y, r, g, b); x = x + 30; gfx.chL(x, y, r, g, b); x = x + 30;
-	gfx.chC(x, y, r, g, b); x = x + 30; gfx.chO(x, y, r, g, b); x = x + 30; gfx.chM(x, y, r, g, b); x = x + 30;
-	gfx.chE(x, y, r, g, b);//welcome
-	x = x + 45;
-	gfx.chT(x, y, r, g, b); x = x + 30; gfx.chO(x, y, r, g, b);//to
-	x = x + 45;
-	gfx.chC(x, y, r, g, b); x = x + 30; gfx.chH(x, y, r, g, b); x = x + 30; gfx.chI(x, y, r, g, b); x = x + 10;
-	gfx.chL(x, y, r, g, b); x = x + 30; gfx.chI(x, y, r, g, b); x = x + 10; gfx.chW(x, y, r, g, b); x = x + 30;
-	gfx.chH(x, y, r, g, b); x = x + 30; gfx.chA(x, y, r, g, b); x = x + 30; gfx.chC(x, y, r, g, b); x = x + 30;
-	gfx.chK(x, y, r, g, b);// Chiliwhack
-	x = x + 45;
-	gfx.ch1(x, y, r, g, b); x = x + 30; gfx.chPoint(x, y, r, g, b); x = x + 10;
-	gfx.ch0(x, y, r, g, b); x = x + 30; gfx.chExMark(x, y, r, g, b); //1.0!
-	/*----------------------------------
-	---------SECOND ROW----------------*/
-	x = 190, y = 240;
+	int x = 190, y = 240;
 	DrawGrid(x, y, 40, 3);
 	x = x + 200;
 	DrawChili(x, y, 60);
@@ -277,6 +259,7 @@ void Game::DrawWelcomeScreen()
 	/*----------------------------------
 	---------THIRD ROW----------------*/
 	x = 120, y = 400;
+	int r = 0, g = 128, b = 0;
 	gfx.chP(x, y, r, g, b); x = x + 30; gfx.chR(x, y, r, g, b); x = x + 30; gfx.chE(x, y, r, g, b); x = x + 30;
 	gfx.chS(x, y, r, g, b); x = x + 30; gfx.chS(x, y, r, g, b); //press
 	x = x + 45;
