@@ -24,7 +24,7 @@
 #include "Mouse.h"
 #include "Graphics.h"
 #include "Sound.h"
-#include "PixelFont.h"
+#include "Database.h"
 
 class Game
 {
@@ -43,7 +43,7 @@ private:
 	void ComposeFrame();
 	void UpdateModel();
 	/*-----------------------------------------------*/
-	void DrawChili(int x,int y, int w); //x-coordinate, y- coordinate and width thanks to Legacy http://forum.planetchili.net/viewtopic.php?f=3&t=3890
+	/*void DrawChili(int x,int y, int w); //x-coordinate, y- coordinate and width thanks to Legacy http://forum.planetchili.net/viewtopic.php?f=3&t=3890
 	void DrawCell(int cellx, int celly, int sq_w, int line_g, int r, int g, int b);//Thanks to Asimov - see http://www.planetchili.net/forum/viewtopic.php?f=3&t=1065
 	void DrawGrid(int posx, int posy, int cw,int rownumber);
 	void DrawTimeline(int length, int height, int r, int g, int b);//Inspired by Maggot#9's Squares - see http://www.planetchili.net/forum/viewtopic.php?t=3856
@@ -55,7 +55,7 @@ private:
 	void DrawEndScreen();
 
 	/*GAME LOGIC FUNCTIONS - for elaborate explanation see old beginner series lesson 12*/
-	void SetCellState(int index, ChiliState state);// sets cells to either empty or chili
+	/*void SetCellState(int index, ChiliState state);// sets cells to either empty or chili
 	void SetCellState(int ix, int iy, ChiliState state);
 
 	ChiliState GetCellState(int index);//reads cell state according to index
@@ -70,8 +70,13 @@ private:
 private:
 	MainWindow& wnd;
 	Graphics gfx;
+	Database db;
+	bool savedonce = false;
+	bool loadedonce = false;
+	PixelFont font;
+	
 	/********************************/
-	const int baseX = 256;//grid top left corner coordinates
+	/*const int baseX = 256;//grid top left corner coordinates
 	const int baseY = 156;
 	const int cellw = 144;//cell width for shifting chili and hammer
 	float timeline_length=799;
@@ -96,7 +101,7 @@ private:
 
 	bool outro = false;
 	int outrow=100;//width of chili in the outro
-	bool end = false;
+	bool end = false;*/
 	/*  User Variables              */
 	/********************************/
 };

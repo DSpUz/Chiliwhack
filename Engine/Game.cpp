@@ -26,18 +26,18 @@
 Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
-	gfx(wnd),
-	hammerx(1),
+	gfx(wnd)
+	/*hammerx(1),
 	hammery(1),
 	keysPressedLastFrame(false),
 	sky(L"sky.wav"),
 	slam(L"slam.wav"),
-	chi(L"chi.wav")
+	chi(L"chi.wav")*/
 {
-	for (int index = 0; index<9; index++) {//initializes all cells empty
+	/*for (int index = 0; index<9; index++) {//initializes all cells empty
 		SetCellState(index, EMPTY);
 	}
-	srand((unsigned int)time(NULL));//converts computer time since 1970 in a number and "seeds" random function
+	srand((unsigned int)time(NULL));//converts computer time since 1970 in a number and "seeds" random function*/
 }
 
 void Game::Go()
@@ -52,7 +52,7 @@ void Game::Go()
 
 /*-------------------------------------------------------------------------*/
 /*GRAPHICS FUNCTIONS*/
-void Game::DrawChili(int x, int y, int w)
+/*void Game::DrawChili(int x, int y, int w)
 {
 	int cx = x, cy = y, width = w;
 
@@ -176,7 +176,7 @@ void Game::DrawCell(int cellx, int celly, int sq_w, int line_g, int r, int g, in
 	/*  cellx, celly - center coordinates of the star(see drawing)
 	sq_w  -  cell width/2
 	line_g -line gap(see drawing) */
-
+/*
 	int movex, movey;
 
 	movey = celly;
@@ -258,7 +258,7 @@ void Game::DrawWelcomeScreen()
 	DrawHammer1(x, y);
 	/*----------------------------------
 	---------THIRD ROW----------------*/
-	x = 120, y = 400;
+	/*x = 120, y = 400;
 	int r = 0, g = 128, b = 0;
 	gfx.chP(x, y, r, g, b); x = x + 30; gfx.chR(x, y, r, g, b); x = x + 30; gfx.chE(x, y, r, g, b); x = x + 30;
 	gfx.chS(x, y, r, g, b); x = x + 30; gfx.chS(x, y, r, g, b); //press
@@ -335,7 +335,7 @@ void Game::DrawEndScreen()
 {
 	int x = 150, y = 100;
 	int r = 0, g = 146, b = 14;
-	/*---------FIRST ROW--------------*/
+	/*---------FIRST ROW--------------*//*
 	gfx.chC(x, y, r, g, b); x = x + 30; gfx.chO(x, y, r, g, b); x = x + 30; gfx.chN(x, y, r, g, b); x = x + 30;
 	gfx.chG(x, y, r, g, b); x = x + 30; gfx.chR(x, y, r, g, b); x = x + 30; gfx.chA(x, y, r, g, b); x = x + 30;
 	gfx.chT(x, y, r, g, b); x = x + 30; gfx.chU(x, y, r, g, b); x = x + 30; gfx.chL(x, y, r, g, b); x = x + 30;
@@ -344,7 +344,7 @@ void Game::DrawEndScreen()
 	gfx.chExMark(x, y, r, g, b);//Congratulations!
 	 /*----------------------------------
 	 ---------SECOND ROW----------------*/
-	x = 140, y = 400;
+	/*x = 140, y = 400;
 	gfx.chY(x, y, r, g, b); x = x + 30; gfx.chO(x, y, r, g, b); x = x + 30; gfx.chU(x, y, r, g, b); //you
 	x = x + 45;
 	gfx.chG(x, y, r, g, b); x = x + 30; gfx.chO(x, y, r, g, b); x = x + 30; gfx.chT(x, y, r, g, b);//got
@@ -365,7 +365,7 @@ void Game::DrawEndScreen()
 /*-------------------------------------------------------------------------*/
 
 /*GAME LOGIC FUNCTIONS - see old series beginner tutorial 12 */
-void Game::SetCellState(int index, ChiliState state)
+/*void Game::SetCellState(int index, ChiliState state)
 {
 	switch (index)  //sets chosen cell to empty or chili
 	{
@@ -504,12 +504,23 @@ void Game::DoUserInput() {
 		slampl = false;
 	}
 	
-}
+}*/
 /*-------------------------------------------------------------------------*/
 void Game::UpdateModel()
 {
+	if (!savedonce) {
+		db.Add("chili", 69);
+		db.Add("me", 402);
+		db.Add("absolute garbage", 15);
+		db.Save("highscores.dat");
+		savedonce = true;
+	}
+	if (!loadedonce) {
+		db.Load("highscores.dat");
+		loadedonce = true;
+	}
 	/*-----------WELCOMESCREEN-------------------*/
-	if (!intropl) {//plays intro
+	/*if (!intropl) {//plays intro
 		sky.Play();
 		intropl = true;
 	}
@@ -521,7 +532,7 @@ void Game::UpdateModel()
 	}
 
 	/*----------------------GAME-----------------------------*/
-	if (start) {
+	/*if (start) {
 		DoAIMoveRand();
 		DoUserInput();
 		if (!gotStarttime) {//checks if starttime is already saved
@@ -553,7 +564,7 @@ void Game::UpdateModel()
 		}
 	}
 	/*-------------OUTRO-----------------*/
-	if (outro) {
+	/*if (outro) {
 		if (!gotStarttime) {//checks if starttime is already saved
 			start_t = (int)time(NULL);
 			cond_t = start_t;
@@ -573,16 +584,17 @@ void Game::UpdateModel()
 			end = true;
 		}
 	}
-
+	*/
 }
 void Game::ComposeFrame()
 {
+	db.Print(gfx, { 100,100 }, font);
 	/*--------------START SCREEN---------------------------*/
-	if (!start&&!outro&&!end) {
+	/*if (!start&&!outro&&!end) {
 		DrawWelcomeScreen();
 	}
 	/*------------------GAME-------------------------------*/
-	else if (timeline_length > 0) {
+	/*else if (timeline_length > 0) {
 		DrawGrid(400, 300, cellw, 3);
 		DrawTimeline(timeline_length, 10, line_r, line_g, line_b);
 		for (int iy = 0; iy < 3; iy++) { //loop through rows
@@ -608,7 +620,7 @@ void Game::ComposeFrame()
 		DrawEndScreen();
 	}
 	 
-	
+	*/
 	
 	
 	

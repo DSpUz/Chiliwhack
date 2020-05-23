@@ -1,10 +1,16 @@
 #include "Database.h"
 
-Database::Entry::Entry( char * entry, int val)
+Database::Entry::Entry(const char * entry, int val)
 	:
 	value(val)
 {
 	std::strcpy(this->name,entry);
+}
+
+void Database::Entry::Print(Graphics& gfx,const PixelFont& font,Vei2& pos) const
+{ 
+	std::string nameandvalue = name + std::string("  ") + std::to_string(value);
+	font.DrawString(pos, nameandvalue,gfx,2,Colors::Green);
 }
 
 void Database::Entry::Serialize(std::ofstream & out) const
@@ -41,10 +47,12 @@ void Database::Save(const char * filename) const
 	}
 }
 
-void Database::Print() const
+void Database::Print(Graphics& gfx, const Vei2& pos, const PixelFont& font) const
 {
+	Vei2 update_pos = pos;
 	for (const Entry&e : entries) {
-		e.Print();
+		e.Print(gfx,font,update_pos);
+		update_pos.y += 18;
 	}
 }
 
