@@ -24,6 +24,8 @@
 #include <math.h>
 #include "ChiliException.h"
 #include "Colors.h"
+#include "Surface.h"
+#include "RectI.h"
 
 
 class Graphics
@@ -107,6 +109,13 @@ public:
 	}
 	void PutPixel( int x,int y,Color c );
 	~Graphics();
+	void DrawSpriteNonChroma(int x, int y, const Surface& s);
+	void DrawSpriteNonChroma(int x, int y, const RectI& srcRect, const Surface& s);
+	void DrawSpriteNonChroma(int x, int y, RectI srcRect, const RectI& clipRect, const Surface& s);
+	void DrawSprite(int x, int y, const Surface& s, Color colorkey);
+	void DrawSprite(int x, int y, const RectI& srcRect, const Surface& s, Color colorkey);
+	void DrawSprite(int x, int y, RectI srcRect, const RectI& clipRect, const Surface& s, Color colorkey);
+	RectI GetScreenRect() const;
 private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>				pSwapChain;
 	Microsoft::WRL::ComPtr<ID3D11Device>				pDevice;

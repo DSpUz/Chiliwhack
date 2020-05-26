@@ -508,9 +508,10 @@ void Game::DoUserInput() {
 /*-------------------------------------------------------------------------*/
 void Game::UpdateModel()
 {
-	if (!savedonce) {
+	marleRight.Update(ft.Mark());
+	/*if (!savedonce) {
 		db.Add("chili", 69);
-		db.Add("me", 402);
+		db.Add("me-", 402);
 		db.Add("absolute garbage", 15);
 		db.Save("highscores.dat");
 		savedonce = true;
@@ -518,7 +519,7 @@ void Game::UpdateModel()
 	if (!loadedonce) {
 		db.Load("highscores.dat");
 		loadedonce = true;
-	}
+	}*/
 	/*-----------WELCOMESCREEN-------------------*/
 	/*if (!intropl) {//plays intro
 		sky.Play();
@@ -588,7 +589,8 @@ void Game::UpdateModel()
 }
 void Game::ComposeFrame()
 {
-	db.Print(gfx, { 100,100 }, font);
+	marleRight.Draw({ wnd.mouse.GetPosX(), wnd.mouse.GetPosY() }, gfx);
+	//db.Print(gfx, { 100,100 }, font);
 	/*--------------START SCREEN---------------------------*/
 	/*if (!start&&!outro&&!end) {
 		DrawWelcomeScreen();

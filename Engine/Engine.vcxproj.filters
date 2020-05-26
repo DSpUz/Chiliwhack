@@ -66,6 +66,18 @@
     <ClInclude Include="Database.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\RectI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Surface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DXErr.cpp">
@@ -101,6 +113,18 @@
     <ClCompile Include="Database.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Animation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\RectI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Surface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="FramebufferPS.hlsl">
@@ -117,6 +141,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Chili.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\hammer240x170.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -25,6 +25,9 @@
 #include "Graphics.h"
 #include "Sound.h"
 #include "Database.h"
+#include "Surface.h"
+#include "Animation.h"
+#include "Timer.h"
 
 class Game
 {
@@ -70,10 +73,13 @@ private:
 private:
 	MainWindow& wnd;
 	Graphics gfx;
-	Database db;
+	Timer ft;
+	Surface surf = Surface("hammer240x170.bmp");
+	Animation marleRight = Animation({ 0,0 }, 240, 170, 8, surf, 0.02f, Colors::Magenta);
+	/*Database db;
 	bool savedonce = false;
 	bool loadedonce = false;
-	PixelFont font;
+	PixelFont font;*/
 	
 	/********************************/
 	/*const int baseX = 256;//grid top left corner coordinates

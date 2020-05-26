@@ -150,6 +150,10 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundEffect.h" />
+    <ClInclude Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Animation.h" />
+    <ClInclude Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\RectI.h" />
+    <ClInclude Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Surface.h" />
+    <ClInclude Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Timer.h" />
     <ClInclude Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Vei2.h" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +167,10 @@
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Animation.cpp" />
+    <ClCompile Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\RectI.cpp" />
+    <ClCompile Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Surface.cpp" />
+    <ClCompile Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Timer.cpp" />
     <ClCompile Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Vei2.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -232,6 +240,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Chili.ico" />
+    <Image Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\hammer240x170.bmp" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="chi.wav" />

@@ -13,7 +13,8 @@ private:
 		void Serialize(std::ofstream& out) const;
 		void Deserialize(std::ifstream& in);
 	private:
-		static constexpr int namebuffersize = 25;
+		void stringcopy(const char* pSrc, char* pDst, int maxsize);
+		static constexpr int namebuffersize = 10;
 		char name[namebuffersize];
 		int value;
 	};
