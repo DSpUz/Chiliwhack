@@ -28,6 +28,9 @@
 #include "Surface.h"
 #include "Animation.h"
 #include "Timer.h"
+#include "Field.h"
+#include "SelectionMenu.h"
+#include <assert.h>
 
 class Game
 {
@@ -37,6 +40,11 @@ public:
 	Game& operator=( const Game& ) = delete;
 	void Go();
 private:
+	enum class State
+	{
+		SelectionMenu,
+		Memesweeper
+	};
 	enum ChiliState
 	{
 		EMPTY,
@@ -65,7 +73,9 @@ private:
 	ChiliState GetCellState(int ix, int iy);
 
 	void DoAIMoveRand();
-	void DoUserInput();
+	void DoUserInput();*/
+	void CreateField( int width,int height,int nMemes );
+	void DestroyField();
 
 	/********************************/
 	/*  User Functions              */
@@ -73,6 +83,9 @@ private:
 private:
 	MainWindow& wnd;
 	Graphics gfx;
+	MemeField* pField = nullptr;
+	SelectionMenu menu;
+	State state = State::SelectionMenu;
 	Timer ft;
 	Surface surf = Surface("hammer240x170.bmp");
 	Animation marleRight = Animation({ 0,0 }, 240, 170, 8, surf, 0.02f, Colors::Magenta);

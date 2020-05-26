@@ -26,7 +26,8 @@
 Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
-	gfx(wnd)
+	gfx(wnd),
+	menu({ gfx.GetScreenRect().GetCenter().x,200 })
 	/*hammerx(1),
 	hammery(1),
 	keysPressedLastFrame(false),
@@ -52,6 +53,17 @@ void Game::Go()
 
 /*-------------------------------------------------------------------------*/
 /*GRAPHICS FUNCTIONS*/
+void Game::CreateField(int width, int height, int nMemes)
+{
+	assert(pField == nullptr);
+	pField = new MemeField(gfx.GetScreenRect().GetCenter(), width, height, nMemes);
+}
+
+void Game::DestroyField()
+{
+	delete pField;
+	pField = nullptr;
+}
 /*void Game::DrawChili(int x, int y, int w)
 {
 	int cx = x, cy = y, width = w;
@@ -508,6 +520,33 @@ void Game::DoUserInput() {
 /*-------------------------------------------------------------------------*/
 void Game::UpdateModel()
 {
+	while (!wnd.mouse.IsEmpty())
+	{
+		const auto e = wnd.mouse.Read();
+		if (state == State::Memesweeper)
+		{
+		}
+		else
+		{
+			const SelectionMenu::Size s = menu.ProcessMouse(e);
+			switch (s)
+			{
+			case SelectionMenu::Size::Small:
+				state = State::Memesweeper;
+				CreateField(8, 4, 5);
+				break;
+			case SelectionMenu::Size::Medium:
+				state = State::Memesweeper;
+				CreateField(8, 4, 5);
+				break;
+			case SelectionMenu::Size::Large:
+
+				state = State::Memesweeper;
+				CreateField(8, 4, 5);
+				break;
+			}
+		}
+	}
 	marleRight.Update(ft.Mark());
 	/*if (!savedonce) {
 		db.Add("chili", 69);
@@ -589,6 +628,13 @@ void Game::UpdateModel()
 }
 void Game::ComposeFrame()
 {
+	if (state == State::Memesweeper)
+	{
+	}
+	else
+	{
+		menu.Draw(gfx);
+	}
 	marleRight.Draw({ wnd.mouse.GetPosX(), wnd.mouse.GetPosY() }, gfx);
 	//db.Print(gfx, { 100,100 }, font);
 	/*--------------START SCREEN---------------------------*/

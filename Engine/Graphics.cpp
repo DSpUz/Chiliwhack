@@ -1124,6 +1124,16 @@ void Graphics::DrawSprite(int x, int y, RectI srcRect, const RectI & clipRect, c
 		}
 	}
 }
+void Graphics::DrawRect(int x0, int y0, int x1, int y1, Color c)
+{
+	for (int y = y0; y < y1; ++y)
+	{
+		for (int x = x0; x < x1; ++x)
+		{
+			PutPixel(x, y, c);
+		}
+	}
+}
 
 RectI Graphics::GetScreenRect() const
 {

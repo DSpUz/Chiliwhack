@@ -141,6 +141,7 @@
     <ClInclude Include="Colors.h" />
     <ClInclude Include="Database.h" />
     <ClInclude Include="DXErr.h" />
+    <ClInclude Include="Field.h" />
     <ClInclude Include="PixelFont.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Graphics.h" />
@@ -150,6 +151,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundEffect.h" />
+    <ClInclude Include="SpriteCodex.h" />
     <ClInclude Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Animation.h" />
     <ClInclude Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\RectI.h" />
     <ClInclude Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Surface.h" />
@@ -159,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="DXErr.cpp" />
+    <ClCompile Include="Field.cpp" />
     <ClCompile Include="PixelFont.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Graphics.cpp" />
@@ -167,6 +170,7 @@
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="SpriteCodex.cpp" />
     <ClCompile Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Animation.cpp" />
     <ClCompile Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\RectI.cpp" />
     <ClCompile Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Surface.cpp" />

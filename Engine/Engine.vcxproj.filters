@@ -78,6 +78,12 @@
     <ClInclude Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SpriteCodex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Field.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DXErr.cpp">
@@ -123,6 +129,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteCodex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Field.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
