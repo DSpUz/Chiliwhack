@@ -28,10 +28,11 @@ private:
 		void SetCellState(State in_state);
 		void SetCellIndex(int ind);
 		int GetCellIndex() const;
+		void SetCellWidth(int w);
 		void DrawCell( const Vei2& screenPos,Field::Mode fieldmode,Graphics& gfx, const PixelFont& font) const;
 	private:
 		int cellindex;
-		int cellwidth=50;
+		int cellwidth;
 		State state = State::Empty;
 	};
 public:

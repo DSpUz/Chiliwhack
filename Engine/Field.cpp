@@ -31,6 +31,11 @@ int Field::Cell::GetCellIndex() const
 	return cellindex;
 }
 
+void Field::Cell::SetCellWidth(int w)
+{
+	cellwidth = w;
+}
+
 void Field::Cell::DrawCell( const Vei2& screenPos,Field::Mode fieldmode,Graphics& gfx,const PixelFont& font) const
 {
 	if( fieldmode == Field::Mode::Classic )
@@ -72,20 +77,24 @@ Field::Field( Vei2& center,int in_width,int in_height,int cell_w, Mode mode_in,c
 	:
 	width( in_width ),
 	height( in_height ),
+	cellwidth(cell_w),
 	pos(center),
 	font(in_font),
 	mode(mode_in),
+	
 	field( new Cell[in_width * in_height] )
 {
 	if (mode==Mode::NumPad) {
 		for (int i = 0; i < in_width * in_height; i++) {
 			CellAt(i).SetCellState(Cell::State::Number);
 			CellAt(i).SetCellIndex(i);
+			CellAt(i).SetCellWidth(cellwidth);
 		}
 	}
 	else {
 		for (int i = 0; i < in_width * in_height; i++) {
 			CellAt(i).SetCellIndex(i);
+			CellAt(i).SetCellWidth(cellwidth);
 		}
 	}
 	std::random_device rd;
@@ -106,12 +115,12 @@ void Field::Draw( Graphics& gfx ) const
 {
 	
 	
-	const Vei2 topLeft = { pos.x - width * cellwidth / 2, pos.y - height * cellwidth / 2 }; //upper left corner coordinates 
+	const Vei2 topLeft = { pos.x - cellwidth*(1-width)/ 2, pos.y - cellwidth * (1 - height) / 2 }; //upper left corner coordinates 
 	for( int y=0; y < height; y++ )//rows
 	{
 		for(int x = 0; x < width; x++ )//column index
 		{
-			CellAt(x*y + x).DrawCell({topLeft.x +cellwidth*x,topLeft.y+cellwidth*y},mode,gfx,font);
+			CellAt(x*y + x).DrawCell({topLeft.x+2*cellwidth*x,topLeft.y+2*cellwidth*y},mode,gfx,font);
 		}
 	}
 }
