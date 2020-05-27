@@ -2,63 +2,51 @@
 
 #include "Graphics.h"
 #include "Sound.h"
+#include "PixelFont.h"
 
-class MemeField
+class Field
 {
 public:
-	enum class State
+	enum class Mode
 	{
-		Fucked,
-		Winrar,
-		Memeing
+		Classic,
+		NumPad
 	};
 private:
-	class Tile
+	class Cell
 	{
 	public:
 		enum class State
 		{
-			Hidden,
-			Flagged,
-			Revealed
+			Empty,
+			Chili,
+			Number
 		};
 	public:
-		void SpawnMeme();
-		bool HasMeme() const;
-		void Draw( const Vei2& screenPos,MemeField::State fucked,Graphics& gfx ) const;
-		void Reveal();
-		bool IsRevealed() const;
-		void ToggleFlag();
-		bool IsFlagged() const;
-		bool HasNoNeighborMemes() const;
-		void SetNeighborMemeCount( int memeCount );
+		void SpawnChili();
+		bool HasChili() const;
+		void SetCellState(State in_state);
+		void SetCellIndex(int ind);
+		int GetCellIndex() const;
+		void DrawCell( const Vei2& screenPos,Field::Mode fieldmode,Graphics& gfx, const PixelFont& font) const;
 	private:
-		State state = State::Hidden;
-		bool hasMeme = false;
-		int nNeighborMemes = -1;
+		int cellindex;
+		int cellwidth=50;
+		State state = State::Empty;
 	};
 public:
-	MemeField( const Vei2& center,int width,int height,int nMemes );
-	~MemeField();
+	Field( Vei2& center,int in_width,int in_height, int cell_w, Mode mode_in,const PixelFont& in_font );
+	~Field();
 	void Draw( Graphics& gfx ) const;
-	RectI GetRect() const;
-	void OnRevealClick( const Vei2& screenPos );
-	void OnFlagClick( const Vei2& screenPos );
-	State GetState() const;
 private:
-	void RevealTile( const Vei2& gridPos );
-	Tile& TileAt( const Vei2& gridPos );
-	const Tile& TileAt( const Vei2& gridPos ) const;
-	Vei2 ScreenToGrid( const Vei2& screenPos );
-	int CountNeighborMemes( const Vei2& gridPos );
-	bool GameIsWon() const;
+	Field::Cell & CellAt(const int gridPos);
+	const Cell& CellAt( int gridPos ) const;
 private:
 	int width;
 	int height;
-	static constexpr int borderThickness = 10;
-	static constexpr Color borderColor = Colors::Blue;
-	Sound sndLose = Sound( L"spayed.wav" );
-	Vei2 topLeft;
-	State state = State::Memeing;
-	Tile* field = nullptr;
+	int cellwidth;
+	Vei2 pos;
+	Mode mode = Mode::Classic;
+	const PixelFont& font;
+	Cell* field = nullptr;
 };

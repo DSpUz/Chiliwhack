@@ -4,7 +4,7 @@
 /* PIXEL FONT FUNCTIONS------------------------------------------
 ----------------------------------------------------------------*/
 
- void PixelFont::DrawString(const Vei2& pos, const std::string& string, Graphics & gfx,int fontsize, const Color& c) const
+void PixelFont::DrawString(const Vei2& pos, const std::string& string, Graphics & gfx,int fontsize, const Color& c) const
  {
 	 int x = pos.x;
 	 int y = pos.y;

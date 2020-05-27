@@ -50,13 +50,10 @@ void Game::Go()
 }
 
 
-
-/*-------------------------------------------------------------------------*/
-/*GRAPHICS FUNCTIONS*/
-void Game::CreateField(int width, int height, int nMemes)
+void Game::CreateField(int width, int height, int cellwidth, Field::Mode mode, const PixelFont& font)
 {
 	assert(pField == nullptr);
-	pField = new MemeField(gfx.GetScreenRect().GetCenter(), width, height, nMemes);
+	pField = new Field(gfx.GetScreenRect().GetCenter(),width,height,cellwidth,mode,font);
 }
 
 void Game::DestroyField()
@@ -64,317 +61,11 @@ void Game::DestroyField()
 	delete pField;
 	pField = nullptr;
 }
-/*void Game::DrawChili(int x, int y, int w)
-{
-	int cx = x, cy = y, width = w;
-
-	float inc = 1; // triangle steepness counter
-
-	for (int x = 0; x <= width / 8.0; x++) //top of the crown
-	{
-		for (int y = 0; y<inc; y++)
-		{
-			gfx.PutPixel(cx + x - width / 8.0f, cy - y - width * 7 / 16.0f, 0, 255, 0);
-			gfx.PutPixel(cx + x - width / 4.0f, cy - y - width * 7 / 16.0f, 0, 255, 0);
-			gfx.PutPixel(cx + x - width * 3 / 8.0f, cy - y - width * 7 / 16.0f, 0, 255, 0);
-			gfx.PutPixel(cx + x - width / 2.0f, cy - y - width * 7 / 16.0f, 0, 255, 0);//first triangle spike from left
-
-			gfx.PutPixel(cx - x + width / 8.0f, cy - y - width * 7 / 16.0f, 0, 255, 0); //right side mirrored cause of -x
-			gfx.PutPixel(cx - x + width / 4.0f, cy - y - width * 7 / 16.0f, 0, 255, 0);
-			gfx.PutPixel(cx - x + width * 3 / 8.0f, cy - y - width * 7 / 16.0f, 0, 255, 0);
-			gfx.PutPixel(cx - x + width / 2.0f, cy - y - width * 7 / 16.0f, 0, 255, 0);
-		}
-		inc = inc + 2; //triangles are 2 times higher than wide
-	}
-
-	for (int x = 0; x <= width; x++) { // base of the crown (green rectangle)
-		for (int y = 0; y <= width / 8.0f; y++) {
-			gfx.PutPixel(cx + x - width / 2.0f, cy + y - width * 7 / 16.0f, 0, 255, 0);
-		}
-	}
-
-	for (int x = 0; x <= width; x++) {//middle of face (white rectangle)
-		for (int y = 0; y <= width / 2.0f; y++) {
-			gfx.PutPixel(cx + x - width / 2.0, cy + y - width * 5 / 16.0, 255, 255, 255);
-		}
-	}
-
-	inc = 1;
-	for (int x = 0; x <= width / 2.0; x++) // white triangle chin
-	{
-		for (int y = 0; y<inc; y++)
-		{
-			gfx.PutPixel(cx + x - width / 2.0f, cy + y + width * 3 / 16.0f, 255, 255, 255); //left side
-			gfx.PutPixel(cx - x + width / 2.0f, cy + y + width * 3 / 16.0f, 255, 255, 255);//right side
-		}
-		inc = inc + 0.85f;
-	}
-
-	for (int x = 0; x <= width / 4.0f; x++) { //black rectangle eyes
-		for (int y = 0; y < width / 10.0f; y++) {
-			gfx.PutPixel(cx + x + width / 16.0f, cy + y - width / 8.0f, 0, 0, 0); // right eye
-			gfx.PutPixel(cx - x - width / 16.0f, cy + y - width / 8.0f, 0, 0, 0); //left eye
-		}
-	}
-
-	for (int x = 0; x <= width / 20.0f; x++) { //black rectangle beard
-		for (int y = 0; y <= width * 6 / 25.0f; y++) {
-			gfx.PutPixel(cx + x - width / 40.0f, cy + y + width * 3 / 8.0f, 0, 0, 0);
-		}
-	}
-
-	for (int x = 1; x <= width * 7 / 20.0f; x++) { // black eyebrows
-		for (int y = 1; y < width / 16.0f; y++) {
-			gfx.PutPixel(cx + x - width * 3 / 8.0f, cy + y - width * 9 / 40.0f, 0, 0, 0); // left eyebrow
-			gfx.PutPixel(cx + x + width / 40.0f, cy + y - width * 9 / 40.0f, 0, 0, 0); //right eyebrow
-		}
-	}
-
-	for (int x = 0; x <= width / 2.0f; x++) { // beige lips
-		for (int y = 0; y <= width / 20.0f; y++) {
-			gfx.PutPixel(cx + x - width / 4.0f, cy + y + width * 5 / 16.0f, 255, 220, 220);
-		}
-	}
-
-	inc = 1;
-
-	for (int x = 0; x <= width * 3 / 16.0f; x++) //beige cheeks 
-	{
-		for (int y = 0; y<inc; y++)
-		{
-			gfx.PutPixel(cx + x - width / 2.0f, cy + y + width * 3 / 16.0f, 255, 240, 240); //left cheek
-			gfx.PutPixel(cx - x + width / 2.0f, cy + y + width * 3 / 16.0f, 255, 240, 240); // right cheek
-		}
-		inc = inc + 0.85f;
-	}
-
-
-	inc = 1;
-
-	for (int x = 1; x <= width * 5 / 16.0f; x++)//beige nose  - nose height 
-	{
-		for (int y = 0; y<inc; y++)
-		{
-			gfx.PutPixel(cx + y, cy + x - width / 8.0f, 255, 240, 240);//right side
-			gfx.PutPixel(cx - y, cy + x - width / 8.0f, 255, 240, 240);//left side
-		}
-		inc = inc + 0.5f;
-	}
 
 
 
-	for (int x = 0; x <= width / 4.0f; x++) { //black moustache-squares
-		for (int y = 1; y < width * 3 / 80.0f; y++) {
-			gfx.PutPixel(cx + x - width * 5 / 16.0f, cy + y + width / 4.0f, 0, 0, 0);
-			gfx.PutPixel(cx + x + width / 16.0f, cy + y + width / 4.0f, 0, 0, 0);
-		}
-	}
-
-	inc = 1;
-
-	for (int x = 0; x <= width / 10.0f; x++)//black moustache triangles
-	{
-		for (int y = 0; y<inc; y++)
-		{
-			gfx.PutPixel(cx + y + width / 40.0f, cy + x + width * 3 / 16.0f, 0, 0, 0);
-			gfx.PutPixel(cx - y - width / 40.0f, cy + x + width * 3 / 16.0f, 0, 0, 0);
-		}
-		inc = inc + 0.85f;
-	}
-
-}
-void Game::DrawCell(int cellx, int celly, int sq_w, int line_g, int r, int g, int b)
-{
-	/*  cellx, celly - center coordinates of the star(see drawing)
-	sq_w  -  cell width/2
-	line_g -line gap(see drawing) */
-/*
-	int movex, movey;
-
-	movey = celly;
-	for (movex = cellx - sq_w; movex <= cellx; movex = movex + line_g) //3rd quadrant
-	{
-		gfx.DrawLine(cellx - sq_w, movey, movex, celly + sq_w, r, g, b); // x1,y1(start point of the line) x2,y2(end point of the line),red,green,blue from the draw-line function
-		movey = movey + line_g;
-	}
-
-	movey = celly;
-	for (movex = cellx + sq_w; movex >= cellx; movex = movex - line_g)
-	{
-		gfx.DrawLine(cellx + sq_w, movey, movex, celly + sq_w, r, g, b); //4th quadrant
-		movey = movey + line_g;
-	}
-
-	movey = celly;
-	for (movex = cellx + sq_w; movex >= cellx; movex = movex - line_g) //1st quadrant
-	{
-		gfx.DrawLine(cellx + sq_w, movey, movex, celly - sq_w, r, g, b);
-		movey = movey - line_g;
-	}
-
-	movey = celly;
-	for (movex = cellx - sq_w; movex <= cellx; movex = movex + line_g)
-	{
-		gfx.DrawLine(cellx - sq_w, movey, movex, celly - sq_w, r, g, b); //2nd quadrant
-		movey = movey - line_g;
-	}
-}
-void Game::DrawGrid(int posx, int posy,int cw,int rownumber)
-{
-	const int x = posx- rownumber*cw/2, y = posy- rownumber*cw/2; //upper left corner coordinates 
-	const int cw2 = cw/2;// half of cell width
-	int loopy = y + cw2; // initializes y-axis variable and sets it back to upper side of the square when both loops end
 
 
-	while (loopy <= y + rownumber*cw)// comparison with the bottom side of the square(see the drawing)
-	{
-		int loopx = x + cw2; // initializes x-axis variable and sets it back to left side of the square when inner loop ends
-
-		while (loopx < x + rownumber*cw)
-		{
-			DrawCell(loopx, loopy,cw2, 4, 102, 178, 255);
-			loopx = loopx +  cw;
-		}
-		loopy = loopy + cw;
-	}
-}
-void Game::DrawTimeline(int length, int height, int r,int g, int b)
-{
-	int x1 = 0,x2=length;
-	for (int y = 0; y <= height; y++) {
-		gfx.DrawLine(x1, y, x2-1, y, r, g, b);
-}
-}
-void Game::DrawHammer1(int head_x, int head_y)
-{
-	gfx.DrawRectangle(head_x+85, head_y-15, 30, 150, 45, 118, 0, 0);
-	gfx.DrawRectangle(head_x + 64, head_y -71, 20, 40, 45, 118, 0, 0);
-	gfx.DrawRectangle(head_x +29, head_y-36 , 20, 40, 45, 118, 0, 0);
-
-}
-void Game::DrawHammer2(int head_x, int head_y)
-{
-	gfx.DrawRectangle(head_x + 80, head_y - 10, 30, 150, 20, 118, 0, 0);
-	gfx.DrawRectangle(head_x + 36, head_y - 49, 20, 40, 20, 118, 0, 0);
-	gfx.DrawRectangle(head_x + 20, head_y -5    , 20, 40, 20, 118, 0, 0);
-}
-void Game::DrawWelcomeScreen()
-{
-	font.DrawString({ 80,50 }, welcometext, gfx,3,Colors::Green);
-	DrawTimeline(gfx.ScreenWidth, 10, 128, 255, 0);
-	int x = 190, y = 240;
-	DrawGrid(x, y, 40, 3);
-	x = x + 200;
-	DrawChili(x, y, 60);
-	x = x + 150;
-	DrawHammer1(x, y);
-	/*----------------------------------
-	---------THIRD ROW----------------*/
-	/*x = 120, y = 400;
-	int r = 0, g = 128, b = 0;
-	gfx.chP(x, y, r, g, b); x = x + 30; gfx.chR(x, y, r, g, b); x = x + 30; gfx.chE(x, y, r, g, b); x = x + 30;
-	gfx.chS(x, y, r, g, b); x = x + 30; gfx.chS(x, y, r, g, b); //press
-	x = x + 45;
-	gfx.chE(x, y, r, g, b); x = x + 30; gfx.chN(x, y, r, g, b); x = x + 30; gfx.chT(x, y, r, g, b); x = x + 30;
-	gfx.chE(x, y, r, g, b); x = x + 30; gfx.chR(x, y, r, g, b);//enter
-	x = x + 45;
-	gfx.chT(x, y, r, g, b); x = x + 30; gfx.chO(x, y, r, g, b);//to
-	x = x + 45;
-	gfx.chS(x, y, r, g, b); x = x + 30; gfx.chT(x, y, r, g, b); x = x + 30; gfx.chA(x, y, r, g, b); x = x + 30;
-	gfx.chR(x, y, r, g, b); x = x + 30; gfx.chT(x, y, r, g, b); x = x + 30; gfx.chPoint(x, y, r, g, b); x = x + 10;
-	gfx.chPoint(x, y, r, g, b); x = x + 10;//start..
-}
-void Game::DrawDigit(int index, int x, int y)
-{
-	switch (index)  //sets chosen cell to empty or chili
-	{
-	case 0:
-		gfx.ch0(x, y, 0, 146, 14);
-		break;
-	case 1:
-		gfx.ch1(x, y, 0, 146, 14);
-		break;
-	case 2:
-		gfx.ch2(x, y, 0, 146, 14);
-		break;
-	case 3:
-		gfx.ch3(x, y, 0, 146, 14);
-		break;
-	case 4:
-		gfx.ch4(x, y, 0, 146, 14);
-		break;
-	case 5:
-		gfx.ch5(x, y, 0, 146, 14);
-		break;
-	case 6:
-		gfx.ch6(x, y, 0, 146, 14);
-		break;
-	case 7:
-		gfx.ch7(x, y, 0, 146, 14);
-		break;
-	case 8:
-		gfx.ch8(x, y, 0, 146, 14);
-		break;
-	case 9:
-		gfx.ch9(x, y, 0, 146, 14);
-		break;
-	default:
-		break;
-	}
-}
-void Game::DrawNumber(int x, int y)
-{
-	int hor = x, ver = y;
-	int hundred, ten, dig, rest;// digits of hundreds, tens and rest
-	hundred = chilicounter / 100; rest = chilicounter % 100;
-	if (hundred > 0) {
-		DrawDigit(hundred, hor, ver); //prints hundred digit
-		hor = hor + 30;
-	}
-	ten = rest / 10; dig = rest % 10;
-	if (hundred > 0) {
-		DrawDigit(ten, hor, ver);
-		hor = hor + 30;
-	}
-	else if (ten > 0) {
-		DrawDigit(ten, hor, ver);
-		hor = hor + 30;
-	}
-	DrawDigit(dig, hor, ver);//prints last digit
-
-}
-void Game::DrawEndScreen()
-{
-	int x = 150, y = 100;
-	int r = 0, g = 146, b = 14;
-	/*---------FIRST ROW--------------*//*
-	gfx.chC(x, y, r, g, b); x = x + 30; gfx.chO(x, y, r, g, b); x = x + 30; gfx.chN(x, y, r, g, b); x = x + 30;
-	gfx.chG(x, y, r, g, b); x = x + 30; gfx.chR(x, y, r, g, b); x = x + 30; gfx.chA(x, y, r, g, b); x = x + 30;
-	gfx.chT(x, y, r, g, b); x = x + 30; gfx.chU(x, y, r, g, b); x = x + 30; gfx.chL(x, y, r, g, b); x = x + 30;
-	gfx.chA(x, y, r, g, b); x = x + 30; gfx.chT(x, y, r, g, b); x = x + 30; gfx.chI(x, y, r, g, b); x = x + 10;
-	gfx.chO(x, y, r, g, b); x = x + 30; gfx.chN(x, y, r, g, b); x = x + 30; gfx.chS(x, y, r, g, b); x = x + 30;
-	gfx.chExMark(x, y, r, g, b);//Congratulations!
-	 /*----------------------------------
-	 ---------SECOND ROW----------------*/
-	/*x = 140, y = 400;
-	gfx.chY(x, y, r, g, b); x = x + 30; gfx.chO(x, y, r, g, b); x = x + 30; gfx.chU(x, y, r, g, b); //you
-	x = x + 45;
-	gfx.chG(x, y, r, g, b); x = x + 30; gfx.chO(x, y, r, g, b); x = x + 30; gfx.chT(x, y, r, g, b);//got
-	x = x + 45;
-	DrawNumber(x, y);
-	if (chilicounter > 99) {
-		x = x + 105;
-	}
-	else if(chilicounter > 9){
-		x = x + 75;
-	}
-	else x = x + 45;
-	
-	gfx.chC(x, y, r, g, b); x = x + 30; gfx.chH(x, y, r, g, b); x = x + 30; gfx.chI(x, y, r, g, b); x = x + 10;
-	gfx.chL(x, y, r, g, b); x = x + 30; gfx.chI(x, y, r, g, b); x = x + 10; gfx.chApostrophe(x, y, r, g, b); x = x + 10;
-	gfx.chS(x, y, r, g, b);//Chili's
-}
-/*-------------------------------------------------------------------------*/
 
 /*GAME LOGIC FUNCTIONS - see old series beginner tutorial 12 */
 /*void Game::SetCellState(int index, ChiliState state)
@@ -528,22 +219,26 @@ void Game::UpdateModel()
 		}
 		else
 		{
-			const SelectionMenu::Size s = menu.ProcessMouse(e);
-			switch (s)
-			{
-			case SelectionMenu::Size::Small:
-				state = State::Memesweeper;
-				CreateField(8, 4, 5);
-				break;
-			case SelectionMenu::Size::Medium:
-				state = State::Memesweeper;
-				CreateField(8, 4, 5);
-				break;
-			case SelectionMenu::Size::Large:
-
-				state = State::Memesweeper;
-				CreateField(8, 4, 5);
-				break;
+			if (!fieldcreated) {
+				const SelectionMenu::Size s = menu.ProcessMouse(e);
+				switch (s)
+				{
+				case SelectionMenu::Size::Small:
+					CreateField(2, 2, 20, Field::Mode::Classic, font);
+					state = State::Memesweeper;
+					fieldcreated = true;
+					break;
+				case SelectionMenu::Size::Medium:
+					CreateField(2, 2, 20, Field::Mode::NumPad, font);
+					state = State::Memesweeper;
+					fieldcreated = true;
+					break;
+				case SelectionMenu::Size::Large:
+					CreateField(2, 2, 20, Field::Mode::NumPad, font);
+					state = State::Memesweeper;
+					fieldcreated = true;
+					break;
+				}
 			}
 		}
 	}
@@ -630,6 +325,7 @@ void Game::ComposeFrame()
 {
 	if (state == State::Memesweeper)
 	{
+		pField->Draw(gfx);
 	}
 	else
 	{

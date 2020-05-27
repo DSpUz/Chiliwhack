@@ -74,7 +74,7 @@ private:
 
 	void DoAIMoveRand();
 	void DoUserInput();*/
-	void CreateField( int width,int height,int nMemes );
+	void CreateField(int width, int height, int cellwidth, Field::Mode mode, const PixelFont& font);
 	void DestroyField();
 
 	/********************************/
@@ -83,7 +83,9 @@ private:
 private:
 	MainWindow& wnd;
 	Graphics gfx;
-	MemeField* pField = nullptr;
+	Field* pField = nullptr;
+	bool fieldcreated = false;
+	PixelFont font;
 	SelectionMenu menu;
 	State state = State::SelectionMenu;
 	Timer ft;
