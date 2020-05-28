@@ -224,17 +224,17 @@ void Game::UpdateModel()
 				switch (s)
 				{
 				case SelectionMenu::Size::Small:
-					CreateField(1, 1, 20, Field::Mode::Classic, font);
+					CreateField(2, 2, 40, Field::Mode::Classic, font);
 					state = State::Memesweeper;
 					fieldcreated = true;
 					break;
 				case SelectionMenu::Size::Medium:
-					CreateField(3, 3, 24, Field::Mode::NumPad, font);
+					CreateField(3, 3, 40, Field::Mode::NumPad, font);
 					state = State::Memesweeper;
 					fieldcreated = true;
 					break;
 				case SelectionMenu::Size::Large:
-					CreateField(3, 3, 24, Field::Mode::NumPad, font);
+					CreateField(5, 5, 24, Field::Mode::NumPad, font);
 					state = State::Memesweeper;
 					fieldcreated = true;
 					break;

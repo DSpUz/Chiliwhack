@@ -21,14 +21,16 @@ void Field::Cell::SetCellState(State in_state)
 	state = in_state;
 }
 
-void Field::Cell::SetCellIndex(int ind)
+void Field::Cell::SetCellIndex(int x, int y)
 {
-	cellindex = ind;
+	GridIndex.x = x;
+	GridIndex.y = y;
 }
 
-int Field::Cell::GetCellIndex() const
+
+ Vei2 Field::Cell::GetCellIndex() const
 {
-	return cellindex;
+	return GridIndex;
 }
 
 void Field::Cell::SetCellWidth(int w)
@@ -36,7 +38,7 @@ void Field::Cell::SetCellWidth(int w)
 	cellwidth = w;
 }
 
-void Field::Cell::DrawCell( const Vei2& screenPos,Field::Mode fieldmode,Graphics& gfx,const PixelFont& font) const
+void Field::Cell::DrawCell(const Vei2& screenPos,int fieldwidth ,Field::Mode fieldmode,Graphics& gfx,const PixelFont& font) const
 {
 	if( fieldmode == Field::Mode::Classic )
 	{
@@ -47,7 +49,7 @@ void Field::Cell::DrawCell( const Vei2& screenPos,Field::Mode fieldmode,Graphics
 			break;
 		case State::Chili:
 			SpriteCodex::DrawCell(screenPos, cellwidth, cellwidth / 20, 0, 255, 0, gfx);
-			SpriteCodex::DrawChili( screenPos, cellwidth/2,gfx);
+			SpriteCodex::DrawChili( screenPos, cellwidth*3/4,gfx);
 			break;
 		default:
 			break;
@@ -59,11 +61,11 @@ void Field::Cell::DrawCell( const Vei2& screenPos,Field::Mode fieldmode,Graphics
 		{
 		case State::Number:
 			SpriteCodex::DrawCell(screenPos, cellwidth, cellwidth / 20, 0, 255, 0, gfx);
-			font.DrawCharacter(screenPos.x, screenPos.y, gfx, 49 + cellindex, 4, Colors::Green);
+			font.DrawCharacter(screenPos.x, screenPos.y, gfx, 49 + fieldwidth*GridIndex.y+GridIndex.x, 4, Colors::Green);
 			break;
 		case State::Chili:
 			SpriteCodex::DrawCell(screenPos, cellwidth, cellwidth / 20, 0, 255, 0, gfx);
-			SpriteCodex::DrawChili(screenPos, cellwidth / 2, gfx);
+			SpriteCodex::DrawChili(screenPos, cellwidth*3/4, gfx);
 			break;
 		default:
 			break;
@@ -85,23 +87,27 @@ Field::Field( Vei2& center,int in_width,int in_height,int cell_w, Mode mode_in,c
 	field( new Cell[in_width * in_height] )
 {
 	if (mode==Mode::NumPad) {
-		for (int i = 0; i < in_width * in_height; i++) {
-			CellAt(i).SetCellState(Cell::State::Number);
-			CellAt(i).SetCellIndex(i);
-			CellAt(i).SetCellWidth(cellwidth);
+		for (int y = 0; y <height; y++) {
+			for (int x = 0; x < width; x++) {
+				field[width*y+x].SetCellState(Cell::State::Number);
+				field[width*y+x].SetCellIndex(x,y);
+				field[width*y+x].SetCellWidth(cellwidth);
+			}
 		}
 	}
 	else {
-		for (int i = 0; i < in_width * in_height; i++) {
-			CellAt(i).SetCellIndex(i);
-			CellAt(i).SetCellWidth(cellwidth);
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				field[width*y + x].SetCellIndex(x, y);
+				field[width*y + x].SetCellWidth(cellwidth);
+			}
 		}
 	}
 	std::random_device rd;
 	std::mt19937 rng( rd() );
 	std::uniform_int_distribution<int> Dist( 0,width*height - 1 );
 	int spawnPos=Dist(rng);
-	CellAt(spawnPos).SpawnChili();
+	field[spawnPos].SpawnChili();
 }
 
 
@@ -115,14 +121,24 @@ void Field::Draw( Graphics& gfx ) const
 {
 	
 	
-	const Vei2 topLeft = { pos.x - cellwidth*(1-width)/ 2, pos.y - cellwidth * (1 - height) / 2 }; //upper left corner coordinates 
+	const Vei2 topLeft = { pos.x + cellwidth*(1-width), pos.y + cellwidth * (1 - height) }; //upper left corner coordinates 
 	for( int y=0; y < height; y++ )//rows
 	{
 		for(int x = 0; x < width; x++ )//column index
 		{
-			CellAt(x*y + x).DrawCell({topLeft.x+2*cellwidth*x,topLeft.y+2*cellwidth*y},mode,gfx,font);
+			field[width*y + x].DrawCell({topLeft.x+2*cellwidth*x,topLeft.y+2*cellwidth*y},width,mode,gfx,font);
 		}
 	}
+}
+
+int Field::GetWidth() const
+{
+	return width;
+}
+
+int Field::GetHeight() const
+{
+	return height;
 }
 
 

@@ -26,19 +26,21 @@ private:
 		void SpawnChili();
 		bool HasChili() const;
 		void SetCellState(State in_state);
-		void SetCellIndex(int ind);
-		int GetCellIndex() const;
+		void SetCellIndex(int x,int y);
+		Vei2 GetCellIndex() const;
 		void SetCellWidth(int w);
-		void DrawCell( const Vei2& screenPos,Field::Mode fieldmode,Graphics& gfx, const PixelFont& font) const;
+		void DrawCell( const Vei2& screenPos, int fieldwidth, Field::Mode fieldmode,Graphics& gfx, const PixelFont& font) const;
 	private:
-		int cellindex;
 		int cellwidth;
+		Vei2 GridIndex;
 		State state = State::Empty;
 	};
 public:
 	Field( Vei2& center,int in_width,int in_height, int cell_w, Mode mode_in,const PixelFont& in_font );
 	~Field();
 	void Draw( Graphics& gfx ) const;
+	int GetWidth() const;
+	int GetHeight() const;
 private:
 	Field::Cell & CellAt(const int gridPos);
 	const Cell& CellAt( int gridPos ) const;
