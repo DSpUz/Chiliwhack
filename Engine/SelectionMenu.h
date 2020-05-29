@@ -4,15 +4,17 @@
 #include "SpriteCodex.h"
 #include "Mouse.h"
 #include "Sound.h"
+#include "PixelFont.h"
+
 
 class SelectionMenu
 {
 public:
-	enum class Size
+	enum class Gamemode
 	{
-		Small,
-		Medium,
-		Large,
+		Classic,
+		Mouse,
+		NumberPad,
 		Count,
 		Invalid
 	};
@@ -21,19 +23,30 @@ private:
 	{
 	public:
 		Entry() = default;
-		Entry( Size s,const Vei2& pos )
+		Entry( Gamemode s,const Vei2& pos )
 			:
 			s( s ),
-			rect( RectI::FromCenter( pos,SpriteCodex::sizeselWidth / 2,SpriteCodex::sizeselHeight / 2 ) )
+			rect( RectI::FromCenter( pos,sizeselWidth / 2,sizeselHeight / 2 ) )
 		{}
-		void Draw( Graphics& gfx ) const
+		void Draw( Graphics& gfx, const PixelFont& font) const
 		{
 			if( highlighted )
 			{
 				gfx.DrawRect( rect.GetExpanded( highlightThickness ),highlightColor );
 			}			
 			gfx.DrawRect( rect,Colors::Black );
-			DrawSizeText( s,rect.GetCenter(),gfx );
+			switch (s)		
+			{
+			case Gamemode::Classic:
+				font.DrawString(rect.GetCenter() - Vei2{fontsize*24,fontsize*3}, "classic", gfx, fontsize, Colors::Green);
+				break;
+			case Gamemode::Mouse:
+				font.DrawString(rect.GetCenter() - Vei2{ fontsize * 19,fontsize * 3 }, "mouse", gfx, fontsize, Colors::Green);
+				break;
+			case Gamemode::NumberPad:
+				font.DrawString(rect.GetCenter() - Vei2{ fontsize * 23,fontsize * 3 }, "numpad", gfx, fontsize, Colors::Green);
+				break;
+			}
 		}
 		bool IsHit( const Vei2& pt ) const
 		{
@@ -51,45 +64,33 @@ private:
 		{
 			return highlighted;
 		}
-		Size GetSize() const
+		Gamemode GetMode() const
 		{
 			return s;
 		}
 	private:
-		static void DrawSizeText( Size s,const Vei2& pos,Graphics& gfx )
-		{
-			switch( s )
-			{
-			case Size::Small:
-				SpriteCodex::DrawSmall( pos,gfx );
-				break;
-			case Size::Medium:
-				SpriteCodex::DrawMedium( pos,gfx );
-				break;
-			case Size::Large:
-				SpriteCodex::DrawLarge( pos,gfx );
-				break;
-			}
-		}
-	private:
-		static constexpr int highlightThickness = 6;
-		static constexpr Color highlightColor = Colors::Yellow;
+		static constexpr int sizeselWidth = 240;
+		static constexpr int sizeselHeight = 56;
+		static constexpr int fontsize = 3;
+		static constexpr int highlightThickness = 2;
+		static constexpr Color highlightColor = Colors::Green;
 		bool highlighted = false;
-		Size s;
+		Gamemode s;
 		RectI rect;
 	};
 public:
-	SelectionMenu( const Vei2& pos )
+	SelectionMenu( const Vei2& pos,const PixelFont& font ):
+		font(font)
 	{
 		auto center = pos;
-		for( int i = 0; i < int( Size::Count ); i++ )
+		for( int i = 0; i < int( Gamemode::Count ); i++ )
 		{
-			entries[i] = { Size( i ),center };
+			entries[i] = { Gamemode( i ),center };
 			center.y += verticalSpacing;
 		}
 	}
 	// returns Size::Something when an entry is clicked, otherwise returns Size::Invalid
-	Size ProcessMouse( const Mouse::Event& e )
+	Gamemode ProcessMouse( const Mouse::Event& e )
 	{
 		switch( e.GetType() )
 		{
@@ -108,7 +109,7 @@ public:
 					}
 					// immediately exit if found a hit
 					// (if we don't, highlight will be reset below)
-					return Size::Invalid;
+					return Gamemode::Invalid;
 				}
 			}
 			// if no entry was hit, reset all highlights
@@ -119,18 +120,18 @@ public:
 			{
 				if( n.IsHit( e.GetPos() ) )
 				{
-					return n.GetSize();
+					return n.GetMode();
 				}
 			}
 			break;
 		}
-		return Size::Invalid;
+		return Gamemode::Invalid;
 	}
 	void Draw( Graphics& gfx ) const
 	{
 		for( const auto& n : entries )
 		{
-			n.Draw( gfx );
+			n.Draw( gfx ,font);
 		}
 	}
 private:
@@ -142,7 +143,8 @@ private:
 		}
 	}
 private:
-	static constexpr int verticalSpacing = SpriteCodex::sizeselHeight * 2;
+	const PixelFont& font;
+	static constexpr int verticalSpacing = 80;
 	Sound hover = { L"menu_boop.wav" };
-	Entry entries[int( Size::Count )];
+	Entry entries[int( Gamemode::Count )];
 };

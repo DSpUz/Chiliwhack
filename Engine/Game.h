@@ -43,12 +43,8 @@ private:
 	enum class State
 	{
 		SelectionMenu,
-		Memesweeper
-	};
-	enum ChiliState
-	{
-		EMPTY,
-		CHILI
+		Game,
+		HighscoreTable
 	};
 private:
 	void ComposeFrame();

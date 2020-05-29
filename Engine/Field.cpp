@@ -57,11 +57,12 @@ void Field::Cell::DrawCell(const Vei2& screenPos,int fieldwidth ,Field::Mode fie
 	}
 	else // NumPad
 	{
+		int fontsize = 3;
 		switch( state )
 		{
 		case State::Number:
 			SpriteCodex::DrawCell(screenPos, cellwidth, cellwidth / 20, 0, 255, 0, gfx);
-			font.DrawCharacter(screenPos.x, screenPos.y, gfx, 49 + fieldwidth*GridIndex.y+GridIndex.x, 4, Colors::Green);
+			font.DrawCharacter(screenPos.x-fontsize*4, screenPos.y-fontsize*4, gfx, 49 + fieldwidth*GridIndex.y+GridIndex.x, fontsize, Colors::Green);
 			break;
 		case State::Chili:
 			SpriteCodex::DrawCell(screenPos, cellwidth, cellwidth / 20, 0, 255, 0, gfx);

@@ -27,7 +27,7 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	menu({ gfx.GetScreenRect().GetCenter().x,200 })
+	menu({ gfx.GetScreenRect().GetCenter().x,300 },font)
 	/*hammerx(1),
 	hammery(1),
 	keysPressedLastFrame(false),
@@ -214,28 +214,28 @@ void Game::UpdateModel()
 	while (!wnd.mouse.IsEmpty())
 	{
 		const auto e = wnd.mouse.Read();
-		if (state == State::Memesweeper)
+		if (state == State::Game)
 		{
 		}
 		else
 		{
 			if (!fieldcreated) {
-				const SelectionMenu::Size s = menu.ProcessMouse(e);
+				const SelectionMenu::Gamemode s = menu.ProcessMouse(e);
 				switch (s)
 				{
-				case SelectionMenu::Size::Small:
+				case SelectionMenu::Gamemode::Classic:
 					CreateField(2, 2, 40, Field::Mode::Classic, font);
-					state = State::Memesweeper;
+					state = State::Game;
 					fieldcreated = true;
 					break;
-				case SelectionMenu::Size::Medium:
+				case SelectionMenu::Gamemode::Mouse:
 					CreateField(3, 3, 40, Field::Mode::NumPad, font);
-					state = State::Memesweeper;
+					state = State::Game;
 					fieldcreated = true;
 					break;
-				case SelectionMenu::Size::Large:
+				case SelectionMenu::Gamemode::NumberPad:
 					CreateField(5, 5, 24, Field::Mode::NumPad, font);
-					state = State::Memesweeper;
+					state = State::Game;
 					fieldcreated = true;
 					break;
 				}
@@ -323,7 +323,7 @@ void Game::UpdateModel()
 }
 void Game::ComposeFrame()
 {
-	if (state == State::Memesweeper)
+	if (state == State::Game)
 	{
 		pField->Draw(gfx);
 	}
