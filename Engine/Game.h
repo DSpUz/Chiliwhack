@@ -44,7 +44,9 @@ private:
 	{
 		SelectionMenu,
 		Game,
-		HighscoreTable
+		BerserkerChili,
+		HighscoreTable,
+		Endscreen
 	};
 private:
 	void ComposeFrame();

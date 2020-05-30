@@ -15,8 +15,15 @@ public:
 		Classic,
 		Mouse,
 		NumberPad,
-		Count,
+		Count1,
+		Replay,
+		Exit,
+		Count2,
 		Invalid
+	};
+	enum class Menutype {
+		StartMenu,
+		EndMenu
 	};
 private:
 	class Entry
@@ -45,6 +52,12 @@ private:
 				break;
 			case Gamemode::NumberPad:
 				font.DrawString(rect.GetCenter() - Vei2{ fontsize * 23,fontsize * 3 }, "numpad", gfx, fontsize, Colors::Green);
+				break;
+			case Gamemode::Replay:
+				font.DrawString(rect.GetCenter() - Vei2{ fontsize * 19,fontsize * 3 }, "replay", gfx, fontsize, Colors::Green);
+				break;
+			case Gamemode::Exit:
+				font.DrawString(rect.GetCenter() - Vei2{ fontsize * 23,fontsize * 3 }, "exit", gfx, fontsize, Colors::Green);
 				break;
 			}
 		}
@@ -83,55 +96,106 @@ public:
 		font(font)
 	{
 		auto center = pos;
-		for( int i = 0; i < int( Gamemode::Count ); i++ )
+		for( int i = 0; i < int( Gamemode::Count1 ); i++ )
 		{
 			entries[i] = { Gamemode( i ),center };
 			center.y += verticalSpacing;
 		}
+		Vei2 leftcorner = { 0,Graphics::ScreenHeight };
+		auto botleft = leftcorner - (leftcorner - pos) / 2;
+		for (int i = int(Gamemode::Count1); i<int(Gamemode::Count2); i++) {
+			entries[i] = { Gamemode(i+1),botleft };
+			botleft.x = Graphics::ScreenWidth - botleft.x;
+		}
 	}
 	// returns Size::Something when an entry is clicked, otherwise returns Size::Invalid
-	Gamemode ProcessMouse( const Mouse::Event& e )
+	Gamemode ProcessMouse( const Mouse::Event& e ,Menutype mtype)
 	{
-		switch( e.GetType() )
-		{
-		case Mouse::Event::Type::Move:
-			for( auto& n : entries )
+		if (mtype == Menutype::StartMenu) {
+			switch (e.GetType())
 			{
-				if( n.IsHit( e.GetPos() ) )
+			case Mouse::Event::Type::Move:
+				for (int i = 0; i<int(Gamemode::Count1); i++)
 				{
-					// need to test here to prevent sfx from firing
-					// on every mouse move event
-					if( !n.IsHighlighted() )
+					if (entries[i].IsHit(e.GetPos()))
 					{
-						ResetHighlights();
-						n.SetHighlight();
-						hover.Play();
+						// need to test here to prevent sfx from firing
+						// on every mouse move event
+						if (!entries[i].IsHighlighted())
+						{
+							ResetHighlights();
+							entries[i].SetHighlight();
+							hover.Play();
+						}
+						// immediately exit if found a hit
+						// (if we don't, highlight will be reset below)
+						return Gamemode::Invalid;
 					}
-					// immediately exit if found a hit
-					// (if we don't, highlight will be reset below)
-					return Gamemode::Invalid;
 				}
-			}
-			// if no entry was hit, reset all highlights
-			ResetHighlights();
-			break;
-		case Mouse::Event::Type::LPress:
-			for( auto& n : entries )
-			{
-				if( n.IsHit( e.GetPos() ) )
+				// if no entry was hit, reset all highlights
+				ResetHighlights();
+				break;
+			case Mouse::Event::Type::LPress:
+				for (int i = 0; i<int(Gamemode::Count1); i++)
 				{
-					return n.GetMode();
+					if (entries[i].IsHit(e.GetPos()))
+					{
+						return entries[i].GetMode();
+					}
 				}
+				break;
 			}
-			break;
+		}
+		else{
+			switch (e.GetType())
+			{
+			case Mouse::Event::Type::Move:
+				for (int i = int(Gamemode::Count1); i<int(Gamemode::Count2)-1; i++)
+				{
+					if (entries[i].IsHit(e.GetPos()))
+					{
+						// need to test here to prevent sfx from firing
+						// on every mouse move event
+						if (!entries[i].IsHighlighted())
+						{
+							ResetHighlights();
+							entries[i].SetHighlight();
+							hover.Play();
+						}
+						// immediately exit if found a hit
+						// (if we don't, highlight will be reset below)
+						return Gamemode::Invalid;
+					}
+				}
+				// if no entry was hit, reset all highlights
+				ResetHighlights();
+				break;
+			case Mouse::Event::Type::LPress:
+				for (int i = int(Gamemode::Count1); i<int(Gamemode::Count2) - 1; i++)
+				{
+					if (entries[i].IsHit(e.GetPos()))
+					{
+						return entries[i].GetMode();
+					}
+				}
+				break;
+			}
 		}
 		return Gamemode::Invalid;
 	}
-	void Draw( Graphics& gfx ) const
+	void Draw( Graphics& gfx ,Menutype type) const
 	{
-		for( const auto& n : entries )
-		{
-			n.Draw( gfx ,font);
+		if (type==Menutype::StartMenu) {
+			for (int i = 0;i<int(Gamemode::Count1);i++)
+			{
+				entries[i].Draw(gfx, font);
+			}
+		}
+		else {
+			for (int i = int(Gamemode::Count1); i<int(Gamemode::Count2)-1; i++)
+			{
+				entries[i].Draw(gfx, font);
+			}
 		}
 	}
 private:
@@ -146,5 +210,6 @@ private:
 	const PixelFont& font;
 	static constexpr int verticalSpacing = 80;
 	Sound hover = { L"menu_boop.wav" };
-	Entry entries[int( Gamemode::Count )];
+	Entry entries[ int(Gamemode::Count2)-1];
+
 };

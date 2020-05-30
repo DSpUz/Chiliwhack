@@ -220,7 +220,7 @@ void Game::UpdateModel()
 		else
 		{
 			if (!fieldcreated) {
-				const SelectionMenu::Gamemode s = menu.ProcessMouse(e);
+				const SelectionMenu::Gamemode s = menu.ProcessMouse(e,SelectionMenu::Menutype::StartMenu);
 				switch (s)
 				{
 				case SelectionMenu::Gamemode::Classic:
@@ -329,7 +329,7 @@ void Game::ComposeFrame()
 	}
 	else
 	{
-		menu.Draw(gfx);
+		menu.Draw(gfx,SelectionMenu::Menutype::StartMenu);
 	}
 	marleRight.Draw({ wnd.mouse.GetPosX(), wnd.mouse.GetPosY() }, gfx);
 	//db.Print(gfx, { 100,100 }, font);
