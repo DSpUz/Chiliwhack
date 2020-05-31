@@ -211,37 +211,65 @@ void Game::DoUserInput() {
 /*-------------------------------------------------------------------------*/
 void Game::UpdateModel()
 {
-	while (!wnd.mouse.IsEmpty())
-	{
-		const auto e = wnd.mouse.Read();
-		if (state == State::Game)
+	switch (state) {
+	case State::SelectionMenu: 
+		while (!wnd.mouse.IsEmpty())
 		{
-		}
-		else
-		{
-			if (!fieldcreated) {
-				const SelectionMenu::Gamemode s = menu.ProcessMouse(e,SelectionMenu::Menutype::StartMenu);
-				switch (s)
-				{
-				case SelectionMenu::Gamemode::Classic:
-					CreateField(2, 2, 40, Field::Mode::Classic, font);
-					state = State::Game;
-					fieldcreated = true;
-					break;
-				case SelectionMenu::Gamemode::Mouse:
-					CreateField(3, 3, 40, Field::Mode::NumPad, font);
-					state = State::Game;
-					fieldcreated = true;
-					break;
-				case SelectionMenu::Gamemode::NumberPad:
-					CreateField(5, 5, 24, Field::Mode::NumPad, font);
-					state = State::Game;
-					fieldcreated = true;
-					break;
+			const auto e = wnd.mouse.Read();
+			
+				if (!fieldcreated) {
+					mode = menu.ProcessMouse(e, SelectionMenu::Menutype::StartMenu);
+					switch (mode)
+					{
+					case SelectionMenu::Gamemode::Classic:
+						CreateField(3, 3, 40, Field::Mode::Classic, font);
+						state = State::Game;
+						fieldcreated = true;
+						break;
+					case SelectionMenu::Gamemode::Mouse:
+						CreateField(3, 3, 40, Field::Mode::Classic, font);
+						state = State::Game;
+						fieldcreated = true;
+						break;
+					case SelectionMenu::Gamemode::NumberPad:
+						CreateField(3, 3, 40, Field::Mode::NumPad, font);
+						state = State::Game;
+						fieldcreated = true;
+						break;
+					}
 				}
 			}
+		break;
+	case State::Game:
+		switch (mode) {
+		case SelectionMenu::Gamemode::Classic:
+			break;
+		case SelectionMenu::Gamemode::Mouse:
+			break;
+		case SelectionMenu::Gamemode::NumberPad:
+			break;
 		}
+	break;
+	case State::BerserkerChili:
+		break;
+	case State::HighscoreTable:
+		break;
+	case State::Endscreen:
+		while (!wnd.mouse.IsEmpty())
+		{
+			const auto e = wnd.mouse.Read();
+			mode = menu.ProcessMouse(e, SelectionMenu::Menutype::EndMenu);
+			switch (mode){
+				case SelectionMenu::Gamemode::Replay:
+					state = State::SelectionMenu;
+					break;
+				case SelectionMenu::Gamemode::Exit:
+					break;
+					}
+		}
+		break;
 	}
+
 	marleRight.Update(ft.Mark());
 	/*if (!savedonce) {
 		db.Add("chili", 69);
@@ -323,15 +351,34 @@ void Game::UpdateModel()
 }
 void Game::ComposeFrame()
 {
-	if (state == State::Game)
-	{
-		pField->Draw(gfx);
+	switch (state) {
+	case State::SelectionMenu:
+		menu.Draw(gfx, SelectionMenu::Menutype::StartMenu);
+		break;
+	case State::Game:
+		switch (mode) {
+		case SelectionMenu::Gamemode::Classic:
+			pField->Draw(gfx);
+			marleRight.Draw({ wnd.mouse.GetPosX(), wnd.mouse.GetPosY() }, gfx);
+			break;
+		case SelectionMenu::Gamemode::Mouse:
+			pField->Draw(gfx);
+			marleRight.Draw({ wnd.mouse.GetPosX(), wnd.mouse.GetPosY() }, gfx);
+			break;
+		case SelectionMenu::Gamemode::NumberPad:
+			pField->Draw(gfx);
+			break;
+		}
+		break;
+	case State::BerserkerChili:
+		break;
+	case State::HighscoreTable:
+		break;
+	case State::Endscreen:
+		menu.Draw(gfx, SelectionMenu::Menutype::EndMenu);
+		break;
 	}
-	else
-	{
-		menu.Draw(gfx,SelectionMenu::Menutype::StartMenu);
-	}
-	marleRight.Draw({ wnd.mouse.GetPosX(), wnd.mouse.GetPosY() }, gfx);
+	
 	//db.Print(gfx, { 100,100 }, font);
 	/*--------------START SCREEN---------------------------*/
 	/*if (!start&&!outro&&!end) {

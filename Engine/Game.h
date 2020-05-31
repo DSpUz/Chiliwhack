@@ -86,6 +86,7 @@ private:
 	PixelFont font;
 	SelectionMenu menu;
 	State state = State::SelectionMenu;
+	SelectionMenu::Gamemode mode;
 	Timer ft;
 	Surface surf = Surface("hammer240x170.bmp");
 	Animation marleRight = Animation({ 0,0 }, 240, 170, 8, surf, 0.02f, Colors::Magenta);
