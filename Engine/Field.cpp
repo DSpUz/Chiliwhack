@@ -111,12 +111,52 @@ Field::Field( Vei2& center,int in_width,int in_height,int cell_w, Mode mode_in,c
 	field[spawnPos].SpawnChili();
 }
 
+Field::Field(const Field & source):
+	width(source.width),
+	height(source.height),
+	cellwidth(source.cellwidth),
+	pos(source.pos),
+	mode(source.mode),
+	font(source.font),
 
-Field::~Field()
+	field(new Cell[source.width * source.height])
+{
+	for (int i = 0; i < source.width * source.height; i++) {
+		field[i] = source[i];
+	}
+}
+
+Field & Field::operator=(const Field & source)
 {
 	delete[] field;
 	field = nullptr;
+	field = new Cell[source.width * source.height];
+	for (int i = 0; i < source.width * source.height; i++) {
+		field[i] = source[i];
+	}
+	return *this;
 }
+
+
+Field::~Field()
+{
+	delete [] field;
+	field = nullptr;
+}
+
+Field::Cell & Field::operator[](int index)
+{
+	return field[index];
+}
+
+const Field::Cell & Field::operator[](int index) const
+{
+	return field[index];
+}
+
+
+
+
 
 void Field::Draw( Graphics& gfx ) const
 {
@@ -140,21 +180,4 @@ int Field::GetWidth() const
 int Field::GetHeight() const
 {
 	return height;
-}
-
-
-
-
-
-
-
-
-Field::Cell& Field::CellAt( const int gridPos )
-{
-	return field[gridPos];
-}
-
-const Field::Cell& Field::CellAt( const int gridPos ) const
-{
-	return field[gridPos];
 }

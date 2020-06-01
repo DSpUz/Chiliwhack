@@ -37,13 +37,14 @@ private:
 	};
 public:
 	Field( Vei2& center,int in_width,int in_height, int cell_w, Mode mode_in,const PixelFont& in_font );
+	Field(const Field& source);
+	Field& operator=(const Field& source);
 	~Field();
+	Field::Cell& operator[](int index);
+	const Field::Cell& operator[](int index) const;
 	void Draw( Graphics& gfx ) const;
 	int GetWidth() const;
 	int GetHeight() const;
-private:
-	Field::Cell & CellAt(const int gridPos);
-	const Cell& CellAt( int gridPos ) const;
 private:
 	int width;
 	int height;

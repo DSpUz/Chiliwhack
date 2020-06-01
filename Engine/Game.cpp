@@ -52,7 +52,7 @@ void Game::CreateField(int width, int height, int cellwidth, Field::Mode mode, c
 
 void Game::DestroyField()
 {
-	delete[] pField;
+	delete pField;
 	pField = nullptr;
 }
 
@@ -278,11 +278,12 @@ void Game::UpdateModel()
 		}
 		else { state = State::HighscoreTable; }
 		DestroyField();
+		fieldcreated = false;
 		break;
 	case State::HighscoreTable:
-		while (!wnd.kbd.KeyIsPressed(VK_RETURN)) {
+		if (wnd.kbd.KeyIsPressed(VK_RETURN)) {
+			state = State::Endscreen;
 		}
-		state = State::Endscreen;
 		break;
 	case State::Endscreen:
 		while (!wnd.mouse.IsEmpty())
