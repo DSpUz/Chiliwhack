@@ -90,38 +90,20 @@ private:
 	Timer ft;
 	Surface surf = Surface("hammer240x170.bmp");
 	Animation marleRight = Animation({ 0,0 }, 240, 170, 8, surf, 0.02f, Colors::Magenta);
-	/*Database db;
+	Database db;
 	bool savedonce = false;
 	bool loadedonce = false;
-	PixelFont font;*/
-	
-	/********************************/
-	/*const int baseX = 256;//grid top left corner coordinates
-	const int baseY = 156;
-	const int cellw = 144;//cell width for shifting chili and hammer
-	float timeline_length=799;
+
+	float gametime=0.0f;
+	RectI timeline;
 	int line_r, line_g, line_b;//timeline colors
-	int hammerx, hammery;//hammer coordinates
-
-	int ChiliMoveX; //AI Chili coordinates
-	int ChiliMoveY;
-	PixelFont font;
-	std::string welcometext = "welcome to chiliwhack 2.0!";
-
-	ChiliState s0, s1, s2, s3, s4, s5, s6, s7, s8; //State variables for each cell
-	bool keysPressedLastFrame,gotStarttime=false;
-	bool start = false;
+	int chiliwidth = 30;
+	bool outroonce=false;
 	Sound sky,slam,chi;//intro,hammer sound, outro
 	bool intropl = false, slampl = false, chipl = false;//intro played variable 
 	
-
-	
 	int chilicounter=0;//counts how many chili's you got
-	int start_t, cond_t, curr_t;
 
-	bool outro = false;
-	int outrow=100;//width of chili in the outro
-	bool end = false;*/
 	/*  User Variables              */
 	/********************************/
 };

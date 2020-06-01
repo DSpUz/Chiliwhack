@@ -27,18 +27,12 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	menu({ gfx.GetScreenRect().GetCenter().x,300 },font)
-	/*hammerx(1),
-	hammery(1),
-	keysPressedLastFrame(false),
+	menu({ gfx.GetScreenRect().GetCenter().x,300 },font),
 	sky(L"sky.wav"),
 	slam(L"slam.wav"),
-	chi(L"chi.wav")*/
+	chi(L"chi.wav")
 {
-	/*for (int index = 0; index<9; index++) {//initializes all cells empty
-		SetCellState(index, EMPTY);
-	}
-	srand((unsigned int)time(NULL));//converts computer time since 1970 in a number and "seeds" random function*/
+	srand((unsigned int)time(NULL));//converts computer time since 1970 in a number and "seeds" random function
 }
 
 void Game::Go()
@@ -58,7 +52,7 @@ void Game::CreateField(int width, int height, int cellwidth, Field::Mode mode, c
 
 void Game::DestroyField()
 {
-	delete pField;
+	delete[] pField;
 	pField = nullptr;
 }
 
@@ -211,8 +205,23 @@ void Game::DoUserInput() {
 /*-------------------------------------------------------------------------*/
 void Game::UpdateModel()
 {
+	if (!savedonce) {
+		db.Add("chili", 69);
+		db.Add("me-", 402);
+		db.Add("absolute garbage", 15);
+		db.Save("highscores.dat");
+		savedonce = true;
+	}
+	if (!loadedonce) {
+		db.Load("highscores.dat");
+		loadedonce = true;
+	}
 	switch (state) {
 	case State::SelectionMenu: 
+		if (!intropl) {//plays intro
+			sky.Play();
+			intropl = true;
+		}
 		while (!wnd.mouse.IsEmpty())
 		{
 			const auto e = wnd.mouse.Read();
@@ -241,18 +250,39 @@ void Game::UpdateModel()
 			}
 		break;
 	case State::Game:
-		switch (mode) {
-		case SelectionMenu::Gamemode::Classic:
-			break;
-		case SelectionMenu::Gamemode::Mouse:
-			break;
-		case SelectionMenu::Gamemode::NumberPad:
-			break;
+		while (gametime < 5.0f) {
+			switch (mode) {
+			case SelectionMenu::Gamemode::Classic:
+				break;
+			case SelectionMenu::Gamemode::Mouse:
+				break;
+			case SelectionMenu::Gamemode::NumberPad:
+				break;
+			}
+			gametime += ft.Mark();
 		}
+		state = State::BerserkerChili;
+		gametime = 0.0f;
 	break;
 	case State::BerserkerChili:
+		if (!outroonce) {
+			chi.Play();
+			
+			while (gametime < 3.0f) {
+
+				chiliwidth += int(float(chiliwidth)*0.1f);
+				gametime += ft.Mark();
+			}
+			state= State::HighscoreTable;
+			gametime = 0.0f;
+		}
+		else { state = State::HighscoreTable; }
+		DestroyField();
 		break;
 	case State::HighscoreTable:
+		while (!wnd.kbd.KeyIsPressed(VK_RETURN)) {
+		}
+		state = State::Endscreen;
 		break;
 	case State::Endscreen:
 		while (!wnd.mouse.IsEmpty())
@@ -264,106 +294,29 @@ void Game::UpdateModel()
 					state = State::SelectionMenu;
 					break;
 				case SelectionMenu::Gamemode::Exit:
+					wnd.Kill();
 					break;
 					}
 		}
 		break;
 	}
 
-	marleRight.Update(ft.Mark());
-	/*if (!savedonce) {
-		db.Add("chili", 69);
-		db.Add("me-", 402);
-		db.Add("absolute garbage", 15);
-		db.Save("highscores.dat");
-		savedonce = true;
-	}
-	if (!loadedonce) {
-		db.Load("highscores.dat");
-		loadedonce = true;
-	}*/
-	/*-----------WELCOMESCREEN-------------------*/
-	/*if (!intropl) {//plays intro
-		sky.Play();
-		intropl = true;
-	}
-	if (!keysPressedLastFrame) {
-		if (wnd.kbd.KeyIsPressed(VK_RETURN)) {
-			start = true;
-			keysPressedLastFrame = true;
-		}
-	}
-
-	/*----------------------GAME-----------------------------*/
-	/*if (start) {
-		DoAIMoveRand();
-		DoUserInput();
-		if (!gotStarttime) {//checks if starttime is already saved
-			start_t = (int)time(NULL);
-			cond_t = start_t;
-			gotStarttime = true;
-		}
-		curr_t = (int)time(NULL);
-		if (curr_t - cond_t > 0 && curr_t - start_t <= 60) {// calculation for 60 sec
-			timeline_length=timeline_length-13.33f;
-			cond_t++;
-		}
-		if (timeline_length <= 400 && timeline_length > 200) {
-			line_r = 255, line_g = 255, line_b = 0;//yellow
-		}
-		else if (timeline_length <= 200 && timeline_length > 75) {
-			line_r = 255, line_g = 128, line_b = 0;//orange
-		}
-		else if (timeline_length <= 75 && timeline_length >= 0) {
-			line_r = 255, line_g = 0, line_b = 0;//red
-		}
-		else {
-			line_r = 128, line_g = 255, line_b = 0;//light green
-		}
-		if ((int)timeline_length == 0) {
-			outro = true;
-			gotStarttime = false;
-			start = false;
-		}
-	}
-	/*-------------OUTRO-----------------*/
-	/*if (outro) {
-		if (!gotStarttime) {//checks if starttime is already saved
-			start_t = (int)time(NULL);
-			cond_t = start_t;
-			gotStarttime = true;
-		}
-		curr_t = (int)time(NULL);
-		if (!chipl) {//plays outro
-			chi.Play();
-			chipl = true;
-		}
-		if (curr_t - cond_t > 0 && curr_t - start_t <= 3) {// calculation for 60 sec
-			outrow=outrow+150;
-			cond_t++;
-		}
-		if (curr_t - start_t == 3) {
-			outro = false;//ends outro after 3 seconds
-			end = true;
-		}
-	}
-	*/
+	//marleRight.Update(ft.Mark());
 }
 void Game::ComposeFrame()
 {
 	switch (state) {
 	case State::SelectionMenu:
+		font.DrawString({ Graphics::ScreenWidth/3,Graphics::ScreenHeight/ 6 }, "chiliwhack", gfx,4,Colors::Green);
 		menu.Draw(gfx, SelectionMenu::Menutype::StartMenu);
 		break;
 	case State::Game:
 		switch (mode) {
 		case SelectionMenu::Gamemode::Classic:
 			pField->Draw(gfx);
-			marleRight.Draw({ wnd.mouse.GetPosX(), wnd.mouse.GetPosY() }, gfx);
 			break;
 		case SelectionMenu::Gamemode::Mouse:
 			pField->Draw(gfx);
-			marleRight.Draw({ wnd.mouse.GetPosX(), wnd.mouse.GetPosY() }, gfx);
 			break;
 		case SelectionMenu::Gamemode::NumberPad:
 			pField->Draw(gfx);
@@ -371,50 +324,18 @@ void Game::ComposeFrame()
 		}
 		break;
 	case State::BerserkerChili:
+		if (!outroonce) {
+			SpriteCodex::DrawChili({ Graphics::ScreenWidth / 2,Graphics::ScreenHeight / 2 }, chiliwidth, gfx);
+		}
 		break;
 	case State::HighscoreTable:
+
+		db.Print(gfx, { 100,100 }, font);
 		break;
 	case State::Endscreen:
 		menu.Draw(gfx, SelectionMenu::Menutype::EndMenu);
 		break;
 	}
-	
-	//db.Print(gfx, { 100,100 }, font);
-	/*--------------START SCREEN---------------------------*/
-	/*if (!start&&!outro&&!end) {
-		DrawWelcomeScreen();
-	}
-	/*------------------GAME-------------------------------*/
-	/*else if (timeline_length > 0) {
-		DrawGrid(400, 300, cellw, 3);
-		DrawTimeline(timeline_length, 10, line_r, line_g, line_b);
-		for (int iy = 0; iy < 3; iy++) { //loop through rows
-			for (int ix = 0; ix < 3; ix++) {			//loop through columns
-				if (GetCellState(ix, iy) == CHILI) {//only chili in cell
-					DrawChili(baseX + ix*cellw, baseY + iy*cellw + 5, 100);
-				}
-
-			}
-		}
-		if (wnd.kbd.KeyIsPressed(VK_SPACE)) {
-			DrawHammer2(baseX + hammerx*cellw, baseY + hammery*cellw);
-		}
-		else {
-			DrawHammer1(baseX + hammerx*cellw, baseY + hammery*cellw);
-		}
-		DrawNumber(650, 100);
-	}
-	else if(outro) {
-		DrawChili(400, 300, outrow);
-	}
-	else if(end) {
-		DrawEndScreen();
-	}
-	 
-	*/
-	
-	
-	
 }
 
 
