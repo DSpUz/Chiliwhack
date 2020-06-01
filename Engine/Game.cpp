@@ -275,6 +275,7 @@ void Game::UpdateModel()
 			}
 			state= State::HighscoreTable;
 			gametime = 0.0f;
+			outroonce = true;
 		}
 		else { state = State::HighscoreTable; }
 		DestroyField();
