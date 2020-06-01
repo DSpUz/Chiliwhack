@@ -205,6 +205,7 @@ void Game::DoUserInput() {
 /*-------------------------------------------------------------------------*/
 void Game::UpdateModel()
 {
+	const float dt = ft.Mark();
 	if (!savedonce) {
 		db.Add("chili", 69);
 		db.Add("me-", 402);
@@ -250,7 +251,7 @@ void Game::UpdateModel()
 			}
 		break;
 	case State::Game:
-		while (gametime < 5.0f) {
+		if (gametime < 5.0f) {
 			switch (mode) {
 			case SelectionMenu::Gamemode::Classic:
 				break;
@@ -259,25 +260,33 @@ void Game::UpdateModel()
 			case SelectionMenu::Gamemode::NumberPad:
 				break;
 			}
-			gametime += ft.Mark();
+			gametime += dt;
 		}
-		state = State::BerserkerChili;
-		gametime = 0.0f;
+		else {
+			state = State::BerserkerChili;
+			gametime = 0.0f;
+		}
 	break;
 	case State::BerserkerChili:
 		if (!outroonce) {
-			chi.Play();
-			
-			while (gametime < 3.0f) {
-
-				chiliwidth += int(float(chiliwidth)*0.1f);
-				gametime += ft.Mark();
+			if (!chipl) {
+				chi.Play();
+				chipl = true;
 			}
-			state= State::HighscoreTable;
-			gametime = 0.0f;
-			outroonce = true;
+			if (gametime < 3.0f) {
+
+				chiliwidth += 150*dt;
+				gametime += dt;
+			}
+			else {
+				state = State::HighscoreTable;
+				gametime = 0.0f;
+				outroonce = true;
+			}
 		}
-		else { state = State::HighscoreTable; }
+		else {
+			state = State::HighscoreTable;
+		}
 		DestroyField();
 		fieldcreated = false;
 		break;
