@@ -232,6 +232,8 @@ void Game::UpdateModel()
 		db.Load("highscores.dat");
 		loadedonce = true;
 	}
+	hammerdown.Update(dt);
+	hammerup.Update(dt);
 	switch (state) {
 	case State::SelectionMenu: 
 		if (!intropl) {//plays intro
@@ -338,13 +340,17 @@ void Game::UpdateModel()
 		}
 		break;
 	}
-
-	//marleRight.Update(ft.Mark());
 }
 void Game::ComposeFrame()
 {
 	switch (state) {
 	case State::SelectionMenu:
+		if (wnd.kbd.KeyIsPressed(VK_RETURN)) {
+			hammerdown.Draw({ wnd.mouse.GetPosX(),wnd.mouse.GetPosY() }, gfx);
+		}
+		if (wnd.kbd.KeyIsPressed(VK_SPACE)) {
+			hammerup.Draw({ wnd.mouse.GetPosX(),wnd.mouse.GetPosY() }, gfx);
+		}
 		gfx.DrawRect(timeline, tcol);
 		font.DrawString({ Graphics::ScreenWidth/3,Graphics::ScreenHeight/ 6 }, "chiliwhack", gfx,4,Colors::Green);
 		menu.Draw(gfx, SelectionMenu::Menutype::StartMenu);

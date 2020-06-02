@@ -90,7 +90,8 @@ private:
 	SelectionMenu::Gamemode mode;
 	Timer ft;
 	Surface surf = Surface("hammer240x170.bmp");
-	Animation marleRight = Animation({ 0,0 }, 240, 170, 8, surf, 0.02f, Colors::Magenta);
+	Animation hammerdown = Animation({ 0,0 }, 240, 170, 8, surf, 0.5f,false, Colors::Magenta),
+		hammerup = Animation({ 0,0 }, 240, 170, 8, surf, 0.5f, true, Colors::Magenta);
 	Database db;
 	bool savedonce = false;
 	bool loadedonce = false;

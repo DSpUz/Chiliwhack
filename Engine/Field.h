@@ -50,7 +50,7 @@ private:
 	int height;
 	int cellwidth;
 	Vei2 pos;
-	Mode mode = Mode::Classic;
+	Mode mode;
 	const PixelFont& font;
 	Cell* field = nullptr;
 };

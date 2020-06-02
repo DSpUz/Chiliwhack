@@ -1,13 +1,20 @@
 #include "Animation.h"
 
-Animation::Animation(const Vei2 & startpos, int width, int height, int numFrames, const Surface & sprite, float htime, const Color & colkey)
+Animation::Animation(const Vei2 & startpos, int width, int height, int numFrames, const Surface & sprite, float htime,bool reverse, const Color & colkey)
 :
 spritesheet(sprite),
 holdTime(htime),
 colorkey(colkey)
 {
-	for (int i = 0; i < numFrames; i++) {
-		frames.emplace_back(startpos.x + i * width, startpos.x + (i + 1) * width, startpos.y, startpos.y + height);
+	if(reverse){
+		for (int i = numFrames; i > 0; i--) {
+			frames.emplace_back(startpos.x + i * width, startpos.x + (i + 1) * width, startpos.y, startpos.y + height);
+		}
+	}
+	else {
+		for (int i = 0; i < numFrames; i++) {
+			frames.emplace_back(startpos.x + i * width, startpos.x + (i + 1) * width, startpos.y, startpos.y + height);
+		}
 	}
 }
 
@@ -33,6 +40,6 @@ void Animation::Update(float dt)
 void Animation::Advance()
 {
 	if (++frameIndex >= frames.size()) {
-		frameIndex = 0;
+		frameIndex = int(frames.size())-1;
 	}
 }

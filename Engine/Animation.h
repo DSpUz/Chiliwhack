@@ -4,7 +4,7 @@
 #include <vector>
 class Animation {
 public:
-	Animation(const Vei2& startpos, int width, int height, int numFrames, const Surface& sprite, float htime, const Color& colkey);
+	Animation(const Vei2& startpos, int width, int height, int numFrames, const Surface& sprite, float htime,bool reverse, const Color& colkey);
 	void Draw(const Vei2& pos, Graphics& gfx) const;
 	void Draw(const Vei2& pos, Graphics& gfx,const RectI& clip) const;
 	void Update(float dt);
