@@ -60,6 +60,7 @@ MainWindow::MainWindow( HINSTANCE hInst,wchar_t * pArgs )
 
 	// show and update
 	ShowWindow( hWnd,SW_SHOWDEFAULT );
+	ShowCursor(false);
 	UpdateWindow( hWnd );
 }
 
