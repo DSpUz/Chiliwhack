@@ -28,6 +28,11 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	menu({ gfx.GetScreenRect().GetCenter().x,300 },font),
+	timeline(0,Graphics::ScreenWidth,0,10),
+	tcol(Colors::Green),
+	line_r(0),
+	line_g(255),
+	line_right(800.0f),
 	sky(L"sky.wav"),
 	slam(L"slam.wav"),
 	chi(L"chi.wav")
@@ -54,6 +59,16 @@ void Game::DestroyField()
 {
 	delete pField;
 	pField = nullptr;
+}
+
+void Game::ResetTimeline()
+{
+	line_g = 255.0f;
+	line_r = 0.0f;
+	timeline.right = 800;
+	line_right = 800.0f;
+	tcol.SetR(unsigned char(line_r));
+	tcol.SetG(unsigned char(line_g));
 }
 
 
@@ -251,7 +266,17 @@ void Game::UpdateModel()
 			}
 		break;
 	case State::Game:
-		if (gametime < 5.0f) {
+		if (timer<gametime) {
+			if(timer<gametime/2){
+				line_r += colorscaling * 2 * dt;
+				tcol.SetR(unsigned char(line_r));
+			}
+			else {
+				line_g -= colorscaling * 2 * dt;
+				tcol.SetG(unsigned char(line_g));
+			}
+			line_right-= Graphics::ScreenWidth / gametime * dt;
+			timeline.right = int(line_right);
 			switch (mode) {
 			case SelectionMenu::Gamemode::Classic:
 				break;
@@ -260,11 +285,13 @@ void Game::UpdateModel()
 			case SelectionMenu::Gamemode::NumberPad:
 				break;
 			}
-			gametime += dt;
+			timer += dt;
 		}
 		else {
 			state = State::BerserkerChili;
-			gametime = 0.0f;
+			timer = 0.0f;
+			ResetTimeline();
+	
 		}
 	break;
 	case State::BerserkerChili:
@@ -273,14 +300,14 @@ void Game::UpdateModel()
 				chi.Play();
 				chipl = true;
 			}
-			if (gametime < 3.0f) {
+			if (timer < 3.0f) {
 
-				chiliwidth += 150*dt;
-				gametime += dt;
+				chiliwidth += int(150*dt);
+				timer += dt;
 			}
 			else {
 				state = State::HighscoreTable;
-				gametime = 0.0f;
+				timer = 0.0f;
 				outroonce = true;
 			}
 		}
@@ -318,10 +345,12 @@ void Game::ComposeFrame()
 {
 	switch (state) {
 	case State::SelectionMenu:
+		gfx.DrawRect(timeline, tcol);
 		font.DrawString({ Graphics::ScreenWidth/3,Graphics::ScreenHeight/ 6 }, "chiliwhack", gfx,4,Colors::Green);
 		menu.Draw(gfx, SelectionMenu::Menutype::StartMenu);
 		break;
 	case State::Game:
+		gfx.DrawRect(timeline, tcol);
 		switch (mode) {
 		case SelectionMenu::Gamemode::Classic:
 			pField->Draw(gfx);

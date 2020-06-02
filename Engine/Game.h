@@ -74,6 +74,7 @@ private:
 	void DoUserInput();*/
 	void CreateField(int width, int height, int cellwidth, Field::Mode mode, const PixelFont& font);
 	void DestroyField();
+	void ResetTimeline();
 
 	/********************************/
 	/*  User Functions              */
@@ -94,9 +95,13 @@ private:
 	bool savedonce = false;
 	bool loadedonce = false;
 
-	float gametime=0.0f;
+	float timer=0.0f;
+	const float gametime = 10.0f;
+	const float colorscaling = 255 / gametime;
 	RectI timeline;
-	int line_r, line_g, line_b;//timeline colors
+	Color tcol;//timeline color
+	float line_r, line_g;//timeline colors
+	float line_right;
 	int chiliwidth = 30;
 	bool outroonce=false;
 	Sound sky,slam,chi;//intro,hammer sound, outro
