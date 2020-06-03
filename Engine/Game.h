@@ -48,20 +48,18 @@ private:
 		HighscoreTable,
 		Endscreen
 	};
+	enum class hammerState {
+		StillUp,
+		LeftIsPressed,
+		LeftReleased,
+		StillDown
+	};
 private:
 	void ComposeFrame();
 	void UpdateModel();
 	/*-----------------------------------------------*/
 	/*void DrawChili(int x,int y, int w); //x-coordinate, y- coordinate and width thanks to Legacy http://forum.planetchili.net/viewtopic.php?f=3&t=3890
 	void DrawCell(int cellx, int celly, int sq_w, int line_g, int r, int g, int b);//Thanks to Asimov - see http://www.planetchili.net/forum/viewtopic.php?f=3&t=1065
-	void DrawGrid(int posx, int posy, int cw,int rownumber);
-	void DrawTimeline(int length, int height, int r, int g, int b);//Inspired by Maggot#9's Squares - see http://www.planetchili.net/forum/viewtopic.php?t=3856
-	void DrawHammer1(int head_x, int head_y);//hammer up
-	void DrawHammer2(int head_x, int head_y);//hammer down
-	void DrawWelcomeScreen();
-	void DrawDigit(int index,int x, int y);
-	void DrawNumber(int x, int y);
-	void DrawEndScreen();
 
 	/*GAME LOGIC FUNCTIONS - for elaborate explanation see old beginner series lesson 12*/
 	/*void SetCellState(int index, ChiliState state);// sets cells to either empty or chili
@@ -75,6 +73,8 @@ private:
 	void CreateField(int width, int height, int cellwidth, Field::Mode mode, const PixelFont& font);
 	void DestroyField();
 	void ResetTimeline();
+	void UpdateHammer(hammerState state, float dt);
+	void DrawHammer(Vei2& pos,hammerState state);
 
 	/********************************/
 	/*  User Functions              */
@@ -88,10 +88,16 @@ private:
 	SelectionMenu menu;
 	State state = State::SelectionMenu;
 	SelectionMenu::Gamemode mode;
+	
 	Timer ft;
+
 	Surface surf = Surface("hammer240x170.bmp");
-	Animation hammerdown = Animation({ 0,0 }, 240, 170, 8, surf, 0.5f,false, Colors::Magenta),
-		hammerup = Animation({ 0,0 }, 240, 170, 8, surf, 0.5f, true, Colors::Magenta);
+	const float frametime = 0.1f;
+	Animation hammerdown = Animation({ 0,0 }, 240, 170, 8, surf,frametime,false, Colors::Magenta),
+		hammerup = Animation({ 0,0 }, 240, 170, 8, surf, frametime, true, Colors::Magenta);
+	hammerState hstate = hammerState::StillDown;
+	Vei2 hammerpos = { 400,300 };
+
 	Database db;
 	bool savedonce = false;
 	bool loadedonce = false;
@@ -103,6 +109,8 @@ private:
 	Color tcol;//timeline color
 	float line_r, line_g;//timeline colors
 	float line_right;
+
+
 	int chiliwidth = 30;
 	bool outroonce=false;
 	Sound sky,slam,chi;//intro,hammer sound, outro

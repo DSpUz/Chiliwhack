@@ -71,6 +71,40 @@ void Game::ResetTimeline()
 	tcol.SetG(unsigned char(line_g));
 }
 
+void Game::UpdateHammer(hammerState state, float dt)
+{
+	switch (state) {
+	case hammerState::LeftIsPressed:
+		hammerdown.Update(dt);
+		break;
+	case hammerState::LeftReleased:
+		hammerup.Update(dt);
+		break;
+	default:
+		break;
+	}
+}
+
+void Game::DrawHammer( Vei2& pos,hammerState state)
+{
+	switch (state) {
+	case hammerState::LeftIsPressed:
+		hammerdown.Draw(pos, gfx);
+		break;
+	case hammerState::LeftReleased:
+		hammerup.Draw(pos, gfx);
+		break;
+	case hammerState::StillUp:
+		gfx.DrawSprite(pos.x, pos.y, { 0,240,0,140 }, gfx.GetScreenRect(), surf, Colors::Magenta);
+		break;
+	case hammerState::StillDown:
+		gfx.DrawSprite(pos.x, pos.y, { 1680,1920,0,140 }, gfx.GetScreenRect(), surf, Colors::Magenta);
+		break;
+	default:
+		break;
+	}
+}
+
 
 
 
@@ -220,6 +254,8 @@ void Game::DoUserInput() {
 /*-------------------------------------------------------------------------*/
 void Game::UpdateModel()
 {
+	hammerpos.x = wnd.mouse.GetPosX();
+	hammerpos.y = wnd.mouse.GetPosY();
 	const float dt = ft.Mark();
 	if (!savedonce) {
 		db.Add("chili", 69);
@@ -232,18 +268,35 @@ void Game::UpdateModel()
 		db.Load("highscores.dat");
 		loadedonce = true;
 	}
-	hammerdown.Update(dt);
-	hammerup.Update(dt);
 	switch (state) {
 	case State::SelectionMenu: 
 		if (!intropl) {//plays intro
 			sky.Play();
 			intropl = true;
 		}
+		/*if (wnd.mouse.LeftIsPressed()) {
+			hstate = hammerState::LeftIsPressed;
+			if (timer < 8 * frametime) {
+				timer += dt;
+				UpdateHammer(hstate, dt);
+			}
+			else {
+				hstate = hammerState::StillDown;
+			}
+		}
+		else {
+			hstate = hammerState::LeftReleased;
+			if (timer < 16 * frametime) {
+				timer += dt;
+				UpdateHammer(hstate, dt);
+			}
+			else {
+				hstate = hammerState::StillUp;
+			}
+		}*/
 		while (!wnd.mouse.IsEmpty())
 		{
 			const auto e = wnd.mouse.Read();
-			
 				if (!fieldcreated) {
 					mode = menu.ProcessMouse(e, SelectionMenu::Menutype::StartMenu);
 					switch (mode)
@@ -266,6 +319,7 @@ void Game::UpdateModel()
 					}
 				}
 			}
+		timer = 0.0f;
 		break;
 	case State::Game:
 		if (timer<gametime) {
@@ -345,15 +399,10 @@ void Game::ComposeFrame()
 {
 	switch (state) {
 	case State::SelectionMenu:
-		if (wnd.kbd.KeyIsPressed(VK_RETURN)) {
-			hammerdown.Draw({ wnd.mouse.GetPosX(),wnd.mouse.GetPosY() }, gfx);
-		}
-		if (wnd.kbd.KeyIsPressed(VK_SPACE)) {
-			hammerup.Draw({ wnd.mouse.GetPosX(),wnd.mouse.GetPosY() }, gfx);
-		}
 		gfx.DrawRect(timeline, tcol);
-		font.DrawString({ Graphics::ScreenWidth/3,Graphics::ScreenHeight/ 6 }, "chiliwhack", gfx,4,Colors::Green);
+		font.DrawString({ Graphics::ScreenWidth / 3,Graphics::ScreenHeight / 6 }, "chiliwhack", gfx, 4, Colors::Green);
 		menu.Draw(gfx, SelectionMenu::Menutype::StartMenu);
+		DrawHammer(hammerpos, hstate);
 		break;
 	case State::Game:
 		gfx.DrawRect(timeline, tcol);

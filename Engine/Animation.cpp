@@ -7,7 +7,7 @@ holdTime(htime),
 colorkey(colkey)
 {
 	if(reverse){
-		for (int i = numFrames; i > 0; i--) {
+		for (int i = numFrames-1; i > 0; i--) {
 			frames.emplace_back(startpos.x + i * width, startpos.x + (i + 1) * width, startpos.y, startpos.y + height);
 		}
 	}
@@ -40,6 +40,6 @@ void Animation::Update(float dt)
 void Animation::Advance()
 {
 	if (++frameIndex >= frames.size()) {
-		frameIndex = int(frames.size())-1;
+		frameIndex = 0;
 	}
 }
