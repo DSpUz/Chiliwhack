@@ -25,11 +25,10 @@
 #include "Graphics.h"
 #include "Sound.h"
 #include "Database.h"
-#include "Surface.h"
-#include "Animation.h"
 #include "Timer.h"
 #include "Field.h"
 #include "SelectionMenu.h"
+#include "Hammer.h"
 #include <assert.h>
 
 class Game
@@ -47,12 +46,6 @@ private:
 		BerserkerChili,
 		HighscoreTable,
 		Endscreen
-	};
-	enum class hammerState {
-		StillUp,
-		LeftIsPressed,
-		LeftReleased,
-		StillDown
 	};
 private:
 	void ComposeFrame();
@@ -73,8 +66,6 @@ private:
 	void CreateField(int width, int height, int cellwidth, Field::Mode mode, const PixelFont& font);
 	void DestroyField();
 	void ResetTimeline();
-	void UpdateHammer(hammerState state, float dt);
-	void DrawHammer(Vei2& pos,hammerState state);
 
 	/********************************/
 	/*  User Functions              */
@@ -91,12 +82,7 @@ private:
 	
 	Timer ft;
 
-	Surface surf = Surface("hammer240x170.bmp");
-	const float frametime = 0.1f;
-	Animation hammerdown = Animation({ 0,0 }, 240, 170, 8, surf,frametime,false, Colors::Magenta),
-		hammerup = Animation({ 0,0 }, 240, 170, 8, surf, frametime, true, Colors::Magenta);
-	hammerState hstate = hammerState::StillDown;
-	Vei2 hammerpos = { 400,300 };
+	Hammer hammer;
 
 	Database db;
 	bool savedonce = false;

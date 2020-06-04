@@ -30,6 +30,7 @@ Game::Game(MainWindow& wnd)
 	menu({ gfx.GetScreenRect().GetCenter().x,300 },font),
 	timeline(0,Graphics::ScreenWidth,0,10),
 	tcol(Colors::Green),
+	hammer({400,300},Hammer::hammerState::StillUp),
 	line_r(0),
 	line_g(255),
 	line_right(800.0f),
@@ -69,40 +70,6 @@ void Game::ResetTimeline()
 	line_right = 800.0f;
 	tcol.SetR(unsigned char(line_r));
 	tcol.SetG(unsigned char(line_g));
-}
-
-void Game::UpdateHammer(hammerState state, float dt)
-{
-	switch (state) {
-	case hammerState::LeftIsPressed:
-		hammerdown.Update(dt);
-		break;
-	case hammerState::LeftReleased:
-		hammerup.Update(dt);
-		break;
-	default:
-		break;
-	}
-}
-
-void Game::DrawHammer( Vei2& pos,hammerState state)
-{
-	switch (state) {
-	case hammerState::LeftIsPressed:
-		hammerdown.Draw(pos, gfx);
-		break;
-	case hammerState::LeftReleased:
-		hammerup.Draw(pos, gfx);
-		break;
-	case hammerState::StillUp:
-		gfx.DrawSprite(pos.x, pos.y, { 0,240,0,140 }, gfx.GetScreenRect(), surf, Colors::Magenta);
-		break;
-	case hammerState::StillDown:
-		gfx.DrawSprite(pos.x, pos.y, { 1680,1920,0,140 }, gfx.GetScreenRect(), surf, Colors::Magenta);
-		break;
-	default:
-		break;
-	}
 }
 
 
@@ -254,8 +221,6 @@ void Game::DoUserInput() {
 /*-------------------------------------------------------------------------*/
 void Game::UpdateModel()
 {
-	hammerpos.x = wnd.mouse.GetPosX();
-	hammerpos.y = wnd.mouse.GetPosY();
 	const float dt = ft.Mark();
 	if (!savedonce) {
 		db.Add("chili", 69);
@@ -268,35 +233,17 @@ void Game::UpdateModel()
 		db.Load("highscores.dat");
 		loadedonce = true;
 	}
+	
 	switch (state) {
 	case State::SelectionMenu: 
 		if (!intropl) {//plays intro
 			sky.Play();
 			intropl = true;
 		}
-		/*if (wnd.mouse.LeftIsPressed()) {
-			hstate = hammerState::LeftIsPressed;
-			if (timer < 8 * frametime) {
-				timer += dt;
-				UpdateHammer(hstate, dt);
-			}
-			else {
-				hstate = hammerState::StillDown;
-			}
-		}
-		else {
-			hstate = hammerState::LeftReleased;
-			if (timer < 16 * frametime) {
-				timer += dt;
-				UpdateHammer(hstate, dt);
-			}
-			else {
-				hstate = hammerState::StillUp;
-			}
-		}*/
 		while (!wnd.mouse.IsEmpty())
 		{
 			const auto e = wnd.mouse.Read();
+			hammer.UpdateHammer(dt, e);
 				if (!fieldcreated) {
 					mode = menu.ProcessMouse(e, SelectionMenu::Menutype::StartMenu);
 					switch (mode)
@@ -402,7 +349,7 @@ void Game::ComposeFrame()
 		gfx.DrawRect(timeline, tcol);
 		font.DrawString({ Graphics::ScreenWidth / 3,Graphics::ScreenHeight / 6 }, "chiliwhack", gfx, 4, Colors::Green);
 		menu.Draw(gfx, SelectionMenu::Menutype::StartMenu);
-		DrawHammer(hammerpos, hstate);
+		hammer.DrawHammer(gfx);
 		break;
 	case State::Game:
 		gfx.DrawRect(timeline, tcol);
