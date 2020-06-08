@@ -99,7 +99,7 @@ private:
 
 	int chiliwidth = 30;
 	bool outroonce=false;
-	Sound sky,slam,chi;//intro,hammer sound, outro
+	Sound chili_t,slam,chi;//intro,hammer sound, outro
 	bool intropl = false, slampl = false, chipl = false;//intro played variable 
 	
 	int chilicounter=0;//counts how many chili's you got

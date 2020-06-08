@@ -34,7 +34,7 @@ Game::Game(MainWindow& wnd)
 	line_r(0),
 	line_g(255),
 	line_right(800.0f),
-	sky(L"sky.wav"),
+	chili_t(L"chili_t.wav"),
 	slam(L"slam.wav"),
 	chi(L"chi.wav")
 {
@@ -235,41 +235,40 @@ void Game::UpdateModel()
 	}
 	
 	switch (state) {
-	case State::SelectionMenu: 
-		if (!intropl) {//plays intro
-			sky.Play();
-			intropl = true;
-		}
-		while (!wnd.mouse.IsEmpty())
+	case State::SelectionMenu:
+	if (!intropl) {//plays intro
+		chili_t.Play();
+		intropl = true;
+	}
+	if (!fieldcreated) {
+		//hammer.UpdateHammer(dt, e, wnd.mouse.IsEmpty());
+		mode = menu.ProcessMouse(wnd.mouse.Read(), SelectionMenu::Menutype::StartMenu);
+		switch (mode)
 		{
-			const auto e = wnd.mouse.Read();
-			hammer.UpdateHammer(dt, e);
-				if (!fieldcreated) {
-					mode = menu.ProcessMouse(e, SelectionMenu::Menutype::StartMenu);
-					switch (mode)
-					{
-					case SelectionMenu::Gamemode::Classic:
-						CreateField(3, 3, 40, Field::Mode::Classic, font);
-						state = State::Game;
-						fieldcreated = true;
-						break;
-					case SelectionMenu::Gamemode::Mouse:
-						CreateField(3, 3, 40, Field::Mode::Classic, font);
-						state = State::Game;
-						fieldcreated = true;
-						break;
-					case SelectionMenu::Gamemode::NumberPad:
-						CreateField(3, 3, 40, Field::Mode::NumPad, font);
-						state = State::Game;
-						fieldcreated = true;
-						break;
-					}
-				}
-			}
-		timer = 0.0f;
+		case SelectionMenu::Gamemode::Classic:
+			CreateField(3, 3, 40, Field::Mode::Classic, font);
+			state = State::Game;
+			fieldcreated = true;
+			break;
+		case SelectionMenu::Gamemode::Mouse:
+			CreateField(3, 3, 40, Field::Mode::Classic, font);
+			state = State::Game;
+			fieldcreated = true;
+			break;
+		case SelectionMenu::Gamemode::NumberPad:
+			CreateField(3, 3, 40, Field::Mode::NumPad, font);
+			state = State::Game;
+			fieldcreated = true;
+			break;
+		default:
+			break;
+		}
+	}
+	else timer = 0.0f;
 		break;
 	case State::Game:
 		if (timer<gametime) {
+			hammer.UpdateHammer(dt, wnd.mouse.Read(), wnd.mouse.IsEmpty());
 			if(timer<gametime/2){
 				line_r += colorscaling * 2 * dt;
 				tcol.SetR(unsigned char(line_r));
@@ -359,6 +358,7 @@ void Game::ComposeFrame()
 			break;
 		case SelectionMenu::Gamemode::Mouse:
 			pField->Draw(gfx);
+			hammer.DrawHammer(gfx);
 			break;
 		case SelectionMenu::Gamemode::NumberPad:
 			pField->Draw(gfx);

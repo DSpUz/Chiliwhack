@@ -251,6 +251,7 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="chi.wav" />
+    <Media Include="chili_t.wav" />
     <Media Include="sky.wav" />
     <Media Include="slam.wav" />
   </ItemGroup>

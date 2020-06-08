@@ -16,76 +16,40 @@ Vei2 Hammer::GetPos() const
 	return pos;
 }
 
-void Hammer::UpdateHammer(float dt, const Mouse::Event & e)
+void Hammer::UpdateHammer(float dt, const Mouse::Event & e,bool MouseIsEmpty)
 {
+	if (timer >= 8 * frametime) {
+		timer = 0.0f;
+		pressedonce = false;
+	}
 
-	if (timer < 16 * frametime) {
+if (MouseIsEmpty) {
+	if (pressedonce) {
 		timer += dt;
-		if (timer < 8 * frametime) {
-			if (state == hammerState::LeftIsPressed) {
-				SetPos(e.GetPos());
-				hammerdown.Update(dt);
-			}
-			else {
-				switch (e.GetType())
-				{
-				case Mouse::Event::Type::Move:
-					state = hammerState::StillUp;
-					SetPos(e.GetPos());
-					break;
-				case Mouse::Event::Type::LPress:
-					SetPos(e.GetPos());
-					hammerdown.Update(dt);
-					state = hammerState::LeftIsPressed;
-					break;
-				}
-			}
-		}
-		else {
-			if (state == hammerState::LeftIsPressed) {
-				switch (e.GetType())
-				{
-				case Mouse::Event::Type::Move:
-					state = hammerState::LeftReleased;
-					hammerup.Update(dt);
-					SetPos(e.GetPos());
-					break;
-				case Mouse::Event::Type::LPress:
-					SetPos(e.GetPos());
-					state = hammerState::StillDown;
-					break;
-				}
-			}
-			else {
-				switch (e.GetType())
-				{
-				case Mouse::Event::Type::Move:
-					hammerup.Update(dt);
-					SetPos(e.GetPos());
-					break;
-				case Mouse::Event::Type::LPress:
-					timer = 0.0f;
-					SetPos(e.GetPos());
-					state = hammerState::LeftIsPressed;
-					break;
-				}
-			}
-		}
+		hammerdown.Update(dt);
+	}
+}
+else {
+	SetPos(e.GetPos());
+	if (pressedonce) {
+		timer += dt;
+		hammerdown.Update(dt);
 	}
 	else {
 		switch (e.GetType())
 		{
 		case Mouse::Event::Type::Move:
-			timer = 0.0f;
 			state = hammerState::StillUp;
-			SetPos(e.GetPos());
 			break;
 		case Mouse::Event::Type::LPress:
-			timer = 0.0f;
 			state = hammerState::LeftIsPressed;
+			pressedonce = true;
+			break;
+		default:
 			break;
 		}
 	}
+}
 }
 
 
@@ -99,10 +63,10 @@ void Hammer::DrawHammer(Graphics& gfx) const
 		hammerup.Draw(pos, gfx);
 		break;
 	case hammerState::StillUp:
-		gfx.DrawSprite(pos.x, pos.y, { 0,240,0,140 }, gfx.GetScreenRect(), surf, Colors::Magenta);
+		gfx.DrawSprite(pos.x, pos.y, { 0,240,0,170 }, gfx.GetScreenRect(), surf, Colors::Magenta);
 		break;
 	case hammerState::StillDown:
-		gfx.DrawSprite(pos.x, pos.y, { 1680,1920,0,140 }, gfx.GetScreenRect(), surf, Colors::Magenta);
+		gfx.DrawSprite(pos.x, pos.y, { 1680,1920,0,170 }, gfx.GetScreenRect(), surf, Colors::Magenta);
 		break;
 	default:
 		break;
