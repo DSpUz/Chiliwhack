@@ -30,7 +30,7 @@ Game::Game(MainWindow& wnd)
 	menu({ gfx.GetScreenRect().GetCenter().x,300 },font),
 	timeline(0,Graphics::ScreenWidth,0,10),
 	tcol(Colors::Green),
-	hammer({400,300},Hammer::hammerState::StillUp),
+	//hammer({400,300},Hammer::hammerState::StillUp),
 	line_r(0),
 	line_g(255),
 	line_right(800.0f),
@@ -242,7 +242,7 @@ void Game::UpdateModel()
 	}
 	if (!fieldcreated) {
 		//hammer.UpdateHammer(dt, e, wnd.mouse.IsEmpty());
-		mode = menu.ProcessMouse(wnd.mouse.Read(), SelectionMenu::Menutype::StartMenu);
+		mode = menu.ProcessMouse(wnd.mouse.Read(), SelectionMenu::Menutype::StartMenu,dt);
 		switch (mode)
 		{
 		case SelectionMenu::Gamemode::Classic:
@@ -268,7 +268,7 @@ void Game::UpdateModel()
 		break;
 	case State::Game:
 		if (timer<gametime) {
-			hammer.UpdateHammer(dt, wnd.mouse.Read(), wnd.mouse.IsEmpty());
+			//hammer.UpdateHammer(dt, wnd.mouse.Read(), wnd.mouse.IsEmpty());
 			if(timer<gametime/2){
 				line_r += colorscaling * 2 * dt;
 				tcol.SetR(unsigned char(line_r));
@@ -325,10 +325,7 @@ void Game::UpdateModel()
 		}
 		break;
 	case State::Endscreen:
-		while (!wnd.mouse.IsEmpty())
-		{
-			const auto e = wnd.mouse.Read();
-			mode = menu.ProcessMouse(e, SelectionMenu::Menutype::EndMenu);
+			mode = menu.ProcessMouse(wnd.mouse.Read(), SelectionMenu::Menutype::EndMenu,dt);
 			switch (mode){
 				case SelectionMenu::Gamemode::Replay:
 					state = State::SelectionMenu;
@@ -337,7 +334,6 @@ void Game::UpdateModel()
 					wnd.Kill();
 					break;
 					}
-		}
 		break;
 	}
 }
@@ -348,7 +344,7 @@ void Game::ComposeFrame()
 		gfx.DrawRect(timeline, tcol);
 		font.DrawString({ Graphics::ScreenWidth / 3,Graphics::ScreenHeight / 6 }, "chiliwhack", gfx, 4, Colors::Green);
 		menu.Draw(gfx, SelectionMenu::Menutype::StartMenu);
-		hammer.DrawHammer(gfx);
+		//hammer.DrawHammer(gfx);
 		break;
 	case State::Game:
 		gfx.DrawRect(timeline, tcol);
@@ -358,7 +354,7 @@ void Game::ComposeFrame()
 			break;
 		case SelectionMenu::Gamemode::Mouse:
 			pField->Draw(gfx);
-			hammer.DrawHammer(gfx);
+			//hammer.DrawHammer(gfx);
 			break;
 		case SelectionMenu::Gamemode::NumberPad:
 			pField->Draw(gfx);

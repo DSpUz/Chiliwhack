@@ -82,7 +82,7 @@ private:
 	
 	Timer ft;
 
-	Hammer hammer;
+	//Hammer hammer;
 
 	Database db;
 	bool savedonce = false;

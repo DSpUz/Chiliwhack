@@ -5,6 +5,7 @@
 #include "Mouse.h"
 #include "Sound.h"
 #include "PixelFont.h"
+#include "Hammer.h"
 
 
 class SelectionMenu
@@ -93,7 +94,9 @@ private:
 	};
 public:
 	SelectionMenu( const Vei2& pos,const PixelFont& font ):
+		menuhammer(pos,Hammer::hammerState::StillUp),
 		font(font)
+
 	{
 		auto center = pos;
 		for( int i = 0; i < int( Gamemode::Count1 ); i++ )
@@ -109,9 +112,10 @@ public:
 		}
 	}
 	// returns Size::Something when an entry is clicked, otherwise returns Size::Invalid
-	Gamemode ProcessMouse( const Mouse::Event& e ,Menutype mtype)
+	Gamemode ProcessMouse( const Mouse::Event& e ,Menutype mtype,float dt)
 	{
 		if (mtype == Menutype::StartMenu) {
+			menuhammer.UpdateHammer(dt, e,!e.IsValid());
 			switch (e.GetType())
 			{
 			case Mouse::Event::Type::Move:
@@ -147,6 +151,7 @@ public:
 			}
 		}
 		else{
+			menuhammer.UpdateHammer(dt, e, !e.IsValid());
 			switch (e.GetType())
 			{
 			case Mouse::Event::Type::Move:
@@ -190,12 +195,14 @@ public:
 			{
 				entries[i].Draw(gfx, font);
 			}
+			menuhammer.DrawHammer(gfx);
 		}
 		else {
 			for (int i = int(Gamemode::Count1); i<int(Gamemode::Count2)-1; i++)
 			{
 				entries[i].Draw(gfx, font);
 			}
+			menuhammer.DrawHammer(gfx);
 		}
 	}
 private:
@@ -207,6 +214,7 @@ private:
 		}
 	}
 private:
+	Hammer menuhammer;
 	const PixelFont& font;
 	static constexpr int verticalSpacing = 80;
 	Sound hover = { L"menu_boop.wav" };
