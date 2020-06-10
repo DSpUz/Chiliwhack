@@ -259,6 +259,7 @@ void Game::UpdateModel()
 			CreateField(3, 3, 40, Field::Mode::NumPad, font);
 			state = State::Game;
 			fieldcreated = true;
+
 			break;
 		default:
 			break;

@@ -7,7 +7,8 @@ public:
 	Animation(const Vei2& startpos, int width, int height, int numFrames, const Surface& sprite, float htime,bool reverse, const Color& colkey);
 	void Draw(const Vei2& pos, Graphics& gfx) const;
 	void Draw(const Vei2& pos, Graphics& gfx,const RectI& clip) const;
-	void Update(float dt);
+	void Update(float dt, float timer);
+	void ResetToFirstFrame();
 private:
 	void Advance();
 private:

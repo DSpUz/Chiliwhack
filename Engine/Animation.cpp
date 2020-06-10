@@ -28,18 +28,27 @@ void Animation::Draw(const Vei2 & pos, Graphics & gfx, const RectI & clip) const
 	gfx.DrawSprite(pos.x, pos.y, frames[frameIndex],clip, spritesheet, colorkey);
 }
 
-void Animation::Update(float dt)
+void Animation::Update(float dt, float timer)
 {
-	curFrameTime += dt;
-	while (curFrameTime >= holdTime) {
-		Advance();
-		curFrameTime -= holdTime;
+	if (!(timer >= frames.size()*holdTime)) {
+		curFrameTime += dt;
+		while (curFrameTime >= holdTime) {
+			Advance();
+			curFrameTime -= holdTime;
+		}
 	}
+	
+	
+}
+
+void Animation::ResetToFirstFrame()
+{
+	frameIndex = 0;
 }
 
 void Animation::Advance()
 {
 	if (++frameIndex >= frames.size()) {
-		frameIndex = 0;
+		frameIndex = int(frames.size())-1;
 	}
 }

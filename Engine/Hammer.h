@@ -2,6 +2,7 @@
 #include "Vei2.h"
 #include "Animation.h"
 #include "Mouse.h"
+#include "Sound.h"
 
 class Hammer {
 public:
@@ -20,10 +21,11 @@ private:
 	float timer = 0.0f;
 	bool pressedonce=false;
 	Surface surf = Surface("hammer240x170.bmp");
-	static constexpr float frametime = 0.1f;
-	Animation hammerdown = Animation({ 0,0 }, 240, 170, 8, surf, frametime, false, Colors::Magenta),
-		hammerup = Animation({ 0,0 }, 240, 170, 8, surf, frametime, true, Colors::Magenta);
+	static constexpr float frametime = 0.01f;
+	Animation hammerdown = Animation({ 0,0 }, 240, 170, 8, surf, frametime, false, Colors::Magenta);
+		//hammerup = Animation({ 0,0 }, 240, 170, 8, surf, frametime, true, Colors::Magenta);
 	Vei2 pos;
 	hammerState state;
+	Sound hammerslam = { L"slam.wav" };
 
 };
