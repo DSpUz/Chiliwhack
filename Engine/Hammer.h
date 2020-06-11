@@ -15,7 +15,14 @@ public:
 	Hammer(Vei2 in_pos, hammerState in_state);
 	void SetPos(const Vei2& changepos);
 	Vei2 GetPos() const;
-	void UpdateHammer(float dt, const Mouse::Event& e,bool MouseIsEmpty);
+	float GetTimer() const;
+	float GetFrameTime() const;
+	void SetState(hammerState in_state);
+	void MouseUpdate(float dt, const Mouse::Event& e,bool MouseIsEmpty);
+	void UpdateTimer(float dt);
+	void UpdateAnimation(float in_dt,float in_timer);
+	void ResetToFirstFrame();
+	void ResetTimer();
 	void DrawHammer(Graphics& gfx) const;
 private:
 	float timer = 0.0f;

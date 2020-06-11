@@ -61,8 +61,8 @@ private:
 	ChiliState GetCellState(int index);//reads cell state according to index
 	ChiliState GetCellState(int ix, int iy);
 
-	void DoAIMoveRand();
-	void DoUserInput();*/
+	void DoAIMoveRand();*/
+	void KeyboardUpdate(float dt);
 	void CreateField(int width, int height, int cellwidth, Field::Mode mode, const PixelFont& font);
 	void DestroyField();
 	void ResetTimeline();
@@ -82,7 +82,8 @@ private:
 	
 	Timer ft;
 
-	//Hammer hammer;
+	Hammer gamehammer;
+	int hammerx=0, hammery=0;
 
 	Database db;
 	bool savedonce = false;
@@ -101,7 +102,7 @@ private:
 	bool outroonce=false;
 	Sound chili_t,slam,chi;//intro,hammer sound, outro
 	bool intropl = false, slampl = false, chipl = false;//intro played variable 
-	
+	bool keysPressedLastFrame=false,pressedonce=false;
 	int chilicounter=0;//counts how many chili's you got
 
 	/*  User Variables              */

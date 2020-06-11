@@ -16,7 +16,22 @@ Vei2 Hammer::GetPos() const
 	return pos;
 }
 
-void Hammer::UpdateHammer(float dt, const Mouse::Event & e,bool MouseIsEmpty)
+float Hammer::GetTimer() const
+{
+	return timer;
+}
+
+float Hammer::GetFrameTime() const
+{
+	return frametime;
+}
+
+void Hammer::SetState(hammerState in_state)
+{
+	state = in_state;
+}
+
+void Hammer::MouseUpdate(float dt, const Mouse::Event & e,bool MouseIsEmpty)
 {
 if (MouseIsEmpty) {
 	if (pressedonce) {
@@ -62,6 +77,26 @@ else {
 		}
 	}
 }
+}
+
+void Hammer::UpdateTimer(float dt)
+{ 
+	timer += dt;
+}
+
+void Hammer::UpdateAnimation(float in_dt, float in_timer)
+{
+	hammerdown.Update(in_dt, in_timer);
+}
+
+void Hammer::ResetToFirstFrame()
+{
+	hammerdown.ResetToFirstFrame();
+}
+
+void Hammer::ResetTimer()
+{
+	timer = 0.0f;
 }
 
 
