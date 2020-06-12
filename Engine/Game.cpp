@@ -308,6 +308,7 @@ void Game::UpdateModel()
 			case SelectionMenu::Gamemode::Mouse:
 				break;
 			case SelectionMenu::Gamemode::NumberPad:
+				pField->KeyboardInput(wnd.kbd.ReadKey());
 				break;
 			}
 			timer += dt;

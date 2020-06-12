@@ -21,6 +21,11 @@ void Field::Cell::SetCellState(State in_state)
 	state = in_state;
 }
 
+Field::Cell::State Field::Cell::GetCellState()
+{
+	return state;
+}
+
 void Field::Cell::SetCellIndex(int x, int y)
 {
 	GridIndex.x = x;
@@ -62,11 +67,15 @@ void Field::Cell::DrawCell(const Vei2& screenPos,int fieldwidth ,Field::Mode fie
 		{
 		case State::Number:
 			SpriteCodex::DrawCell(screenPos, cellwidth, cellwidth / 20, 0, 255, 0, gfx);
-			font.DrawCharacter(screenPos.x-fontsize*4, screenPos.y-fontsize*4, gfx, 49 + fieldwidth*GridIndex.y+GridIndex.x, fontsize, Colors::Green);
+			font.DrawCharacter(screenPos.x - fontsize * 4, screenPos.y - fontsize * 4, gfx, 49 + fieldwidth * GridIndex.y + GridIndex.x, fontsize, { 0,128,0 });
 			break;
 		case State::Chili:
 			SpriteCodex::DrawCell(screenPos, cellwidth, cellwidth / 20, 0, 255, 0, gfx);
 			SpriteCodex::DrawChili(screenPos, cellwidth*3/4, gfx);
+			break;
+		case State::NumberPressed:
+			SpriteCodex::DrawCell(screenPos, cellwidth, cellwidth / 20, 0, 255, 0, gfx);
+			font.DrawCharacter(screenPos.x - fontsize * 4, screenPos.y - fontsize * 4, gfx, 49 + fieldwidth * GridIndex.y + GridIndex.x, fontsize, { 0,255,0 });
 			break;
 		default:
 			break;
@@ -152,6 +161,50 @@ Field::Cell & Field::operator[](int index)
 const Field::Cell & Field::operator[](int index) const
 {
 	return field[index];
+}
+
+void Field::KeyboardInput(const Keyboard::Event & e)
+{
+	if (e.IsPress()) {
+		const int number = int(e.GetCode());
+		switch (number)
+		{
+		case 97: //Numpad 1	
+			field[6].SetCellState(Cell::State::NumberPressed);
+			break;
+		case 98://Numpad2
+			field[7].SetCellState(Cell::State::NumberPressed);
+			break;
+		case 99: //Numpad3	
+			field[8].SetCellState(Cell::State::NumberPressed);
+			break;
+		case 100://Numpad4
+			field[3].SetCellState(Cell::State::NumberPressed);
+			break;
+		case 101: //Numpad5	
+			field[4].SetCellState(Cell::State::NumberPressed);
+			break;
+		case 102://Numpad6
+			field[5].SetCellState(Cell::State::NumberPressed);
+			break;
+		case 103: //Numpad7	
+			field[0].SetCellState(Cell::State::NumberPressed);
+			break;
+		case 104://Numpad8
+			field[1].SetCellState(Cell::State::NumberPressed);
+			break;
+		case 105://Numpad9
+			field[2].SetCellState(Cell::State::NumberPressed);
+			break;
+		}
+	}
+	else {
+		for (int i = 0; i<this->width*this->height;i++) {
+			if (field[i].GetCellState() == Cell::State::NumberPressed) {
+				field[i].SetCellState(Cell::State::Number);
+			}
+		}
+	}
 }
 
 

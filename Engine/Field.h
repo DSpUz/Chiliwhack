@@ -3,6 +3,7 @@
 #include "Graphics.h"
 #include "Sound.h"
 #include "PixelFont.h"
+#include "Keyboard.h"
 
 class Field
 {
@@ -20,12 +21,14 @@ private:
 		{
 			Empty,
 			Chili,
-			Number
+			Number,
+			NumberPressed
 		};
 	public:
 		void SpawnChili();
 		bool HasChili() const;
 		void SetCellState(State in_state);
+		State GetCellState();
 		void SetCellIndex(int x,int y);
 		Vei2 GetCellIndex() const;
 		void SetCellWidth(int w);
@@ -42,6 +45,7 @@ public:
 	~Field();
 	Field::Cell& operator[](int index);
 	const Field::Cell& operator[](int index) const;
+	void KeyboardInput(const Keyboard::Event& e);
 	void Draw( Graphics& gfx ) const;
 	int GetWidth() const;
 	int GetHeight() const;
