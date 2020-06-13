@@ -171,39 +171,85 @@ void Field::KeyboardInput(const Keyboard::Event & e)
 		{
 		case 97: //Numpad 1	
 			field[6].SetCellState(Cell::State::NumberPressed);
+			if (!sfxplayedonce) {
+				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
+				phone1.Play();
+				sfxplayedonce = true;
+			}
 			break;
 		case 98://Numpad2
 			field[7].SetCellState(Cell::State::NumberPressed);
+			if (!sfxplayedonce) {
+				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
+				phone2.Play();
+				sfxplayedonce = true;
+			}
 			break;
 		case 99: //Numpad3	
 			field[8].SetCellState(Cell::State::NumberPressed);
+			if (!sfxplayedonce) {
+				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
+				phone3.Play();
+				sfxplayedonce = true;
+			}
 			break;
 		case 100://Numpad4
 			field[3].SetCellState(Cell::State::NumberPressed);
+			if (!sfxplayedonce) {
+				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
+				phone4.Play();
+				sfxplayedonce = true;
+			}
 			break;
 		case 101: //Numpad5	
 			field[4].SetCellState(Cell::State::NumberPressed);
+			if (!sfxplayedonce) {
+				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
+				phone5.Play();
+				sfxplayedonce = true;
+			}
 			break;
 		case 102://Numpad6
 			field[5].SetCellState(Cell::State::NumberPressed);
+			if (!sfxplayedonce) {
+				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
+				phone6.Play();
+				sfxplayedonce = true;
+			}
 			break;
 		case 103: //Numpad7	
 			field[0].SetCellState(Cell::State::NumberPressed);
+			if (!sfxplayedonce) {
+				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
+				phone7.Play();
+				sfxplayedonce = true;
+			}
 			break;
 		case 104://Numpad8
 			field[1].SetCellState(Cell::State::NumberPressed);
+			if (!sfxplayedonce) {
+				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
+				phone8.Play();
+				sfxplayedonce = true;
+			}
 			break;
 		case 105://Numpad9
 			field[2].SetCellState(Cell::State::NumberPressed);
+			if (!sfxplayedonce) {
+				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
+				phone9.Play();
+				sfxplayedonce = true;
+			}
 			break;
 		}
 	}
-	else {
+	else if(e.IsRelease()){
 		for (int i = 0; i<this->width*this->height;i++) {
 			if (field[i].GetCellState() == Cell::State::NumberPressed) {
 				field[i].SetCellState(Cell::State::Number);
 			}
 		}
+		sfxplayedonce = false;
 	}
 }
 

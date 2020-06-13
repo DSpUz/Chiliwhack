@@ -252,6 +252,15 @@
   <ItemGroup>
     <Media Include="chi.wav" />
     <Media Include="chili_t.wav" />
+    <Media Include="phone1.wav" />
+    <Media Include="phone2.wav" />
+    <Media Include="phone3.wav" />
+    <Media Include="phone4.wav" />
+    <Media Include="phone5.wav" />
+    <Media Include="phone6.wav" />
+    <Media Include="phone7.wav" />
+    <Media Include="phone8.wav" />
+    <Media Include="phone9.wav" />
     <Media Include="sky.wav" />
     <Media Include="slam.wav" />
   </ItemGroup>

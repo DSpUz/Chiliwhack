@@ -53,6 +53,9 @@ private:
 	int width;
 	int height;
 	int cellwidth;
+	Sound phone1 = { L"phone1.wav" }, phone2 = { L"phone2.wav" }, phone3 = { L"phone3.wav" }, phone4 = { L"phone4.wav" }, phone5 = { L"phone5.wav" }
+	, phone6 = { L"phone6.wav" }, phone7 = { L"phone7.wav" }, phone8 = { L"phone8.wav" }, phone9 = { L"phone9.wav" };
+	bool sfxplayedonce=false;
 	Vei2 pos;
 	Mode mode;
 	const PixelFont& font;
