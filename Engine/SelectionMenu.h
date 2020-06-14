@@ -114,7 +114,7 @@ public:
 	Gamemode ProcessMouse( const Mouse::Event& e ,Menutype mtype,float dt)
 	{
 		if (mtype == Menutype::StartMenu) {
-			menuhammer.MouseUpdate(dt, e,!e.IsValid());
+			menuhammer.UpdateHammer(dt, e,!e.IsValid());
 			switch (e.GetType())
 			{
 			case Mouse::Event::Type::Move:
@@ -150,7 +150,7 @@ public:
 			}
 		}
 		else{
-			menuhammer.MouseUpdate(dt, e, !e.IsValid());
+			menuhammer.UpdateHammer(dt, e, !e.IsValid());
 			switch (e.GetType())
 			{
 			case Mouse::Event::Type::Move:

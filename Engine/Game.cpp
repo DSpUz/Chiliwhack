@@ -30,7 +30,7 @@ Game::Game(MainWindow& wnd)
 	menu({ gfx.GetScreenRect().GetCenter().x,300 },font),
 	timeline(0,Graphics::ScreenWidth,0,10),
 	tcol(Colors::Green),
-	gamehammer({400,300},Hammer::hammerState::StillUp),
+	//hammer({400,300},Hammer::hammerState::StillUp),
 	line_r(0),
 	line_g(255),
 	line_right(800.0f),
@@ -172,74 +172,53 @@ void Game::DoAIMoveRand()
 		ChiliMoveY = rand() % 3;
 		SetCellState(ChiliMoveX, ChiliMoveY, CHILI);
 	}
-}*/
-void Game::KeyboardUpdate(float dt) {
+}
+void Game::DoUserInput() {
 	if (!keysPressedLastFrame) {
 		if (wnd.kbd.KeyIsPressed(VK_RIGHT)) {
 			keysPressedLastFrame = true;
 			hammerx++;
-			if (hammerx > 2) hammerx = 2;
-			gamehammer.SetPos({ 400 + hammerx * 50,300 + hammery * 50 });
+			if (hammerx>2) hammerx = 2;
 		}
 
 		if (wnd.kbd.KeyIsPressed(VK_LEFT)) {
 			keysPressedLastFrame = true;
 			hammerx--;
-			if (hammerx < 0) hammerx = 0;
-			gamehammer.SetPos({ 400 + hammerx * 50,300 + hammery * 50 });
+			if (hammerx<0) hammerx = 0;
 		}
 
 		if (wnd.kbd.KeyIsPressed(VK_DOWN)) {
 			keysPressedLastFrame = true;
 			hammery++;
-			if (hammery > 2) hammery = 2;
-			gamehammer.SetPos({ 400 + hammerx * 50,300 + hammery * 50 });
+			if (hammery>2) hammery = 2;
 		}
 
 		if (wnd.kbd.KeyIsPressed(VK_UP)) {
 			keysPressedLastFrame = true;
 			hammery--;
-			if (hammery < 0) hammery = 0;
-			gamehammer.SetPos({400 + hammerx * 50,300 + hammery * 50 });
+			if (hammery<0) hammery = 0;
 		}
-		if (wnd.kbd.KeyIsPressed(VK_SPACE)) {
+		if (wnd.kbd.KeyIsPressed(VK_SPACE) ) {
 			keysPressedLastFrame = true;
-			pressedonce = true;
-			gamehammer.SetState(Hammer::hammerState::LeftIsPressed);
 			if (!slampl) {//plays hammer slam
-				slam.Play(1.0, 0.2);
+				slam.Play(1.0,0.2);
 				slampl = true;
 			}
 		}
-
-		/*if (wnd.kbd.KeyIsPressed(VK_SPACE) && GetCellState(hammerx, hammery) == CHILI) {
+		
+		if (wnd.kbd.KeyIsPressed(VK_SPACE) && GetCellState(hammerx, hammery) == CHILI) {
 			keysPressedLastFrame = true;
 			SetCellState(hammerx, hammery, EMPTY);
 			chilicounter++;
-		}*/
+		}
 	}
-	else if (!(wnd.kbd.KeyIsPressed(VK_RIGHT) || wnd.kbd.KeyIsPressed(VK_LEFT) || wnd.kbd.KeyIsPressed(VK_DOWN) || wnd.kbd.KeyIsPressed(VK_UP) || wnd.kbd.KeyIsPressed(VK_SPACE))) {//if non of the keys are pressed
+	else if (!(wnd.kbd.KeyIsPressed(VK_RIGHT) || wnd.kbd.KeyIsPressed(VK_LEFT) || wnd.kbd.KeyIsPressed(VK_DOWN) || wnd.kbd.KeyIsPressed(VK_UP)||wnd.kbd.KeyIsPressed(VK_SPACE))) {//if non of the keys are pressed
 		keysPressedLastFrame = false;
 		slampl = false;
 	}
-	if (pressedonce) {
-			gamehammer.UpdateTimer(dt);
-			if (gamehammer.GetTimer() >= 8 * gamehammer.GetFrameTime()) {
-				gamehammer.ResetTimer();
-				gamehammer.ResetToFirstFrame();
-				pressedonce = false;
-			}
-			else {
-				gamehammer.UpdateAnimation(dt, gamehammer.GetTimer());
-			}
-		}
-	else {
-	gamehammer.SetState(Hammer::hammerState::StillUp);
-	}
 	
-}
-
-
+}*/
+/*-------------------------------------------------------------------------*/
 void Game::UpdateModel()
 {
 	const float dt = ft.Mark();
@@ -262,7 +241,7 @@ void Game::UpdateModel()
 		intropl = true;
 	}
 	if (!fieldcreated) {
-		//hammer.MouseUpdate(dt, e, wnd.mouse.IsEmpty());
+		//hammer.UpdateHammer(dt, e, wnd.mouse.IsEmpty());
 		mode = menu.ProcessMouse(wnd.mouse.Read(), SelectionMenu::Menutype::StartMenu,dt);
 		switch (mode)
 		{
@@ -290,7 +269,7 @@ void Game::UpdateModel()
 		break;
 	case State::Game:
 		if (timer<gametime) {
-			//hammer.MouseUpdate(dt, wnd.mouse.Read(), wnd.mouse.IsEmpty());
+			//hammer.UpdateHammer(dt, wnd.mouse.Read(), wnd.mouse.IsEmpty());
 			if(timer<gametime/2){
 				line_r += colorscaling * 2 * dt;
 				tcol.SetR(unsigned char(line_r));
@@ -303,7 +282,6 @@ void Game::UpdateModel()
 			timeline.right = int(line_right);
 			switch (mode) {
 			case SelectionMenu::Gamemode::Classic:
-				KeyboardUpdate(dt);
 				break;
 			case SelectionMenu::Gamemode::Mouse:
 				break;
@@ -375,7 +353,6 @@ void Game::ComposeFrame()
 		switch (mode) {
 		case SelectionMenu::Gamemode::Classic:
 			pField->Draw(gfx);
-			gamehammer.DrawHammer(gfx);
 			break;
 		case SelectionMenu::Gamemode::Mouse:
 			pField->Draw(gfx);
