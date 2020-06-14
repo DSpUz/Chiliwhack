@@ -93,7 +93,7 @@ Field::Field( Vei2& center,int in_width,int in_height,int cell_w, Mode mode_in,c
 	pos(center),
 	font(in_font),
 	mode(mode_in),
-	
+	fieldhammer(pos,Hammer::hammerState::StillUp),
 	field( new Cell[in_width * in_height] )
 {
 	if (mode==Mode::NumPad) {
@@ -127,6 +127,7 @@ Field::Field(const Field & source):
 	pos(source.pos),
 	mode(source.mode),
 	font(source.font),
+	fieldhammer(pos,Hammer::hammerState::StillUp),
 
 	field(new Cell[source.width * source.height])
 {
@@ -163,7 +164,12 @@ const Field::Cell & Field::operator[](int index) const
 	return field[index];
 }
 
-void Field::KeyboardInput(const Keyboard::Event & e)
+void Field::KeyboardInput(const Keyboard::Event & e, float dt, bool noinput)
+{
+	fieldhammer.KeyboardUpdate(dt, e, noinput, cellwidth);
+}
+
+void Field::NumPadInput(const Keyboard::Event & e)
 {
 	if (e.IsPress()) {
 		const int number = int(e.GetCode());
@@ -253,14 +259,8 @@ void Field::KeyboardInput(const Keyboard::Event & e)
 	}
 }
 
-
-
-
-
 void Field::Draw( Graphics& gfx ) const
 {
-	
-	
 	const Vei2 topLeft = { pos.x + cellwidth*(1-width), pos.y + cellwidth * (1 - height) }; //upper left corner coordinates 
 	for( int y=0; y < height; y++ )//rows
 	{
@@ -268,6 +268,9 @@ void Field::Draw( Graphics& gfx ) const
 		{
 			field[width*y + x].DrawCell({topLeft.x+2*cellwidth*x,topLeft.y+2*cellwidth*y},width,mode,gfx,font);
 		}
+	}
+	if (mode == Mode::Classic) {
+		fieldhammer.DrawHammer(gfx);
 	}
 }
 

@@ -16,7 +16,7 @@ Vei2 Hammer::GetPos() const
 	return pos;
 }
 
-void Hammer::UpdateHammer(float dt, const Mouse::Event & e,bool MouseIsEmpty)
+void Hammer::MouseUpdate(float dt, const Mouse::Event & e,bool MouseIsEmpty)
 {
 if (MouseIsEmpty) {
 	if (pressedonce) {
@@ -62,6 +62,61 @@ else {
 		}
 	}
 }
+}
+
+void Hammer::KeyboardUpdate(float dt, const Keyboard::Event & e,bool noinput, const int cellwidth)
+{
+	if (noinput) {
+		if (pressedonce) {
+			timer += dt;
+			if (timer >= 8 * frametime) {
+				timer = 0.0f;
+				hammerdown.ResetToFirstFrame();
+				pressedonce = false;
+			}
+			else {
+				hammerdown.Update(dt, timer);
+			}
+		}
+	}
+	else {
+		if (pressedonce) {
+			timer += dt;
+			if (timer >= 8 * frametime) {
+				hammerdown.ResetToFirstFrame();
+				timer = 0.0f;
+				pressedonce = false;
+			}
+			else {
+				hammerdown.Update(dt, timer);
+			}
+		}
+		else if (e.IsPress()) {
+			const int number = int(e.GetCode());
+			switch (number)
+			{
+			case 32: //Space
+			state = hammerState::LeftIsPressed;
+			hammerslam.Play();;
+			pressedonce = true;
+			break;
+			case VK_RIGHT:
+				pos += {2*cellwidth, 0};
+				break;
+			case VK_LEFT: //Numpad3	
+				pos -= {2*cellwidth, 0};
+				break;
+			case VK_UP://Numpad4
+				pos -= {0,2*cellwidth};
+				break;
+			case VK_DOWN: //Numpad5	
+				pos += {0, 2*cellwidth};
+				break;
+		
+			}
+		}
+		
+	}
 }
 
 

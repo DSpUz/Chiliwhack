@@ -4,6 +4,7 @@
 #include "Sound.h"
 #include "PixelFont.h"
 #include "Keyboard.h"
+#include "Hammer.h"
 
 class Field
 {
@@ -45,7 +46,8 @@ public:
 	~Field();
 	Field::Cell& operator[](int index);
 	const Field::Cell& operator[](int index) const;
-	void KeyboardInput(const Keyboard::Event& e);
+	void KeyboardInput(const Keyboard::Event& e, float dt, bool noinput);
+	void NumPadInput(const Keyboard::Event& e);
 	void Draw( Graphics& gfx ) const;
 	int GetWidth() const;
 	int GetHeight() const;
@@ -59,5 +61,6 @@ private:
 	Vei2 pos;
 	Mode mode;
 	const PixelFont& font;
+	Hammer fieldhammer;
 	Cell* field = nullptr;
 };
