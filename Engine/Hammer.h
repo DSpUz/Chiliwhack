@@ -16,6 +16,7 @@ public:
 	Hammer(Vei2 in_pos, hammerState in_state);
 	void SetPos(const Vei2& changepos);
 	Vei2 GetPos() const;
+	bool IsHammerPressed() const;
 	void MouseUpdate(float dt, const Mouse::Event& e,bool MouseIsEmpty);
 	void KeyboardUpdate(float dt,const Keyboard::Event& e, bool noinput,const int cellwidth);
 	void DrawHammer(Graphics& gfx) const;

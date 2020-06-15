@@ -282,12 +282,13 @@ void Game::UpdateModel()
 			timeline.right = int(line_right);
 			switch (mode) {
 			case SelectionMenu::Gamemode::Classic:
-				pField->KeyboardInput(wnd.kbd.ReadKey(), dt, wnd.kbd.KeyIsEmpty());
+				pField->KeyboardInput(wnd.kbd.ReadKey(), dt, wnd.kbd.KeyIsEmpty(), chilicounter);
 				break;
 			case SelectionMenu::Gamemode::Mouse:
+				pField->MouseInput(wnd.mouse.Read(), dt, wnd.mouse.IsEmpty(), chilicounter);
 				break;
 			case SelectionMenu::Gamemode::NumberPad:
-				pField->NumPadInput(wnd.kbd.ReadKey());
+				pField->NumPadInput(wnd.kbd.ReadKey(), chilicounter);
 				break;
 			}
 			timer += dt;

@@ -16,6 +16,14 @@ Vei2 Hammer::GetPos() const
 	return pos;
 }
 
+bool Hammer::IsHammerPressed() const
+{
+	if (state == hammerState::LeftIsPressed) {
+		return true;
+	}
+	else return false;
+}
+
 void Hammer::MouseUpdate(float dt, const Mouse::Event & e,bool MouseIsEmpty)
 {
 if (MouseIsEmpty) {
@@ -103,13 +111,13 @@ void Hammer::KeyboardUpdate(float dt, const Keyboard::Event & e,bool noinput, co
 			case VK_RIGHT:
 				pos += {2*cellwidth, 0};
 				break;
-			case VK_LEFT: //Numpad3	
+			case VK_LEFT:
 				pos -= {2*cellwidth, 0};
 				break;
-			case VK_UP://Numpad4
+			case VK_UP:
 				pos -= {0,2*cellwidth};
 				break;
-			case VK_DOWN: //Numpad5	
+			case VK_DOWN:	
 				pos += {0, 2*cellwidth};
 				break;
 		
@@ -118,7 +126,6 @@ void Hammer::KeyboardUpdate(float dt, const Keyboard::Event & e,bool noinput, co
 		
 	}
 }
-
 
 void Hammer::DrawHammer(Graphics& gfx) const
 {

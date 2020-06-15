@@ -164,12 +164,33 @@ const Field::Cell & Field::operator[](int index) const
 	return field[index];
 }
 
-void Field::KeyboardInput(const Keyboard::Event & e, float dt, bool noinput)
+void Field::MouseInput(const Mouse::Event & e, float dt, bool noinput, int& chilicounter)
 {
-	fieldhammer.KeyboardUpdate(dt, e, noinput, cellwidth);
+	fieldhammer.MouseUpdate(dt, e, noinput);
+	const int cellindex = GetCellIndexFromPos(fieldhammer.GetPos());
+	if (cellindex < width*height) {
+		if (fieldhammer.IsHammerPressed() && field[GetCellIndexFromPos(fieldhammer.GetPos())].HasChili()) {
+			chilicounter++;
+			field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
+		}
+	}
+	else{}
 }
 
-void Field::NumPadInput(const Keyboard::Event & e)
+void Field::KeyboardInput(const Keyboard::Event & e, float dt, bool noinput,int& chilicounter)
+{
+	fieldhammer.KeyboardUpdate(dt, e, noinput, cellwidth);
+	const int cellindex = GetCellIndexFromPos(fieldhammer.GetPos());
+	if (cellindex < width*height) {
+		if (fieldhammer.IsHammerPressed() && field[GetCellIndexFromPos(fieldhammer.GetPos())].HasChili()) {
+			chilicounter++;
+			field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
+		}
+	}
+	else {}
+}
+
+void Field::NumPadInput(const Keyboard::Event & e, int& chilicounter)
 {
 	if (e.IsPress()) {
 		const int number = int(e.GetCode());
@@ -182,6 +203,10 @@ void Field::NumPadInput(const Keyboard::Event & e)
 				phone1.Play();
 				sfxplayedonce = true;
 			}
+			if(field[6].HasChili()){
+				chilicounter++;
+				field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
+			}
 			break;
 		case 98://Numpad2
 			field[7].SetCellState(Cell::State::NumberPressed);
@@ -189,6 +214,10 @@ void Field::NumPadInput(const Keyboard::Event & e)
 				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
 				phone2.Play();
 				sfxplayedonce = true;
+			}
+			if (field[7].HasChili()) {
+				chilicounter++;
+				field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
 			}
 			break;
 		case 99: //Numpad3	
@@ -198,6 +227,10 @@ void Field::NumPadInput(const Keyboard::Event & e)
 				phone3.Play();
 				sfxplayedonce = true;
 			}
+			if (field[8].HasChili()) {
+				chilicounter++;
+				field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
+			}
 			break;
 		case 100://Numpad4
 			field[3].SetCellState(Cell::State::NumberPressed);
@@ -205,6 +238,10 @@ void Field::NumPadInput(const Keyboard::Event & e)
 				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
 				phone4.Play();
 				sfxplayedonce = true;
+			}
+			if (field[3].HasChili()) {
+				chilicounter++;
+				field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
 			}
 			break;
 		case 101: //Numpad5	
@@ -214,6 +251,10 @@ void Field::NumPadInput(const Keyboard::Event & e)
 				phone5.Play();
 				sfxplayedonce = true;
 			}
+			if (field[4].HasChili()) {
+				chilicounter++;
+				field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
+			}
 			break;
 		case 102://Numpad6
 			field[5].SetCellState(Cell::State::NumberPressed);
@@ -221,6 +262,10 @@ void Field::NumPadInput(const Keyboard::Event & e)
 				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
 				phone6.Play();
 				sfxplayedonce = true;
+			}
+			if (field[5].HasChili()) {
+				chilicounter++;
+				field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
 			}
 			break;
 		case 103: //Numpad7	
@@ -230,6 +275,10 @@ void Field::NumPadInput(const Keyboard::Event & e)
 				phone7.Play();
 				sfxplayedonce = true;
 			}
+			if (field[0].HasChili()) {
+				chilicounter++;
+				field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
+			}
 			break;
 		case 104://Numpad8
 			field[1].SetCellState(Cell::State::NumberPressed);
@@ -238,6 +287,10 @@ void Field::NumPadInput(const Keyboard::Event & e)
 				phone8.Play();
 				sfxplayedonce = true;
 			}
+			if (field[1].HasChili()) {
+				chilicounter++;
+				field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
+			}
 			break;
 		case 105://Numpad9
 			field[2].SetCellState(Cell::State::NumberPressed);
@@ -245,6 +298,10 @@ void Field::NumPadInput(const Keyboard::Event & e)
 				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
 				phone9.Play();
 				sfxplayedonce = true;
+			}
+			if (field[2].HasChili()) {
+				chilicounter++;
+				field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
 			}
 			break;
 		}
@@ -259,6 +316,22 @@ void Field::NumPadInput(const Keyboard::Event & e)
 	}
 }
 
+int Field::GetCellIndexFromPos(const Vei2 & hammerpos) const
+{
+	int cellindex = 0;
+	if (fieldrect.Contains(hammerpos)) {
+		for (int top = fieldrect.top; top < fieldrect.bottom; top += 2 * cellwidth) {
+			for (int left = fieldrect.left; left < fieldrect.right; left += 2 * cellwidth) {
+				if(hammerpos.x >= left && hammerpos.x < left+2*cellwidth && hammerpos.y >= top && hammerpos.y < top+2*cellwidth){
+					return cellindex;
+				}
+				cellindex++;
+			}
+		}
+	}
+	else return width * height;
+}
+
 void Field::Draw( Graphics& gfx ) const
 {
 	const Vei2 topLeft = { pos.x + cellwidth*(1-width), pos.y + cellwidth * (1 - height) }; //upper left corner coordinates 
@@ -269,7 +342,7 @@ void Field::Draw( Graphics& gfx ) const
 			field[width*y + x].DrawCell({topLeft.x+2*cellwidth*x,topLeft.y+2*cellwidth*y},width,mode,gfx,font);
 		}
 	}
-	if (mode == Mode::Classic) {
+	if (mode == Mode::Classic||mode==Mode::Mouse) {
 		fieldhammer.DrawHammer(gfx);
 	}
 }
