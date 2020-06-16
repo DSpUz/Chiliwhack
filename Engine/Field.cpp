@@ -169,12 +169,16 @@ void Field::MouseInput(const Mouse::Event & e, float dt, bool noinput, int& chil
 	fieldhammer.MouseUpdate(dt, e, noinput);
 	const int cellindex = GetCellIndexFromPos(fieldhammer.GetPos());
 	if (cellindex < width*height) {
-		if (fieldhammer.IsHammerPressed() && field[GetCellIndexFromPos(fieldhammer.GetPos())].HasChili()) {
+		if (fieldhammer.IsHammerPressed() && field[cellindex].HasChili()) {
+			field[cellindex].SetCellState(Cell::State::Empty);
 			chilicounter++;
-			field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
+			int newindex = randChili.Get<int>(0, width*height - 1);
+			while (newindex == cellindex) {
+				newindex = randChili.Get<int>(0, width*height - 1);
+			}
+			field[newindex].SpawnChili();
 		}
 	}
-	else{}
 }
 
 void Field::KeyboardInput(const Keyboard::Event & e, float dt, bool noinput,int& chilicounter)
@@ -182,12 +186,16 @@ void Field::KeyboardInput(const Keyboard::Event & e, float dt, bool noinput,int&
 	fieldhammer.KeyboardUpdate(dt, e, noinput, cellwidth);
 	const int cellindex = GetCellIndexFromPos(fieldhammer.GetPos());
 	if (cellindex < width*height) {
-		if (fieldhammer.IsHammerPressed() && field[GetCellIndexFromPos(fieldhammer.GetPos())].HasChili()) {
+		if (fieldhammer.IsHammerPressed() && field[cellindex].HasChili()) {
+			field[cellindex].SetCellState(Cell::State::Empty);
 			chilicounter++;
-			field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
+			int newindex= randChili.Get<int>(0, width*height - 1);
+			while (newindex == cellindex) {
+				newindex = randChili.Get<int>(0, width*height - 1);
+			}
+			field[newindex].SpawnChili();
 		}
 	}
-	else {}
 }
 
 void Field::NumPadInput(const Keyboard::Event & e, int& chilicounter)
@@ -197,118 +205,162 @@ void Field::NumPadInput(const Keyboard::Event & e, int& chilicounter)
 		switch (number)
 		{
 		case 97: //Numpad 1	
+			if (field[6].HasChili()) {
+				chilicounter++;
+				int newindex = randChili.Get<int>(0, width*height - 1);
+				while (newindex == 6) {
+					newindex = randChili.Get<int>(0, width*height - 1);
+				}
+				field[newindex].SpawnChili();
+			}
 			field[6].SetCellState(Cell::State::NumberPressed);
 			if (!sfxplayedonce) {
 				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
 				phone1.Play();
 				sfxplayedonce = true;
 			}
-			if(field[6].HasChili()){
-				chilicounter++;
-				field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
-			}
+			
 			break;
 		case 98://Numpad2
+			if (field[7].HasChili()) {
+				chilicounter++;
+				int newindex = randChili.Get<int>(0, width*height - 1);
+				while (newindex == 7) {
+					newindex = randChili.Get<int>(0, width*height - 1);
+				}
+				field[newindex].SpawnChili();
+			}
 			field[7].SetCellState(Cell::State::NumberPressed);
 			if (!sfxplayedonce) {
 				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
 				phone2.Play();
 				sfxplayedonce = true;
 			}
-			if (field[7].HasChili()) {
-				chilicounter++;
-				field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
-			}
+		
 			break;
 		case 99: //Numpad3	
+			if (field[8].HasChili()) {
+				chilicounter++;
+				int newindex = randChili.Get<int>(0, width*height - 1);
+				while (newindex == 8) {
+					newindex = randChili.Get<int>(0, width*height - 1);
+				}
+				field[newindex].SpawnChili();
+			}
 			field[8].SetCellState(Cell::State::NumberPressed);
 			if (!sfxplayedonce) {
 				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
 				phone3.Play();
 				sfxplayedonce = true;
 			}
-			if (field[8].HasChili()) {
-				chilicounter++;
-				field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
-			}
+		
 			break;
 		case 100://Numpad4
+			if (field[3].HasChili()) {
+				chilicounter++;
+				int newindex = randChili.Get<int>(0, width*height - 1);
+				while (newindex == 3) {
+					newindex = randChili.Get<int>(0, width*height - 1);
+				}
+				field[newindex].SpawnChili();
+			}
 			field[3].SetCellState(Cell::State::NumberPressed);
 			if (!sfxplayedonce) {
 				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
 				phone4.Play();
 				sfxplayedonce = true;
 			}
-			if (field[3].HasChili()) {
-				chilicounter++;
-				field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
-			}
+		
 			break;
 		case 101: //Numpad5	
+			if (field[4].HasChili()) {
+				chilicounter++;
+				int newindex = randChili.Get<int>(0, width*height - 1);
+				while (newindex == 4) {
+					newindex = randChili.Get<int>(0, width*height - 1);
+				}
+				field[newindex].SpawnChili();
+			}
 			field[4].SetCellState(Cell::State::NumberPressed);
 			if (!sfxplayedonce) {
 				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
 				phone5.Play();
 				sfxplayedonce = true;
 			}
-			if (field[4].HasChili()) {
-				chilicounter++;
-				field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
-			}
+		
 			break;
 		case 102://Numpad6
+			if (field[5].HasChili()) {
+				chilicounter++;
+				int newindex = randChili.Get<int>(0, width*height - 1);
+				while (newindex == 5) {
+					newindex = randChili.Get<int>(0, width*height - 1);
+				}
+				field[newindex].SpawnChili();
+			}
 			field[5].SetCellState(Cell::State::NumberPressed);
 			if (!sfxplayedonce) {
 				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
 				phone6.Play();
 				sfxplayedonce = true;
 			}
-			if (field[5].HasChili()) {
-				chilicounter++;
-				field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
-			}
+		
 			break;
 		case 103: //Numpad7	
+			if (field[0].HasChili()) {
+				chilicounter++;
+				int newindex = randChili.Get<int>(0, width*height - 1);
+				while (newindex == 0) {
+					newindex = randChili.Get<int>(0, width*height - 1);
+				}
+				field[newindex].SpawnChili();
+			}
 			field[0].SetCellState(Cell::State::NumberPressed);
 			if (!sfxplayedonce) {
 				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
 				phone7.Play();
 				sfxplayedonce = true;
 			}
-			if (field[0].HasChili()) {
-				chilicounter++;
-				field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
-			}
 			break;
 		case 104://Numpad8
+			if (field[1].HasChili()) {
+				chilicounter++;
+				int newindex = randChili.Get<int>(0, width*height - 1);
+				while (newindex == 1) {
+					newindex = randChili.Get<int>(0, width*height - 1);
+				}
+				field[newindex].SpawnChili();
+			}
 			field[1].SetCellState(Cell::State::NumberPressed);
 			if (!sfxplayedonce) {
 				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
 				phone8.Play();
 				sfxplayedonce = true;
 			}
-			if (field[1].HasChili()) {
-				chilicounter++;
-				field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
-			}
+		
 			break;
 		case 105://Numpad9
+			if (field[2].HasChili()) {
+				chilicounter++;
+				int newindex = randChili.Get<int>(0, width*height - 1);
+				while (newindex == 2) {
+					newindex = randChili.Get<int>(0, width*height - 1);
+				}
+				field[newindex].SpawnChili();
+			}
 			field[2].SetCellState(Cell::State::NumberPressed);
 			if (!sfxplayedonce) {
 				phone1.StopAll(); phone2.StopAll(); phone3.StopAll(); phone4.StopAll(); phone5.StopAll(); phone6.StopAll(); phone7.StopAll(); phone8.StopAll(); phone9.StopAll();
 				phone9.Play();
 				sfxplayedonce = true;
 			}
-			if (field[2].HasChili()) {
-				chilicounter++;
-				field[randChili.Get<int>(0, width*height - 1)].SpawnChili();
-			}
 			break;
 		}
 	}
 	else if(e.IsRelease()){
 		for (int i = 0; i<this->width*this->height;i++) {
-			if (field[i].GetCellState() == Cell::State::NumberPressed) {
+			Cell::State cellstate = field[i].GetCellState();
+			if (cellstate == Cell::State::NumberPressed) {
 				field[i].SetCellState(Cell::State::Number);
 			}
 		}

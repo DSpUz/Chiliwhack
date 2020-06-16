@@ -18,10 +18,7 @@ Vei2 Hammer::GetPos() const
 
 bool Hammer::IsHammerPressed() const
 {
-	if (state == hammerState::LeftIsPressed) {
-		return true;
-	}
-	else return false;
+	return pressedonce;
 }
 
 void Hammer::MouseUpdate(float dt, const Mouse::Event & e,bool MouseIsEmpty)
