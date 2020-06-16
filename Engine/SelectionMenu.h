@@ -204,6 +204,7 @@ public:
 			menuhammer.DrawHammer(gfx);
 		}
 	}
+	void SilenceHammer();
 private:
 	void ResetHighlights()
 	{

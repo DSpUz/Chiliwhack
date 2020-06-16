@@ -143,3 +143,8 @@ void Hammer::DrawHammer(Graphics& gfx) const
 		break;
 	}
 }
+
+void Hammer::SilenceHammer()
+{
+	hammerslam.StopAll();
+}

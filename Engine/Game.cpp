@@ -78,146 +78,9 @@ void Game::ResetTimeline()
 
 
 /*GAME LOGIC FUNCTIONS - see old series beginner tutorial 12 */
-/*void Game::SetCellState(int index, ChiliState state)
-{
-	switch (index)  //sets chosen cell to empty or chili
-	{
-	case 0:
-		s0 = state;
-		break;
-	case 1:
-		s1 = state;
-		break;
-	case 2:
-		s2 = state;
-		break;
-	case 3:
-		s3 = state;
-		break;
-	case 4:
-		s4 = state;
-		break;
-	case 5:
-		s5 = state;
-		break;
-	case 6:
-		s6 = state;
-		break;
-	case 7:
-		s7 = state;
-		break;
-	case 8:
-		s8 = state;
-		break;
-	default:
-		break;
-	}
-}
-void Game::SetCellState(int ix, int iy, ChiliState state)
-{
-	int index = iy * 3 + ix;
-	SetCellState(index, state);
-}
-Game:: ChiliState Game::GetCellState(int index)
-{
-	switch (index)
-	{
-	case 0:
-		return s0;
-		break;
-	case 1:
-		return s1;
-		break;
-	case 2:
-		return s2;
-		break;
-	case 3:
-		return s3;
-		break;
-	case 4:
-		return s4;
-		break;
-	case 5:
-		return s5;
-		break;
-	case 6:
-		return s6;
-		break;
-	case 7:
-		return s7;
-		break;
-	case 8:
-		return s8;
-		break;
-	default:
-		return EMPTY;
-	}
-}
-Game:: ChiliState Game::GetCellState(int ix, int iy)
-{
-	int index = iy * 3 + ix;//transforms cell matrix coordinate to integer index
-	return GetCellState(index);
-}
 
-void Game::DoAIMoveRand()
-{
-	int filled_cell_counter=0;
-	for (int index = 0; index < 9; index++) {// this 
-		if (GetCellState(index) == CHILI) {
-			filled_cell_counter++;
-		}
-	}
-	if (filled_cell_counter == 0) {
-		ChiliMoveX = rand() % 3; // makes the remainder of division stay between 0 and 2
-		ChiliMoveY = rand() % 3;
-		SetCellState(ChiliMoveX, ChiliMoveY, CHILI);
-	}
-}
-void Game::DoUserInput() {
-	if (!keysPressedLastFrame) {
-		if (wnd.kbd.KeyIsPressed(VK_RIGHT)) {
-			keysPressedLastFrame = true;
-			hammerx++;
-			if (hammerx>2) hammerx = 2;
-		}
-
-		if (wnd.kbd.KeyIsPressed(VK_LEFT)) {
-			keysPressedLastFrame = true;
-			hammerx--;
-			if (hammerx<0) hammerx = 0;
-		}
-
-		if (wnd.kbd.KeyIsPressed(VK_DOWN)) {
-			keysPressedLastFrame = true;
-			hammery++;
-			if (hammery>2) hammery = 2;
-		}
-
-		if (wnd.kbd.KeyIsPressed(VK_UP)) {
-			keysPressedLastFrame = true;
-			hammery--;
-			if (hammery<0) hammery = 0;
-		}
-		if (wnd.kbd.KeyIsPressed(VK_SPACE) ) {
-			keysPressedLastFrame = true;
-			if (!slampl) {//plays hammer slam
-				slam.Play(1.0,0.2);
-				slampl = true;
-			}
-		}
-		
-		if (wnd.kbd.KeyIsPressed(VK_SPACE) && GetCellState(hammerx, hammery) == CHILI) {
-			keysPressedLastFrame = true;
-			SetCellState(hammerx, hammery, EMPTY);
-			chilicounter++;
-		}
-	}
-	else if (!(wnd.kbd.KeyIsPressed(VK_RIGHT) || wnd.kbd.KeyIsPressed(VK_LEFT) || wnd.kbd.KeyIsPressed(VK_DOWN) || wnd.kbd.KeyIsPressed(VK_UP)||wnd.kbd.KeyIsPressed(VK_SPACE))) {//if non of the keys are pressed
-		keysPressedLastFrame = false;
-		slampl = false;
-	}
+//slam.Play(1.0,0.2);
 	
-}*/
 /*-------------------------------------------------------------------------*/
 void Game::UpdateModel()
 {
@@ -241,22 +104,21 @@ void Game::UpdateModel()
 		intropl = true;
 	}
 	if (!fieldcreated) {
-		//hammer.UpdateHammer(dt, e, wnd.mouse.IsEmpty());
 		mode = menu.ProcessMouse(wnd.mouse.Read(), SelectionMenu::Menutype::StartMenu,dt);
 		switch (mode)
 		{
 		case SelectionMenu::Gamemode::Classic:
-			CreateField(3, 3, 40, Field::Mode::Classic, font);
+			CreateField(3, 3, 72, Field::Mode::Classic, font);
 			state = State::Game;
 			fieldcreated = true;
 			break;
 		case SelectionMenu::Gamemode::Mouse:
-			CreateField(3, 3, 40, Field::Mode::Classic, font);
+			CreateField(3, 3, 72, Field::Mode::Classic, font);
 			state = State::Game;
 			fieldcreated = true;
 			break;
 		case SelectionMenu::Gamemode::NumberPad:
-			CreateField(3, 3, 40, Field::Mode::NumPad, font);
+			CreateField(3, 3, 72, Field::Mode::NumPad, font);
 			state = State::Game;
 			fieldcreated = true;
 
@@ -332,9 +194,11 @@ void Game::UpdateModel()
 			mode = menu.ProcessMouse(wnd.mouse.Read(), SelectionMenu::Menutype::EndMenu,dt);
 			switch (mode){
 				case SelectionMenu::Gamemode::Replay:
+					chilicounter = 0;
 					state = State::SelectionMenu;
 					break;
 				case SelectionMenu::Gamemode::Exit:
+					menu.SilenceHammer();
 					wnd.Kill();
 					break;
 					}
@@ -348,20 +212,21 @@ void Game::ComposeFrame()
 		gfx.DrawRect(timeline, tcol);
 		font.DrawString({ Graphics::ScreenWidth / 3,Graphics::ScreenHeight / 6 }, "chiliwhack", gfx, 4, Colors::Green);
 		menu.Draw(gfx, SelectionMenu::Menutype::StartMenu);
-		//hammer.DrawHammer(gfx);
 		break;
 	case State::Game:
 		gfx.DrawRect(timeline, tcol);
 		switch (mode) {
 		case SelectionMenu::Gamemode::Classic:
 			pField->Draw(gfx);
+			font.DrawString({ 650,100 }, font.int2string(chilicounter), gfx, 4, { 0,122,0 });
 			break;
 		case SelectionMenu::Gamemode::Mouse:
 			pField->Draw(gfx);
-			//hammer.DrawHammer(gfx);
+			font.DrawString({ 650,100 }, font.int2string(chilicounter), gfx, 4, { 0,122,0 });
 			break;
 		case SelectionMenu::Gamemode::NumberPad:
 			pField->Draw(gfx);
+			font.DrawString({ 650,100 }, font.int2string(chilicounter), gfx, 4, { 0,122,0 });
 			break;
 		}
 		break;
@@ -371,7 +236,6 @@ void Game::ComposeFrame()
 		}
 		break;
 	case State::HighscoreTable:
-
 		db.Print(gfx, { 100,100 }, font);
 		break;
 	case State::Endscreen:

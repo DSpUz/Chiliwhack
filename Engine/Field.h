@@ -35,6 +35,7 @@ private:
 		void SetCellIndex(int x,int y);
 		Vei2 GetCellIndex() const;
 		void SetCellWidth(int w);
+		int flipnumpadnumber(int input) const;
 		void DrawCell( const Vei2& screenPos, int fieldwidth, Field::Mode fieldmode,Graphics& gfx, const PixelFont& font) const;
 	private:
 		int cellwidth;

@@ -173,6 +173,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="SelectionMenu.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="SpriteCodex.cpp" />
     <ClCompile Include="\\pc-pc\Users\PC\source\repos\Chiliwhack\Engine\Animation.cpp" />

@@ -20,6 +20,7 @@ public:
 	void MouseUpdate(float dt, const Mouse::Event& e,bool MouseIsEmpty);
 	void KeyboardUpdate(float dt,const Keyboard::Event& e, bool noinput,const int cellwidth);
 	void DrawHammer(Graphics& gfx) const;
+	void SilenceHammer();
 private:
 	float timer = 0.0f;
 	bool pressedonce=false;

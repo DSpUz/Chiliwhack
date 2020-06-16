@@ -43,6 +43,42 @@ void Field::Cell::SetCellWidth(int w)
 	cellwidth = w;
 }
 
+int Field::Cell::flipnumpadnumber(int input) const
+{
+	switch (input) {
+	case 49:
+		return 55;
+		break;
+	case 50:
+		return 56;
+		break;
+	case 51:
+		return 57;
+		break;
+	case 52:
+		return 52;
+		break;
+	case 53:
+		return 53;
+		break;
+	case 54:
+		return 54;
+		break;
+	case 55:
+		return 49;
+		break;
+	case 56:
+		return 50;
+		break;
+	case 57:
+		return 51;
+		break;
+	default: 
+		return 0;
+		break;
+	}
+}
+
 void Field::Cell::DrawCell(const Vei2& screenPos,int fieldwidth ,Field::Mode fieldmode,Graphics& gfx,const PixelFont& font) const
 {
 	if( fieldmode == Field::Mode::Classic )
@@ -50,11 +86,11 @@ void Field::Cell::DrawCell(const Vei2& screenPos,int fieldwidth ,Field::Mode fie
 		switch( state )
 		{
 		case State::Empty:
-			SpriteCodex::DrawCell( screenPos,cellwidth,cellwidth/20,0,255,0,gfx );
+			SpriteCodex::DrawCell( screenPos,cellwidth,4,102,178,255,gfx );
 			break;
 		case State::Chili:
-			SpriteCodex::DrawCell(screenPos, cellwidth, cellwidth / 20, 0, 255, 0, gfx);
-			SpriteCodex::DrawChili( screenPos, cellwidth*3/4,gfx);
+			SpriteCodex::DrawCell(screenPos, cellwidth, 4, 102, 178, 255, gfx);
+			SpriteCodex::DrawChili( screenPos, cellwidth*4/3,gfx);
 			break;
 		default:
 			break;
@@ -62,20 +98,20 @@ void Field::Cell::DrawCell(const Vei2& screenPos,int fieldwidth ,Field::Mode fie
 	}
 	else // NumPad
 	{
-		int fontsize = 3;
+		int fontsize = 4;
 		switch( state )
 		{
 		case State::Number:
-			SpriteCodex::DrawCell(screenPos, cellwidth, cellwidth / 20, 0, 255, 0, gfx);
-			font.DrawCharacter(screenPos.x - fontsize * 4, screenPos.y - fontsize * 4, gfx, 49 + fieldwidth * GridIndex.y + GridIndex.x, fontsize, { 0,128,0 });
+			SpriteCodex::DrawCell(screenPos, cellwidth, 4, 102, 178, 255, gfx);
+			font.DrawCharacter(screenPos.x - fontsize * 4, screenPos.y - fontsize * 4, gfx,flipnumpadnumber( 49 + fieldwidth * GridIndex.y + GridIndex.x), fontsize, { 0,60,0 });
 			break;
 		case State::Chili:
-			SpriteCodex::DrawCell(screenPos, cellwidth, cellwidth / 20, 0, 255, 0, gfx);
-			SpriteCodex::DrawChili(screenPos, cellwidth*3/4, gfx);
+			SpriteCodex::DrawCell(screenPos, cellwidth,4, 102, 178, 255, gfx);
+			SpriteCodex::DrawChili(screenPos, cellwidth*4/3, gfx);
 			break;
 		case State::NumberPressed:
-			SpriteCodex::DrawCell(screenPos, cellwidth, cellwidth / 20, 0, 255, 0, gfx);
-			font.DrawCharacter(screenPos.x - fontsize * 4, screenPos.y - fontsize * 4, gfx, 49 + fieldwidth * GridIndex.y + GridIndex.x, fontsize, { 0,255,0 });
+			SpriteCodex::DrawCell(screenPos, cellwidth, 4, 102, 178, 255, gfx);
+			font.DrawCharacter(screenPos.x - fontsize * 4, screenPos.y - fontsize * 4, gfx,flipnumpadnumber( 49 + fieldwidth * GridIndex.y + GridIndex.x), fontsize, { 80,255,0 });
 			break;
 		default:
 			break;

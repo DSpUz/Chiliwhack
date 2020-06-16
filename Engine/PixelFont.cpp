@@ -831,3 +831,8 @@ are made of */
 	}
 }
 
+std::string PixelFont::int2string(int i) const
+{
+	return std::to_string(i);
+}
+

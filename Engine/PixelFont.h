@@ -9,4 +9,5 @@ struct PixelFont{
 	void DrawString(const Vei2& pos,const std::string& string, Graphics& gfx,int fontsize,const Color& c) const;
 	void DrawCharacter(int x, int y,Graphics& gfx,int char_case_nr,int fontsize,const Color& c) const;
 	void DrawBlock(Graphics& gfx,int x,int y, int width,const Color& c) const;
+	std::string int2string(int i) const;
 };
