@@ -12,9 +12,8 @@ private:
 		Entry() = default;
 		Entry(const char* entry, int val,Field::Mode mode);
 		bool operator<(const Entry& rhs) const {
-			return value  < rhs.value;
+			return value  > rhs.value;
 		}
-
 		void Print(Graphics& gfx,const PixelFont& font,Vei2& pos) const;
 		void Serialize(std::ofstream& out) const;
 		void Deserialize(std::ifstream& in);
@@ -29,7 +28,7 @@ private:
 public:
 	Database() = default;
 	void Load(const char* filename);
-	void Save(const char* filename) const;
+	void Save(const char* filename);
 	void Print(Graphics& gfx,const Vei2& pos, const PixelFont& font, Field::Mode mode) const;
 	void Add(const char* name, int value,Field::Mode in_mode);
 private:

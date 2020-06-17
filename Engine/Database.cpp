@@ -8,6 +8,7 @@ Database::Entry::Entry(const char * entry, int val, Field::Mode in_mode)
 	stringcopy(entry,this->name,sizeof(this->name));
 }
 
+
 void Database::Entry::Print(Graphics& gfx,const PixelFont& font,Vei2& pos) const
 { 
 	std::string nameandvalue = name + std::string("  ") + std::to_string(value);
@@ -55,7 +56,7 @@ void Database::Load(const char * filename)
 	}
 }
 
-void Database::Save(const char * filename) const
+void Database::Save(const char * filename)
 {
 	std::ofstream out(filename, std::ios::binary);
 	const int size = int(entries.size());
