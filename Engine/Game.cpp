@@ -77,25 +77,12 @@ void Game::ResetTimeline()
 
 
 
-/*GAME LOGIC FUNCTIONS - see old series beginner tutorial 12 */
 
 //slam.Play(1.0,0.2);
 	
-/*-------------------------------------------------------------------------*/
 void Game::UpdateModel()
 {
 	const float dt = ft.Mark();
-	if (!savedonce) {
-		db.Add("chili", 69);
-		db.Add("me-", 402);
-		db.Add("absolute garbage", 15);
-		db.Save("highscores.dat");
-		savedonce = true;
-	}
-	if (!loadedonce) {
-		db.Load("highscores.dat");
-		loadedonce = true;
-	}
 	
 	switch (state) {
 	case State::SelectionMenu:
@@ -109,16 +96,19 @@ void Game::UpdateModel()
 		{
 		case SelectionMenu::Gamemode::Classic:
 			CreateField(3, 3, 72, Field::Mode::Classic, font);
+			modeplayed = Field::Mode::Classic;
 			state = State::Game;
 			fieldcreated = true;
 			break;
 		case SelectionMenu::Gamemode::Mouse:
 			CreateField(3, 3, 72, Field::Mode::Classic, font);
+			modeplayed = Field::Mode::Mouse;
 			state = State::Game;
 			fieldcreated = true;
 			break;
 		case SelectionMenu::Gamemode::NumberPad:
 			CreateField(3, 3, 72, Field::Mode::NumPad, font);
+			modeplayed = Field::Mode::NumPad;
 			state = State::Game;
 			fieldcreated = true;
 
@@ -182,6 +172,21 @@ void Game::UpdateModel()
 		else {
 			state = State::HighscoreTable;
 		}
+		if (!savedonce) {
+			db.Add("chili", chilicounter, modeplayed);
+			db.Add("me-", 402, Field::Mode::NumPad);
+			db.Add("player1", 105, Field::Mode::NumPad);
+			db.Add("absolute garbage", 15, Field::Mode::Classic);
+			db.Add("player2", 35, Field::Mode::Classic);
+			db.Add("whatevaa", 27, Field::Mode::Mouse);
+			db.Add("player3", 60, Field::Mode::Mouse);
+			db.Save("highscores.dat");
+			savedonce = true;
+		}
+		if (!loadedonce) {
+			db.Load("highscores.dat");
+			loadedonce = true;
+		}
 		DestroyField();
 		fieldcreated = false;
 		break;
@@ -236,9 +241,10 @@ void Game::ComposeFrame()
 		}
 		break;
 	case State::HighscoreTable:
-		db.Print(gfx, { 100,100 }, font);
+		db.Print(gfx, { 100,100 }, font, modeplayed);
 		break;
 	case State::Endscreen:
+		db.Print(gfx, { 100,100 }, font, modeplayed);
 		menu.Draw(gfx, SelectionMenu::Menutype::EndMenu);
 		break;
 	}

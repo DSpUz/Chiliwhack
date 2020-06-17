@@ -82,8 +82,7 @@ private:
 	
 	Timer ft;
 
-	//Hammer hammer;
-
+	Field::Mode modeplayed;
 	Database db;
 	bool savedonce = false;
 	bool loadedonce = false;

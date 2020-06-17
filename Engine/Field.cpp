@@ -404,6 +404,11 @@ void Field::NumPadInput(const Keyboard::Event & e, int& chilicounter)
 	}
 }
 
+Field::Mode Field::GetMode() const
+{
+	return mode;
+}
+
 int Field::GetCellIndexFromPos(const Vei2 & hammerpos) const
 {
 	int cellindex = 0;
@@ -417,7 +422,8 @@ int Field::GetCellIndexFromPos(const Vei2 & hammerpos) const
 			}
 		}
 	}
-	else return width * height;
+	else { return width * height; }
+	return width * height;
 }
 
 void Field::Draw( Graphics& gfx ) const

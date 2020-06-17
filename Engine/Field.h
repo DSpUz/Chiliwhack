@@ -52,6 +52,7 @@ public:
 	void MouseInput(const Mouse::Event& e, float dt, bool noinput, int& chilicounter);
 	void KeyboardInput(const Keyboard::Event& e, float dt, bool noinput, int& chilicounter);
 	void NumPadInput(const Keyboard::Event& e, int& chilicounter);
+	Field::Mode GetMode() const;
 	int GetCellIndexFromPos(const Vei2& hammerpos) const;
 	void Draw( Graphics& gfx ) const;
 	int GetWidth() const;
