@@ -72,6 +72,38 @@ void Game::ResetTimeline()
 	tcol.SetG(unsigned char(line_g));
 }
 
+void Game::readplayername(const Keyboard::Event & e, char*& playername,int& charcounter)
+{
+		if (e.IsPress()) {
+			int charcode = int(e.GetCode());
+			if (charcounter < sizeof(namebuffer)){
+				if (charcode == 8) {
+					playername--;
+					charcounter--;
+					*playername = 0;
+				}
+				else {
+					if (charcode > 64 && charcode < 91) {
+						charcode += 32;
+						*playername = char(charcode);
+						playername++;
+					}
+					else {
+						*playername = e.GetCode();
+						playername++;
+					}
+					charcounter++;
+				}
+			}
+			else {
+				if (charcode == 8) {
+					playername--;
+					charcounter--;
+				}
+			}
+		}
+}
+
 
 
 
@@ -191,6 +223,7 @@ void Game::UpdateModel()
 		fieldcreated = false;
 		break;
 	case State::HighscoreTable:
+		readplayername(wnd.kbd.ReadKey(), namepointer, curNameSize);
 		if (wnd.kbd.KeyIsPressed(VK_RETURN)) {
 			state = State::Endscreen;
 		}
@@ -242,6 +275,7 @@ void Game::ComposeFrame()
 		break;
 	case State::HighscoreTable:
 		db.Print(gfx, { 100,100 }, font, modeplayed);
+		font.DrawString({ 100,500 }, namebuffer, gfx, 2, Colors::Green);
 		break;
 	case State::Endscreen:
 		db.Print(gfx, { 100,100 }, font, modeplayed);

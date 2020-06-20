@@ -29,6 +29,7 @@ void Database::Entry::Deserialize(std::ifstream & in)
 	in.read(reinterpret_cast<char*> (&mode), sizeof(mode));
 }
 
+
 Field::Mode Database::Entry::GetDatabaseMode() const
 {
 	return mode;

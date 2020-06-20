@@ -17,6 +17,7 @@ private:
 		void Print(Graphics& gfx,const PixelFont& font,Vei2& pos) const;
 		void Serialize(std::ofstream& out) const;
 		void Deserialize(std::ifstream& in);
+
 		Field::Mode GetDatabaseMode() const;
 	private:
 		void stringcopy(const char* pSrc, char* pDst, int maxsize);

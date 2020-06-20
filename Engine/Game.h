@@ -66,7 +66,7 @@ private:
 	void CreateField(int width, int height, int cellwidth, Field::Mode mode, const PixelFont& font);
 	void DestroyField();
 	void ResetTimeline();
-
+	void readplayername(const Keyboard::Event& e,char*& playername, int& charcounter);
 	/********************************/
 	/*  User Functions              */
 	/********************************/
@@ -88,7 +88,7 @@ private:
 	bool loadedonce = false;
 
 	float timer=0.0f;
-	const float gametime = 30.0f;
+	const float gametime = 2.0f;
 	const float colorscaling = 255 / gametime;
 	RectI timeline;
 	Color tcol;//timeline color
@@ -100,6 +100,10 @@ private:
 	bool outroonce=false;
 	Sound chili_t,slam,chi;//intro,hammer sound, outro
 	bool intropl = false, slampl = false, chipl = false;//intro played variable 
+
+	char namebuffer[10];
+	char* namepointer = namebuffer;
+	int curNameSize=0;
 	
 	int chilicounter=0;//counts how many chili's you got
 
