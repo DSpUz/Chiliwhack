@@ -74,6 +74,7 @@ void Game::ResetTimeline()
 
 void Game::readplayername(const Keyboard::Event & e, char*& playername,int& charcounter)
 {
+	*playername = 0;
 		if (e.IsPress()) {
 			int charcode = int(e.GetCode());
 			if (charcounter < sizeof(namebuffer)&&charcounter>=0){
@@ -90,11 +91,13 @@ void Game::readplayername(const Keyboard::Event & e, char*& playername,int& char
 					if (charcode > 64 && charcode < 91) {
 						charcode += 32;
 						*playername = char(charcode);
-						playername++;
+						playername++;	
+						*playername = 0;
 					}
 					else {
 						*playername = e.GetCode();
 						playername++;
+						*playername = 0;
 					}
 					charcounter++;
 				}
