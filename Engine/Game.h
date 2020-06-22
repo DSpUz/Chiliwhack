@@ -101,7 +101,7 @@ private:
 	Sound chili_t,slam,chi;//intro,hammer sound, outro
 	bool intropl = false, slampl = false, chipl = false;//intro played variable 
 
-	char namebuffer[10];
+	char namebuffer[18];
 	char* namepointer = namebuffer;
 	int curNameSize=0;
 	

@@ -76,11 +76,15 @@ void Game::readplayername(const Keyboard::Event & e, char*& playername,int& char
 {
 		if (e.IsPress()) {
 			int charcode = int(e.GetCode());
-			if (charcounter < sizeof(namebuffer)){
+			if (charcounter < sizeof(namebuffer)&&charcounter>=0){
 				if (charcode == 8) {
-					playername--;
-					charcounter--;
-					*playername = 0;
+					if (charcounter ==0){}
+					else {
+						*playername = 0;
+						playername--;
+						charcounter--;
+						*playername = 0;
+					}
 				}
 				else {
 					if (charcode > 64 && charcode < 91) {
@@ -97,8 +101,11 @@ void Game::readplayername(const Keyboard::Event & e, char*& playername,int& char
 			}
 			else {
 				if (charcode == 8) {
-					playername--;
-					charcounter--;
+				playername = &namebuffer[sizeof(namebuffer)];
+				*playername = 0;
+				playername--;
+				*playername = 0;
+				charcounter--;
 				}
 			}
 		}
