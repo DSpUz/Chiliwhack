@@ -29,6 +29,11 @@ void Database::Entry::Deserialize(std::ifstream & in)
 	in.read(reinterpret_cast<char*> (&mode), sizeof(mode));
 }
 
+int Database::Entry::GetValue() const
+{
+	return value;
+}
+
 
 Field::Mode Database::Entry::GetDatabaseMode() const
 {
@@ -59,10 +64,33 @@ void Database::Load(const char * filename)
 
 void Database::Save(const char * filename)
 {
+	int ecountClassic = 0, ecountMouse = 0, ecountNum = 0;
+	std::stable_sort(entries.begin(), entries.end());
+	for (size_t i = 0;i< entries.size();i++) {
+		switch (entries[i].GetDatabaseMode()) {
+		case Field::Mode::Classic:
+			ecountClassic++;
+			if (ecountClassic > 5) { entries.erase(entries.begin()+i);
+			i--;
+			}
+		case Field::Mode::Mouse:
+			ecountMouse++;
+			if (ecountMouse > 5) {
+				entries.erase(entries.begin() + i);
+				i--;
+			}
+		case Field::Mode::NumPad:
+			ecountNum++;
+			if (ecountNum > 5) {
+				entries.erase(entries.begin() + i);
+				i--;
+			}
+		}
+	}
 	std::ofstream out(filename, std::ios::binary);
 	const int size = int(entries.size());
 	out.write(reinterpret_cast<const char*>(&size), sizeof(size));
-	std::stable_sort(entries.begin(), entries.end());
+	
 	for (const Entry& e : entries) {
 		e.Serialize(out);
 	}
@@ -97,4 +125,18 @@ void Database::Print(Graphics& gfx, const Vei2& pos, const PixelFont& font, Fiel
 void Database::Add(const char* name, int value,Field::Mode in_mode)
 {
 	entries.emplace_back(name, value,in_mode);
+}
+
+bool Database::CheckIfHighscore(int newvalue, Field::Mode in_mode)
+{
+	if (entries.size() == 0) {
+		return true;
+	}
+	bool returnval = false;
+	for (const Entry& e : entries) {
+		if (e.GetDatabaseMode() == in_mode) {
+			returnval = returnval || (newvalue > e.GetValue());
+		}
+	}
+	return returnval;
 }

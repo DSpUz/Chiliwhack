@@ -79,8 +79,7 @@ void Game::readplayername(const Keyboard::Event & e, char*& playername,int& char
 			int charcode = int(e.GetCode());
 			if (charcounter < sizeof(namebuffer)&&charcounter>=0){
 				if (charcode == 8) {
-					if (charcounter ==0){}
-					else {
+					if (charcounter != 0)  {
 						*playername = 0;
 						playername--;
 						charcounter--;
@@ -214,21 +213,6 @@ void Game::UpdateModel()
 		else {
 			state = State::HighscoreTable;
 		}
-		if (!savedonce) {
-			db.Add("chili", chilicounter, modeplayed);
-			db.Add("me-", 402, Field::Mode::NumPad);
-			db.Add("player1", 105, Field::Mode::NumPad);
-			db.Add("absolute garbage", 15, Field::Mode::Classic);
-			db.Add("player2", 35, Field::Mode::Classic);
-			db.Add("whatevaa", 27, Field::Mode::Mouse);
-			db.Add("player3", 60, Field::Mode::Mouse);
-			db.Save("highscores.dat");
-			savedonce = true;
-		}
-		if (!loadedonce) {
-			db.Load("highscores.dat");
-			loadedonce = true;
-		}
 		DestroyField();
 		fieldcreated = false;
 		break;
@@ -239,10 +223,23 @@ void Game::UpdateModel()
 		}
 		break;
 	case State::Endscreen:
+		if (!savedonce) {
+			if (db.CheckIfHighscore(chilicounter, modeplayed)) {
+				db.Add(namebuffer, chilicounter, modeplayed);
+			}
+			db.Save("highscores.dat");
+			savedonce = true;
+		}
+		if (!loadedonce) {
+			db.Load("highscores.dat");
+			loadedonce = true;
+		}
 			mode = menu.ProcessMouse(wnd.mouse.Read(), SelectionMenu::Menutype::EndMenu,dt);
 			switch (mode){
 				case SelectionMenu::Gamemode::Replay:
 					chilicounter = 0;
+					savedonce = false;
+					loadedonce = false;
 					state = State::SelectionMenu;
 					break;
 				case SelectionMenu::Gamemode::Exit:

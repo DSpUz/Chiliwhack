@@ -17,7 +17,7 @@ private:
 		void Print(Graphics& gfx,const PixelFont& font,Vei2& pos) const;
 		void Serialize(std::ofstream& out) const;
 		void Deserialize(std::ifstream& in);
-
+		int GetValue() const;
 		Field::Mode GetDatabaseMode() const;
 	private:
 		void stringcopy(const char* pSrc, char* pDst, int maxsize);
@@ -32,6 +32,7 @@ public:
 	void Save(const char* filename);
 	void Print(Graphics& gfx,const Vei2& pos, const PixelFont& font, Field::Mode mode) const;
 	void Add(const char* name, int value,Field::Mode in_mode);
+	bool CheckIfHighscore(int newvalue, Field::Mode in_mode);
 private:
 	std::vector<Entry> entries;
 };
