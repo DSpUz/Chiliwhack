@@ -14,14 +14,14 @@ private:
 		bool operator<(const Entry& rhs) const {
 			return value  > rhs.value;
 		}
-		void Print(Graphics& gfx,const PixelFont& font,Vei2& pos) const;
+		void Print(Graphics& gfx,const PixelFont& font,const Vei2& pos) const;
 		void Serialize(std::ofstream& out) const;
 		void Deserialize(std::ifstream& in);
 		int GetValue() const;
 		Field::Mode GetDatabaseMode() const;
 	private:
 		void stringcopy(const char* pSrc, char* pDst, int maxsize);
-		static constexpr int namebuffersize = 10;
+		static constexpr int namebuffersize = 18;
 		char name[namebuffersize];
 		int value;
 		Field::Mode mode;

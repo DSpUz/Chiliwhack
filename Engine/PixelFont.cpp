@@ -11,9 +11,9 @@ void PixelFont::DrawString(const Vei2& pos, const std::string& string, Graphics 
 	 const int padding = (fontsize + fontsize / 2)*6;
 	 for (size_t i = 0; i < string.size(); i++) {
 		 if (string[i] == 32) {//space
-			 x += padding/2;
+			 x += padding / 2;
 		 }
-		 else if (string[i] == 105|| string[i] == 46 || string[i] == 39 || string[i] == 33 ) {// i .' or !
+		 else if (string[i] == 105 || string[i] == 46 || string[i] == 39 || string[i] == 33 || string[i]==58) {// i .' ! or :
 			 DrawCharacter(x, y, gfx, string[i], fontsize, c);
 			 x += padding/3;
 		 }
@@ -769,6 +769,10 @@ void PixelFont::DrawCharacter(int x,int y, Graphics& gfx,int char_case_nr,int fo
 		DrawBlock(gfx, x + xy3, y + y5,fontsize,c);
 		DrawBlock(gfx, x + xy2, y + y5,fontsize,c);
 		DrawBlock(gfx, x + xy1, y + y5,fontsize,c);
+		break;
+	case 58: //:
+		DrawBlock(gfx, x, y + xy1, fontsize, c);
+		DrawBlock(gfx, x, y + xy4, fontsize, c);
 		break;
 	case 46: // .	
 		DrawBlock(gfx, x, y + y5,fontsize,c);

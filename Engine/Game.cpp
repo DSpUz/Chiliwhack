@@ -136,33 +136,32 @@ void Game::UpdateModel()
 		switch (mode)
 		{
 		case SelectionMenu::Gamemode::Classic:
-			CreateField(3, 3, 72, Field::Mode::Classic, font);
-			modeplayed = Field::Mode::Classic;
-			state = State::Game;
-			fieldcreated = true;
+				CreateField(3, 3, 72, Field::Mode::Classic, font);
+				modeplayed = Field::Mode::Classic;
+					state = State::Game;
+					fieldcreated = true;
+					timer = 0.0f;
 			break;
 		case SelectionMenu::Gamemode::Mouse:
-			CreateField(3, 3, 72, Field::Mode::Classic, font);
-			modeplayed = Field::Mode::Mouse;
-			state = State::Game;
-			fieldcreated = true;
+				CreateField(3, 3, 72, Field::Mode::Classic, font);
+				modeplayed = Field::Mode::Mouse;
+				state = State::Game;
+				fieldcreated = true;
 			break;
 		case SelectionMenu::Gamemode::NumberPad:
-			CreateField(3, 3, 72, Field::Mode::NumPad, font);
-			modeplayed = Field::Mode::NumPad;
-			state = State::Game;
-			fieldcreated = true;
-
+				CreateField(3, 3, 72, Field::Mode::NumPad, font);
+				modeplayed = Field::Mode::NumPad;
+				state = State::Game;
+				fieldcreated = true;
 			break;
 		default:
 			break;
 		}
 	}
-	else timer = 0.0f;
+	else  timer = 0.0f;
 		break;
 	case State::Game:
 		if (timer<gametime) {
-			//hammer.UpdateHammer(dt, wnd.mouse.Read(), wnd.mouse.IsEmpty());
 			if(timer<gametime/2){
 				line_r += colorscaling * 2 * dt;
 				tcol.SetR(unsigned char(line_r));
@@ -201,17 +200,27 @@ void Game::UpdateModel()
 			}
 			if (timer < 3.0f) {
 
-				chiliwidth += int(150*dt);
+				chiliwidth += int(140*dt);
 				timer += dt;
 			}
 			else {
-				state = State::HighscoreTable;
+				if(db.CheckIfHighscore(chilicounter,modeplayed)){ 
+					state = State::HighscoreTable;
+				}
+				else {
+					state = State::Endscreen;
+				}
 				timer = 0.0f;
 				outroonce = true;
 			}
 		}
 		else {
-			state = State::HighscoreTable;
+			if (db.CheckIfHighscore(chilicounter, modeplayed)) {
+				state = State::HighscoreTable;
+			}
+			else {
+				state = State::Endscreen;
+			}
 		}
 		DestroyField();
 		fieldcreated = false;
@@ -281,11 +290,13 @@ void Game::ComposeFrame()
 		}
 		break;
 	case State::HighscoreTable:
-		db.Print(gfx, { 100,100 }, font, modeplayed);
-		font.DrawString({ 100,500 }, namebuffer, gfx, 2, Colors::Green);
+		db.Print(gfx, { 225,50 }, font, modeplayed);
+		font.DrawString({ 100,450 }, "congratulations, you got a new highscore!", gfx, 2, Colors::Green);
+		font.DrawString({ 100,500 }, "enter your name: ", gfx, 2, Colors::Green);
+		font.DrawString({ 400,500 }, namebuffer, gfx, 2, Colors::Green);
 		break;
 	case State::Endscreen:
-		db.Print(gfx, { 100,100 }, font, modeplayed);
+		db.Print(gfx, { 225,50 }, font, modeplayed);
 		menu.Draw(gfx, SelectionMenu::Menutype::EndMenu);
 		break;
 	}

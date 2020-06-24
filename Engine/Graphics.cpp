@@ -325,7 +325,7 @@ void Graphics::DrawLine(int x1, int y1, int x2, int y2, int r, int g, int bl)// 
 		float m = (float)dx / (float)dy; // calculates the steepness of the line
 		float b = x1 - m*y1;					// calculates the y-intercept
 		for (int y = y1; y <= y2; y++) {
-			int x = m*y + b+ 0.5f; // 0.5f corrects the rounding effect of compiler(see video)
+			int x = int(m*y + b+ 0.5f); // 0.5f corrects the rounding effect of compiler(see video)
 			PutPixel(x, y, r, g, bl);
 		}
 	}
@@ -342,53 +342,11 @@ void Graphics::DrawLine(int x1, int y1, int x2, int y2, int r, int g, int bl)// 
 		float m = (float)dy / (float)dx; // calculates the steepness of the line
 		float b = y1 - m*x1;					// calculates the y-intercept
 		for (int x = x1; x <= x2; x++) {
-			int y = m*x + b + 0.5f;
+			int y = int(m*x + b + 0.5f);
 			PutPixel(x, y, r, g, bl);
 		}
 	}
 }
-
-void Graphics::DrawRectangle(int cx, int cy, int height, int width, int angle, int r, int g, int b)
-{
-	const float PI = 3.14159;
-	const float ra = angle* PI / 180.0;//angle in radians
-	const int hw = width / 2; //half of width
-	const int hh = height / 2; //half of height
-
-
-			const int Ax = cx - hw*cos(ra) - hh*sin(ra);
-			const int Ay = cy - hw*sin(ra) + hh*cos(ra);
-
-			const int Bx = cx + hw*cos(ra) - hh*sin(ra);
-			const int By = cy + hw*sin(ra) + hh*cos(ra);
-
-
-			const int Cx = cx - hw*cos(ra) + hh*sin(ra);
-			const int Cy = cy - hw*sin(ra) - hh*cos(ra);
-			
-			float y1 = Ay, x2 = Cx, y2 = Cy, x1=Ax;
-			for (  x1 = x1; x1 <= Bx; x1 = x1+ cos(ra)) {
-				DrawLine(x1, y1, x2, y2, r, g, b);
-				x2 = x2 + cos(ra);
-				y1 = y1 + sin(ra);
-				y2 = y2 + sin(ra);
-			}
-
-			x1 = Ax, x2 = Bx, y2 = By;
-			for ( y1 = Ay; y1 >= Cy; y1 = y1 - cos(ra)) { // this loop is unnecessary - its just meant to fill out holes
-				DrawLine(x1, y1, x2, y2, r, g, b);
-				x1= x1 + sin(ra);
-				x2 = x2 + sin(ra);
-				y2 = y2 - cos(ra);
-			}
-			/*
-			PutPixel(cx - hw*cos(ra) - hh*sin(ra), cy - hw*sin(ra) + hh*cos(ra), 255, 0, 0);// Point A - Ax, Ay - red
-			PutPixel(cx + hw*cos(ra) - hh*sin(ra), cy + hw*sin(ra) + hh*cos(ra), 0, 255, 0);// Point B - Bx,By - green
-			PutPixel(cx - hw*cos(ra) + hh*sin(ra), cy - hw*sin(ra) - hh*cos(ra), 255, 255, 0);// Point C - Cx,Cy - yellow
-			PutPixel(cx + hw*cos(ra) + hh*sin(ra), cy + hw*sin(ra) - hh*cos(ra), 0, 255, 255);// Point D - Dx,Dy - blue
-			}*/
-
-			}
 
 /*----------------------------------------------------------------*/
 

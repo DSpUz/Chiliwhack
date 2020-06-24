@@ -58,7 +58,6 @@ public:
 	/*--------------------------------------------
 	--------------MY FUNCTIONS---------------------*/
 	void DrawLine(int x1, int y1, int x2, int y2, int r, int g, int bl);//see video - old series beginner Lesson 10
-	void DrawRectangle(int cx, int cy, int height, int width, int angle, int r, int g, int b);//for drawing hammer
 
 	void PutPixel( int x,int y,int r,int g,int b )
 	{

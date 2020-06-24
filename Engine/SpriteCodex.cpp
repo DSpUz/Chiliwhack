@@ -14,76 +14,76 @@ void SpriteCodex::DrawChili(const Vei2 & pos, int w, Graphics & gfx)
 	{
 		for (int y = 0; y < inc; y++)
 		{
-			gfx.PutPixel(cx + x - width / 8.0f, cy - y - width * 7 / 16.0f, 0, 255, 0);
-			gfx.PutPixel(cx + x - width / 4.0f, cy - y - width * 7 / 16.0f, 0, 255, 0);
-			gfx.PutPixel(cx + x - width * 3 / 8.0f, cy - y - width * 7 / 16.0f, 0, 255, 0);
-			gfx.PutPixel(cx + x - width / 2.0f, cy - y - width * 7 / 16.0f, 0, 255, 0);//first triangle spike from left
+			gfx.PutPixel(cx + x - int(width / 8.0f), cy - y - int(width * 7 / 16.0f), 0, 255, 0);
+			gfx.PutPixel(cx + x - int(width / 4.0f), cy - y - int(width * 7 / 16.0f), 0, 255, 0);
+			gfx.PutPixel(cx + x - int(width * 3 / 8.0f), cy - y - int(width * 7 / 16.0f), 0, 255, 0);
+			gfx.PutPixel(cx + x - int(width / 2.0f), cy - y - int(width * 7 / 16.0f), 0, 255, 0);//first triangle spike from left
 
-			gfx.PutPixel(cx - x + width / 8.0f, cy - y - width * 7 / 16.0f, 0, 255, 0); //right side mirrored cause of -x
-			gfx.PutPixel(cx - x + width / 4.0f, cy - y - width * 7 / 16.0f, 0, 255, 0);
-			gfx.PutPixel(cx - x + width * 3 / 8.0f, cy - y - width * 7 / 16.0f, 0, 255, 0);
-			gfx.PutPixel(cx - x + width / 2.0f, cy - y - width * 7 / 16.0f, 0, 255, 0);
+			gfx.PutPixel(cx - x + int(width / 8.0f), cy - y - int(width * 7 / 16.0f), 0, 255, 0); //right side mirrored cause of -x
+			gfx.PutPixel(cx - x + int(width / 4.0f), cy - y - int(width * 7 / 16.0f), 0, 255, 0);
+			gfx.PutPixel(cx - x + int(width * 3 / 8.0f), cy - y - int(width * 7 / 16.0f), 0, 255, 0);
+			gfx.PutPixel(cx - x + int(width / 2.0f), cy - y - int(width * 7 / 16.0f), 0, 255, 0);
 		}
 		inc = inc + 2; //triangles are 2 times higher than wide
 	}
 
 	for (int x = 0; x <= width; x++) { // base of the crown (green rectangle)
-		for (int y = 0; y <= width / 8.0f; y++) {
-			gfx.PutPixel(cx + x - width / 2.0f, cy + y - width * 7 / 16.0f, 0, 255, 0);
+		for (int y = 0; y <= int(width / 8.0f); y++) {
+			gfx.PutPixel(cx + x - int(width / 2.0f), cy + y - int(width * 7 / 16.0f), 0, 255, 0);
 		}
 	}
 
 	for (int x = 0; x <= width; x++) {//middle of face (white rectangle)
-		for (int y = 0; y <= width / 2.0f; y++) {
-			gfx.PutPixel(cx + x - width / 2.0, cy + y - width * 5 / 16.0, 255, 255, 255);
+		for (int y = 0; y <= int(width / 2.0f); y++) {
+			gfx.PutPixel(cx + x - int(width / 2.0), cy + y - int(width * 5 / 16.0f), 255, 255, 255);
 		}
 	}
 
 	inc = 1;
-	for (int x = 0; x <= width / 2.0; x++) // white triangle chin
+	for (int x = 0; x <= int(width / 2.0); x++) // white triangle chin
 	{
 		for (int y = 0; y < inc; y++)
 		{
-			gfx.PutPixel(cx + x - width / 2.0f, cy + y + width * 3 / 16.0f, 255, 255, 255); //left side
-			gfx.PutPixel(cx - x + width / 2.0f, cy + y + width * 3 / 16.0f, 255, 255, 255);//right side
+			gfx.PutPixel(cx + x - int(width / 2.0f), cy + y + int(width * 3 / 16.0f), 255, 255, 255); //left side
+			gfx.PutPixel(cx - x + int(width / 2.0f), cy + y + int(width * 3 / 16.0f), 255, 255, 255);//right side
 		}
 		inc = inc + 0.85f;
 	}
 
-	for (int x = 0; x <= width / 4.0f; x++) { //black rectangle eyes
-		for (int y = 0; y < width / 10.0f; y++) {
-			gfx.PutPixel(cx + x + width / 16.0f, cy + y - width / 8.0f, 0, 0, 0); // right eye
-			gfx.PutPixel(cx - x - width / 16.0f, cy + y - width / 8.0f, 0, 0, 0); //left eye
+	for (int x = 0; x <= int(width / 4.0f); x++) { //black rectangle eyes
+		for (int y = 0; y < int(width / 10.0f); y++) {
+			gfx.PutPixel(cx + x + int(width / 16.0f), cy + y - int(width / 8.0f), 0, 0, 0); // right eye
+			gfx.PutPixel(cx - x - int(width / 16.0f), cy + y - int(width / 8.0f), 0, 0, 0); //left eye
 		}
 	}
 
-	for (int x = 0; x <= width / 20.0f; x++) { //black rectangle beard
-		for (int y = 0; y <= width * 6 / 25.0f; y++) {
-			gfx.PutPixel(cx + x - width / 40.0f, cy + y + width * 3 / 8.0f, 0, 0, 0);
+	for (int x = 0; x <= int(width / 20.0f); x++) { //black rectangle beard
+		for (int y = 0; y <= int(width * 6 / 25.0f); y++) {
+			gfx.PutPixel(cx + x - int(width / 40.0f), cy + y + int(width * 3 / 8.0f), 0, 0, 0);
 		}
 	}
 
-	for (int x = 1; x <= width * 7 / 20.0f; x++) { // black eyebrows
-		for (int y = 1; y < width / 16.0f; y++) {
-			gfx.PutPixel(cx + x - width * 3 / 8.0f, cy + y - width * 9 / 40.0f, 0, 0, 0); // left eyebrow
-			gfx.PutPixel(cx + x + width / 40.0f, cy + y - width * 9 / 40.0f, 0, 0, 0); //right eyebrow
+	for (int x = 1; x <= int(width * 7 / 20.0f); x++) { // black eyebrows
+		for (int y = 1; y < int(width / 16.0f); y++) {
+			gfx.PutPixel(cx + x - int(width * 3 / 8.0f), cy + y - int(width * 9 / 40.0f), 0, 0, 0); // left eyebrow
+			gfx.PutPixel(cx + x + int(width / 40.0f), cy + y - int(width * 9 / 40.0f), 0, 0, 0); //right eyebrow
 		}
 	}
 
-	for (int x = 0; x <= width / 2.0f; x++) { // beige lips
-		for (int y = 0; y <= width / 20.0f; y++) {
-			gfx.PutPixel(cx + x - width / 4.0f, cy + y + width * 5 / 16.0f, 255, 220, 220);
+	for (int x = 0; x <= int(width / 2.0f); x++) { // beige lips
+		for (int y = 0; y <= int(width / 20.0f); y++) {
+			gfx.PutPixel(cx + x - int(width / 4.0f), cy + y + int(width * 5 / 16.0f), 255, 220, 220);
 		}
 	}
 
 	inc = 1;
 
-	for (int x = 0; x <= width * 3 / 16.0f; x++) //beige cheeks 
+	for (int x = 0; x <= int(width * 3 / 16.0f); x++) //beige cheeks 
 	{
 		for (int y = 0; y < inc; y++)
 		{
-			gfx.PutPixel(cx + x - width / 2.0f, cy + y + width * 3 / 16.0f, 255, 240, 240); //left cheek
-			gfx.PutPixel(cx - x + width / 2.0f, cy + y + width * 3 / 16.0f, 255, 240, 240); // right cheek
+			gfx.PutPixel(cx + x - int(width / 2.0f), cy + y + int(width * 3 / 16.0f), 255, 240, 240); //left cheek
+			gfx.PutPixel(cx - x + int(width / 2.0f), cy + y + int(width * 3 / 16.0f), 255, 240, 240); // right cheek
 		}
 		inc = inc + 0.85f;
 	}
@@ -91,33 +91,33 @@ void SpriteCodex::DrawChili(const Vei2 & pos, int w, Graphics & gfx)
 
 	inc = 1;
 
-	for (int x = 1; x <= width * 5 / 16.0f; x++)//beige nose  - nose height 
+	for (int x = 1; x <= int(width * 5 / 16.0f); x++)//beige nose  - nose height 
 	{
 		for (int y = 0; y < inc; y++)
 		{
-			gfx.PutPixel(cx + y, cy + x - width / 8.0f, 255, 240, 240);//right side
-			gfx.PutPixel(cx - y, cy + x - width / 8.0f, 255, 240, 240);//left side
+			gfx.PutPixel(cx + y, cy + x - int(width / 8.0f), 255, 240, 240);//right side
+			gfx.PutPixel(cx - y, cy + x - int(width / 8.0f), 255, 240, 240);//left side
 		}
 		inc = inc + 0.5f;
 	}
 
 
 
-	for (int x = 0; x <= width / 4.0f; x++) { //black moustache-squares
-		for (int y = 1; y < width * 3 / 80.0f; y++) {
-			gfx.PutPixel(cx + x - width * 5 / 16.0f, cy + y + width / 4.0f, 0, 0, 0);
-			gfx.PutPixel(cx + x + width / 16.0f, cy + y + width / 4.0f, 0, 0, 0);
+	for (int x = 0; x <= int(width / 4.0f); x++) { //black moustache-squares
+		for (int y = 1; y < int(width * 3 / 80.0f); y++) {
+			gfx.PutPixel(cx + x - int(width * 5 / 16.0f), cy + y + int(width / 4.0f), 0, 0, 0);
+			gfx.PutPixel(cx + x + int(width / 16.0f), cy + y + int(width / 4.0f), 0, 0, 0);
 		}
 	}
 
 	inc = 1;
 
-	for (int x = 0; x <= width / 10.0f; x++)//black moustache triangles
+	for (int x = 0; x <= int(width / 10.0f); x++)//black moustache triangles
 	{
 		for (int y = 0; y < inc; y++)
 		{
-			gfx.PutPixel(cx + y + width / 40.0f, cy + x + width * 3 / 16.0f, 0, 0, 0);
-			gfx.PutPixel(cx - y - width / 40.0f, cy + x + width * 3 / 16.0f, 0, 0, 0);
+			gfx.PutPixel(cx + y + int(width / 40.0f), cy + x + int(width * 3 / 16.0f), 0, 0, 0);
+			gfx.PutPixel(cx - y - int(width / 40.0f), cy + x + int(width * 3 / 16.0f), 0, 0, 0);
 		}
 		inc = inc + 0.85f;
 	}
@@ -160,18 +160,3 @@ void SpriteCodex::DrawCell(const Vei2 & pos, int sq_w, int line_g, int r, int g,
 		movey = movey - line_g;
 	}
 }
-
- void SpriteCodex::DrawHammer1(const Vei2 & pos, Graphics & gfx)
-{
-	gfx.DrawRectangle(pos.x + 85, pos.y - 15, 30, 150, 45, 118, 0, 0);
-	gfx.DrawRectangle(pos.x + 64, pos.y - 71, 20, 40, 45, 118, 0, 0);
-	gfx.DrawRectangle(pos.x + 29, pos.y - 36, 20, 40, 45, 118, 0, 0);
-
-}
-
-void SpriteCodex::DrawHammer2(const Vei2 & pos, Graphics & gfx)
- {
-	 gfx.DrawRectangle(pos.x + 80, pos.y - 10, 30, 150, 20, 118, 0, 0);
-	 gfx.DrawRectangle(pos.x + 36, pos.y - 49, 20, 40, 20, 118, 0, 0);
-	 gfx.DrawRectangle(pos.x + 20, pos.y - 5, 20, 40, 20, 118, 0, 0);
- }

@@ -50,19 +50,6 @@ private:
 private:
 	void ComposeFrame();
 	void UpdateModel();
-	/*-----------------------------------------------*/
-	/*void DrawChili(int x,int y, int w); //x-coordinate, y- coordinate and width thanks to Legacy http://forum.planetchili.net/viewtopic.php?f=3&t=3890
-	void DrawCell(int cellx, int celly, int sq_w, int line_g, int r, int g, int b);//Thanks to Asimov - see http://www.planetchili.net/forum/viewtopic.php?f=3&t=1065
-
-	/*GAME LOGIC FUNCTIONS - for elaborate explanation see old beginner series lesson 12*/
-	/*void SetCellState(int index, ChiliState state);// sets cells to either empty or chili
-	void SetCellState(int ix, int iy, ChiliState state);
-
-	ChiliState GetCellState(int index);//reads cell state according to index
-	ChiliState GetCellState(int ix, int iy);
-
-	void DoAIMoveRand();
-	void DoUserInput();*/
 	void CreateField(int width, int height, int cellwidth, Field::Mode mode, const PixelFont& font);
 	void DestroyField();
 	void ResetTimeline();
@@ -88,7 +75,7 @@ private:
 	bool loadedonce = false;
 
 	float timer=0.0f;
-	const float gametime = 10.0f;
+	const float gametime = 2.0f;
 	const float colorscaling = 255 / gametime;
 	RectI timeline;
 	Color tcol;//timeline color
@@ -106,6 +93,8 @@ private:
 	int curNameSize=0;
 	
 	int chilicounter=0;//counts how many chili's you got
+
+
 
 	/*  User Variables              */
 	/********************************/
