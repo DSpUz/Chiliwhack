@@ -30,7 +30,7 @@ Game::Game(MainWindow& wnd)
 	menu({ gfx.GetScreenRect().GetCenter().x,300 },font),
 	timeline(0,Graphics::ScreenWidth,0,10),
 	tcol(Colors::Green),
-	//hammer({400,300},Hammer::hammerState::StillUp),
+	
 	line_r(0),
 	line_g(255),
 	line_right(800.0f),
@@ -38,7 +38,7 @@ Game::Game(MainWindow& wnd)
 	slam(L"slam.wav"),
 	chi(L"chi.wav")
 {
-	srand((unsigned int)time(NULL));//converts computer time since 1970 in a number and "seeds" random function
+
 }
 
 void Game::Go()
@@ -189,7 +189,6 @@ void Game::UpdateModel()
 			state = State::BerserkerChili;
 			timer = 0.0f;
 			ResetTimeline();
-	
 		}
 	break;
 	case State::BerserkerChili:
@@ -199,8 +198,7 @@ void Game::UpdateModel()
 				chipl = true;
 			}
 			if (timer < 3.0f) {
-
-				chiliwidth += int(140*dt);
+				chiliwidth += int(150*dt);
 				timer += dt;
 			}
 			else {
@@ -224,6 +222,10 @@ void Game::UpdateModel()
 		}
 		DestroyField();
 		fieldcreated = false;
+		if (!loadedonce) {
+			db.Load("highscores.dat");
+			loadedonce = true;
+		}
 		break;
 	case State::HighscoreTable:
 		readplayername(wnd.kbd.ReadKey(), namepointer, curNameSize);
@@ -239,10 +241,7 @@ void Game::UpdateModel()
 			db.Save("highscores.dat");
 			savedonce = true;
 		}
-		if (!loadedonce) {
-			db.Load("highscores.dat");
-			loadedonce = true;
-		}
+		
 			mode = menu.ProcessMouse(wnd.mouse.Read(), SelectionMenu::Menutype::EndMenu,dt);
 			switch (mode){
 				case SelectionMenu::Gamemode::Replay:
