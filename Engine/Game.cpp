@@ -199,6 +199,9 @@ void Game::UpdateModel()
 			}
 			if (timer < 3.0f) {
 				chiliwidth += int(150*dt);
+				if (chiliwidth > 395) {
+					chiliwidth = 395;
+				}
 				timer += dt;
 			}
 			else {
