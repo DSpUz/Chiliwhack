@@ -112,14 +112,6 @@ void Game::readplayername(const Keyboard::Event & e, char*& playername,int& char
 			}
 		}
 }
-
-
-
-
-
-
-
-//slam.Play(1.0,0.2);
 	
 void Game::UpdateModel()
 {

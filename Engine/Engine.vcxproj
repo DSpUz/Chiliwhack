@@ -263,7 +263,6 @@
     <Media Include="phone7.wav" />
     <Media Include="phone8.wav" />
     <Media Include="phone9.wav" />
-    <Media Include="sky.wav" />
     <Media Include="slam.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

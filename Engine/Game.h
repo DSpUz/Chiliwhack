@@ -75,7 +75,7 @@ private:
 	bool loadedonce = false;
 
 	float timer=0.0f;
-	const float gametime = 10.0f;
+	const float gametime = 60.0f;
 	const float colorscaling = 255 / gametime;
 	RectI timeline;
 	Color tcol;//timeline color

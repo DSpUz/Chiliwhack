@@ -38,18 +38,28 @@ MainWindow::MainWindow( HINSTANCE hInst,wchar_t * pArgs )
 	wc.hIcon = (HICON)LoadImage( hInst,MAKEINTRESOURCE( IDI_APPICON ),IMAGE_ICON,32,32,0 );
 	wc.hCursor = LoadCursor( nullptr,IDC_ARROW );
 	RegisterClassEx( &wc );
+	RECT desktop_rect{};
+	auto desktop_handle = GetDesktopWindow();
+	GetWindowRect(desktop_handle, &desktop_rect);
 
-	// create window & get hWnd
-	RECT wr;
-	wr.left = 350;
-	wr.right = Graphics::ScreenWidth + wr.left;
-	wr.top = 100;
-	wr.bottom = Graphics::ScreenHeight + wr.top;
-	AdjustWindowRect( &wr,WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,FALSE );
-	hWnd = CreateWindow( wndClassName,L"Chiliwhack",
+	// Setup the window as if in the top left corner just to get the adjusted dimensions
+	auto wr = RECT{ 0, 0, Graphics::ScreenWidth, Graphics::ScreenHeight };
+	AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
+
+	// Now calculate the total width and height of the window
+	const auto width = wr.right - wr.left;
+	const auto height = wr.bottom - wr.top;
+
+	// Calculate the x and y position of the window
+	const auto x = (desktop_rect.right - desktop_rect.left - width) / 2;
+	const auto y = (desktop_rect.bottom - desktop_rect.top - height) / 2;
+
+	// Create the window with the adjusted X, Y, Width and Height
+	hWnd = CreateWindow(wndClassName, L"Chiliwhack",
 		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
-		wr.left,wr.top,wr.right - wr.left,wr.bottom - wr.top,
-		nullptr,nullptr,hInst,this );
+		x, y, width, height,
+		nullptr, nullptr, hInst, this);
+	// create window & get hWnd
 
 	// throw exception if something went terribly wrong
 	if( hWnd == nullptr )
