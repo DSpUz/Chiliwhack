@@ -205,6 +205,9 @@ public:
 		}
 	}
 	void SilenceHammer();
+	void UpdateHammer(const Mouse::Event& e, float dt,bool MouseIsEmpty) {
+		menuhammer.MouseUpdate(dt, e, MouseIsEmpty);
+	};
 private:
 	void ResetHighlights()
 	{
